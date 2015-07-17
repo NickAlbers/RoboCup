@@ -59,22 +59,18 @@ void loop()
        || Xbox.getAnalogHat(RightHatY, 0) > 7500 || Xbox.getAnalogHat(RightHatY, 0) < -7500) {
         
         //Read joystick values
-        int leftTrackSpeed = Xbox.getAnalogHat(LeftHatY, 0);
-        int rightTrackSpeed = Xbox.getAnalogHat(RightHatY, 0);
+        int trackSpeed = Xbox.getAnalogHat(LeftHatY, 0);
         
         //Map to motor ranges
-       leftTrackSpeed  = map(leftTrackSpeed, -32767, 32767, 0, 180);
-       rightTrackSpeed = map(rightTrackSpeed, -32767, 32767, 0, 180);
+       trackSpeed  = map(trackSpeed, -32767, 32767, 135, 45); //Flip these if the chasis is flipped
        
        //Deadband for Trackspeeds between 85 and 95
-       if (leftTrackSpeed < 100 && leftTrackSpeed > 80) {leftTrackSpeed = 90;}
-       if (rightTrackSpeed < 100 && rightTrackSpeed > 80) {rightTrackSpeed = 90;}
+       if (trackSpeed < 100 && trackSpeed > 80) {trackSpeed = 90;}
        
        //Write output values to the motor
-       leftServo.write(leftTrackSpeed);
-       Serial.println(leftTrackSpeed);
-       rightServo.write(rightTrackSpeed);
-       Serial.println(rightTrackSpeed);
+       leftServo.write(trackSpeed);
+       rightServo.write(trackSpeed);
+       Serial.println(trackSpeed);
       }
 
       if (Xbox.getButtonClick(UP, 0)) {
