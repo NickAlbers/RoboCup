@@ -15,21 +15,22 @@ Any speed outside this range will be ignored.
 #endif
 
 
-Servo myservoA;      // create servo object to control a servo
-Servo myservoB;      // create servo object to control a servo
+Servo leftServo;      // create servo object to control a servo
+Servo rightServo;      // create servo object to control a servo
 
 USB Usb;
 XBOXRECV Xbox(&Usb);
 
 void setup()
 { 
-  int motorSpeed = 0;
+  int leftTrackSpeed = 0;
+  int rightTrackSpeed = 0;
  //Setup the Servos 
   pinMode(49, OUTPUT);                 //Pin 49 is used to enable IO power
   digitalWrite(49, 1);                 //Enable IO power on main CPU board
   
-  myservoA.attach(3);  // attaches the servo pin 3 to the servo object
-  myservoB.attach(2);  // attaches the servo pin 2 to the servo object
+  leftServo.attach(3);  // attaches the servo pin 3 to the servo object
+  rightServo.attach(2);  // attaches the servo pin 2 to the servo object
   
   //setup the Xbox Receiver
   Serial.begin(115200);
@@ -47,102 +48,88 @@ void loop()
 { 
   Usb.Task();
   if (Xbox.XboxReceiverConnected) {
-    for (uint8_t i = 0; i < 4; i++) {
-      if (Xbox.Xbox360Connected[i]) {
-        if (Xbox.getButtonPress(L2, i) || Xbox.getButtonPress(R2, i)) {
-          Serial.print("L2: ");
-          Serial.print(Xbox.getButtonPress(L2, i));
-          Serial.print("\tR2: ");
-          Serial.println(Xbox.getButtonPress(R2, i));
-          Xbox.setRumbleOn(Xbox.getButtonPress(L2, i), Xbox.getButtonPress(R2, i), i);
-        }
-
-        if (Xbox.getAnalogHat(LeftHatX, i) > 7500 || Xbox.getAnalogHat(LeftHatX, i) < -7500 || Xbox.getAnalogHat(LeftHatY, i) > 7500 || Xbox.getAnalogHat(LeftHatY, i) < -7500 || Xbox.getAnalogHat(RightHatX, i) > 7500 || Xbox.getAnalogHat(RightHatX, i) < -7500 || Xbox.getAnalogHat(RightHatY, i) > 7500 || Xbox.getAnalogHat(RightHatY, i) < -7500) {
-       
-          //Forward and Reverse Control
-          if (Xbox.getAnalogHat(LeftHatY, i) > 8000) { //7500 is default value
-            myservoA.write(135);
-            myservoB.write(135);
-          }
-          if (Xbox.getAnalogHat(LeftHatY, i) < -7500) { //-7500 is default
-            myservoA.write(45);
-            myservoB.write(45);
-          }
-
-          //Rotate Right and left
-//          if (Xbox.getAnalogHat(LeftHatX, i) > 7500) { //7500 is default value
-//            myservoA.write(135);
-//            myservoB.write(45);
-//          }
-//          if (Xbox.getAnalogHat(LeftHatX, i) > -7500) { //7500 is default value
-//            myservoA.write(45);
-//            myservoB.write(135);
-//          }
-          if (Xbox.getAnalogHat(RightHatX, i) > 7500 || Xbox.getAnalogHat(RightHatX, i) < -7500) {
-            myservoA.write(90);
-            myservoB.write(90);
-          }
-          if (Xbox.getAnalogHat(RightHatY, i) > 7500 || Xbox.getAnalogHat(RightHatY, i) < -7500) {
-            myservoA.write(90);
-            myservoB.write(90);
-          }
-          Serial.println();
-        }
-
-        if (Xbox.getButtonClick(UP, i)) {
-          Xbox.setLedOn(LED1, i);
-          Serial.println(F("Up"));
-        }
-        if (Xbox.getButtonClick(DOWN, i)) {
-          Xbox.setLedOn(LED4, i);
-          Serial.println(F("Down"));
-        }
-        if (Xbox.getButtonClick(LEFT, i)) {
-          Xbox.setLedOn(LED3, i);
-          Serial.println(F("Left"));
-        }
-        if (Xbox.getButtonClick(RIGHT, i)) {
-          Xbox.setLedOn(LED2, i);
-          Serial.println(F("Right"));
-        }
-
-        if (Xbox.getButtonClick(START, i)) {
-          Xbox.setLedMode(ALTERNATING, i);
-          Serial.println(F("Start"));
-        }
-        if (Xbox.getButtonClick(BACK, i)) {
-          Xbox.setLedBlink(ALL, i);
-          Serial.println(F("Back"));
-        }
-        if (Xbox.getButtonClick(L3, i))
-          Serial.println(F("L3"));
-        if (Xbox.getButtonClick(R3, i))
-          Serial.println(F("R3"));
-
-        if (Xbox.getButtonClick(L1, i))
-          Serial.println(F("L1"));
-        if (Xbox.getButtonClick(R1, i))
-          Serial.println(F("R1"));
-        if (Xbox.getButtonClick(XBOX, i)) {
-          Xbox.setLedMode(ROTATING, i);
-          Serial.print(F("Xbox (Battery: "));
-          Serial.print(Xbox.getBatteryLevel(i)); // The battery level in the range 0-3
-          Serial.println(F(")"));
-        }
-        if (Xbox.getButtonClick(SYNC, i)) {
-          Serial.println(F("Sync"));
-          Xbox.disconnect(i);
-        }
-
-        if (Xbox.getButtonClick(A, i))
-          Serial.println(F("A"));
-        if (Xbox.getButtonClick(B, i))
-          Serial.println(F("B"));
-        if (Xbox.getButtonClick(X, i))
-          Serial.println(F("X"));
-        if (Xbox.getButtonClick(Y, i))
-          Serial.println(F("Y"));
+    if (Xbox.Xbox360Connected[0]) {
+      if (Xbox.getButtonPress(L2, 0) || Xbox.getButtonPress(R2, 0)) {
+        Xbox.setRumbleOn(Xbox.getButtonPress(L2, 0), Xbox.getButtonPress(R2, 0), 0);
       }
+
+      if (Xbox.getAnalogHat(LeftHatX, 0) > 7500 || Xbox.getAnalogHat(LeftHatX, 0) < -7500
+       || Xbox.getAnalogHat(LeftHatY, 0) > 7500 || Xbox.getAnalogHat(LeftHatY, 0) < -7500 
+       || Xbox.getAnalogHat(RightHatX, 0) > 7500 || Xbox.getAnalogHat(RightHatX, 0) < -7500 
+       || Xbox.getAnalogHat(RightHatY, 0) > 7500 || Xbox.getAnalogHat(RightHatY, 0) < -7500) {
+        
+        //Read joystick values
+        int leftTrackSpeed = Xbox.getAnalogHat(LeftHatY, 0);
+        int rightTrackSpeed = Xbox.getAnalogHat(RightHatY, 0);
+        
+        //Map to motor ranges
+       leftTrackSpeed  = map(leftTrackSpeed, -32767, 32767, 0, 180);
+       rightTrackSpeed = map(rightTrackSpeed, -32767, 32767, 0, 180);
+       
+       //Deadband for Trackspeeds between 85 and 95
+       if (leftTrackSpeed < 100 && leftTrackSpeed > 80) {leftTrackSpeed = 90;}
+       if (rightTrackSpeed < 100 && rightTrackSpeed > 80) {rightTrackSpeed = 90;}
+       
+       //Write output values to the motor
+       leftServo.write(leftTrackSpeed);
+       Serial.println(leftTrackSpeed);
+       rightServo.write(rightTrackSpeed);
+       Serial.println(rightTrackSpeed);
+      }
+
+      if (Xbox.getButtonClick(UP, 0)) {
+        Xbox.setLedOn(LED1, 0);
+        Serial.println(F("Up"));
+      }
+      if (Xbox.getButtonClick(DOWN, 0)) {
+        Xbox.setLedOn(LED4, 0);
+        Serial.println(F("Down"));
+      }
+      if (Xbox.getButtonClick(LEFT, 0)) {
+        Xbox.setLedOn(LED3, 0);
+        Serial.println(F("Left"));
+      }
+      if (Xbox.getButtonClick(RIGHT, 0)) {
+        Xbox.setLedOn(LED2, 0);
+        Serial.println(F("Right"));
+      }
+
+      if (Xbox.getButtonClick(START, 0)) {
+        Xbox.setLedMode(ALTERNATING, 0);
+        Serial.println(F("Start"));
+      }
+      if (Xbox.getButtonClick(BACK, 0)) {
+        Xbox.setLedBlink(ALL, 0);
+        Serial.println(F("Back"));
+      }
+      if (Xbox.getButtonClick(L3, 0))
+        Serial.println(F("L3"));
+      if (Xbox.getButtonClick(R3, 0))
+        Serial.println(F("R3"));
+
+      if (Xbox.getButtonClick(L1, 0))
+        Serial.println(F("L1"));
+      if (Xbox.getButtonClick(R1, 0))
+        Serial.println(F("R1"));
+      if (Xbox.getButtonClick(XBOX, 0)) {
+        Xbox.setLedMode(ROTATING, 0);
+        Serial.print(F("Xbox (Battery: "));
+        Serial.print(Xbox.getBatteryLevel(0)); // The battery level in the range 0-3
+        Serial.println(F(")"));
+      }
+      if (Xbox.getButtonClick(SYNC, 0)) {
+        Serial.println(F("Sync"));
+        Xbox.disconnect(0);
+      }
+
+      if (Xbox.getButtonClick(A, 0))
+        Serial.println(F("A"));
+      if (Xbox.getButtonClick(B, 0))
+        Serial.println(F("B"));
+      if (Xbox.getButtonClick(X, 0))
+        Serial.println(F("X"));
+      if (Xbox.getButtonClick(Y, 0))
+        Serial.println(F("Y"));
     }
   }
 } 
