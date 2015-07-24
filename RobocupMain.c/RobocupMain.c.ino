@@ -64,7 +64,7 @@ void loop()
         
         //Map to motor ranges
        trackSpeed  = map(trackSpeed, -32767, 32767, 135, 45); //Flip these if the chasis is flipped
-       trackDiff = map(trackDiff, -32767, 32767, 45, -45);
+       //trackDiff = map(trackDiff, -32767, 32767, 45, -45);
        
        //Deadband for Trackspeeds between 85 and 95
        if (trackSpeed < 100 && trackSpeed > 80) {trackSpeed = 90;}
@@ -73,11 +73,11 @@ void loop()
        //Having one plus and one minus should facilitate movement in opposite
        //directions. Right on the RightHatX will increase left track speed and
        //slow right track, vice versa for the other direction
-       int trackLeft = trackspeed + trackDiff; 
-       int trackRight = trackspeed - trackDiff;
+       int trackLeft = trackSpeed + trackDiff; 
+       int trackRight = trackSpeed + trackDiff;
        
        //Write output values to the motor
-       leftServo.write(trackLeft;
+       leftServo.write(trackLeft);
        rightServo.write(trackRight);
        Serial.println(trackLeft);
        Serial.println(trackRight);
