@@ -1,4 +1,5 @@
-/* Using port S1 and channels S1 and S2 to drive the two motors on the robot.
+/*
+Useing port S1 and channels S1 and S2 to drive the two motors on the robot.
 The motors must be connected through the Sabertooth driver.
 The sabertooth must be in mode Microcontroller pulses, independent linear control mode.
 1000us to 2000us control the speed and direction. 1500us is stop.
@@ -24,7 +25,6 @@ void setup()
 { 
   int leftTrackSpeed = 0;
   int rightTrackSpeed = 0;
-  
  //Setup the Servos 
   pinMode(49, OUTPUT);                 //Pin 49 is used to enable IO power
   digitalWrite(49, 1);                 //Enable IO power on main CPU board
@@ -60,27 +60,17 @@ void loop()
         
         //Read joystick values
         int trackSpeed = Xbox.getAnalogHat(LeftHatY, 0);
-        int trackDiff = Xbox.getAnalogHat(RightHatX, 0);
         
         //Map to motor ranges
        trackSpeed  = map(trackSpeed, -32767, 32767, 135, 45); //Flip these if the chasis is flipped
-       trackDiff = map(trackDiff, -32767, 32767, 45, -45);
        
        //Deadband for Trackspeeds between 85 and 95
        if (trackSpeed < 100 && trackSpeed > 80) {trackSpeed = 90;}
-       if (trackDiff < 100 && trackSpeed > 80) {trackSpeed = 90;}
-       
-       //Having one plus and one minus should facilitate movement in opposite
-       //directions. Right on the RightHatX will increase left track speed and
-       //slow right track, vice versa for the other direction
-       int trackLeft = trackspeed + trackDiff; 
-       int trackRight = trackspeed - trackDiff;
        
        //Write output values to the motor
-       leftServo.write(trackLeft;
-       rightServo.write(trackRight);
-       Serial.println(trackLeft);
-       Serial.println(trackRight);
+       leftServo.write(trackSpeed);
+       rightServo.write(trackSpeed);
+       Serial.println(trackSpeed);
       }
 
       if (Xbox.getButtonClick(UP, 0)) {
