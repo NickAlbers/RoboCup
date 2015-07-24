@@ -3,21 +3,28 @@
 //***********************************************************************************************
 void modeSelect() {
   //Enable or Disable remote control when Y is pressed
-  if (Xbox.getButtonPress(Y, 0) && operationMode == AUTONOMOUS) {
-    operationMode = REMOTECONTROL;
-    Serial.println("Remote control enabled");
+  if (Xbox.XboxReceiverConnected && Xbox.Xbox360Connected[0]) {
+    if (operationMode == AUTONOMOUS && Xbox.getButtonPress(X, 0)) {
+      operationMode = REMOTECONTROL;
+      Serial.println("Remote control enabled");
+    }
+    else if (operationMode == REMOTECONTROL && Xbox.getButtonPress(Y, 0))
+    {
+      operationMode = AUTONOMOUS;
+      Serial.println("Autonomous mode activated");
+    }
   }
-  else if (Xbox.getButtonPress(Y, 0) && operationMode == REMOTECONTROL)
-  {
+  else {
     operationMode = AUTONOMOUS;
-    Serial.println("Autonomous mode activated");
+    Serial.println("Autonomous mode activated, no xbox detected");
   }
 }
 //***********************************************************************************************
-//Function to control the DC motors from an xbox controller. 
+//Function to control the DC motors from an xbox controller.
 //Left analog stick maps speed, right analog controls direction
 //***********************************************************************************************
 void xboxControl() {
+  Serial.println("Remote Control");
   if (Xbox.getAnalogHat(LeftHatX, 0) > 1500 || Xbox.getAnalogHat(LeftHatX, 0) < -1500
       || Xbox.getAnalogHat(LeftHatY, 0) > 1500 || Xbox.getAnalogHat(LeftHatY, 0) < -1500
       || Xbox.getAnalogHat(RightHatX, 0) > 1500 || Xbox.getAnalogHat(RightHatX, 0) < -1500

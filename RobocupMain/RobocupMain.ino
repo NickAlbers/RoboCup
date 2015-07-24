@@ -14,18 +14,22 @@ Any speed outside this range will be ignored.
 #include <SPI.h>
 #endif
 
-//Declare globals
-Servo leftServo;      // create servo object to control a servo
-Servo rightServo;      // create servo object to control a servo
-int operationMode = true;
-
 #define READYSTATE 0
 #define REMOTECONTROL 1
 #define AUTONOMOUS 2
 
+int operationMode = REMOTECONTROL;
+int xboxConnected = false; //Assume no xbox controller is connected
+int i = 0;
+
+//Declare globals
+Servo leftServo;      // create servo object to control a servo
+Servo rightServo;      // create servo object to control a servo
 USB Usb;
 XBOXRECV Xbox(&Usb);
-
+//***********************************************************************************************
+//Setup Code goes here
+//***********************************************************************************************
 void setup()
 {
   //Setup the Servos
@@ -45,77 +49,38 @@ void setup()
     while (1); //halt
   }
   Serial.print(F("\r\nXbox Wireless Receiver Library Started"));
+  
+  //Enable Timer interrupts
+//  pinMode(ledPin, OUTPUT);
+//  
+//  // initialize timer1 
+//  noInterrupts();           // disable all interrupts
+//  TCCR1A = 0;
+//  TCCR1B = 0;
+//  TCNT1  = 0;
+//
+//  OCR1A = 31250;            // compare match register 16MHz/256/2Hz
+//  TCCR1B |= (1 << WGM12);   // CTC mode
+//  TCCR1B |= (1 << CS12);    // 256 prescaler 
+//  TIMSK1 |= (1 << OCIE1A);  // enable timer compare interrupt
+//  interrupts();             // enable all interrupts
+  
 }
 
+//***********************************************************************************************
+//The main program loop
+//***********************************************************************************************
 void loop()
 {
   Usb.Task();
-  if (Xbox.XboxReceiverConnected && Xbox.Xbox360Connected[0]) {
-    modeSelect();
-  }
-
+  modeSelect();
   //If remote control enabled give user control via the Xbox controller.
-  if (operationMode == REMOTECONTROL){
+  if (operationMode == REMOTECONTROL) {
     xboxControl();
-    Serial.println("Remote Control");
   }
-
   //If remote control disabled enable autonomous control
-  if (operationMode == AUTONOMOUS) {
-    Serial.println("Hello World");
+  else if (operationMode == AUTONOMOUS) {
+    autonomousControl();
   }
-
-  //    if (Xbox.getButtonClick(UP, 0)) {
-  //      Xbox.setLedOn(LED1, 0);
-  //      Serial.println(F("Up"));
-  //    }
-  //    if (Xbox.getButtonClick(DOWN, 0)) {
-  //      Xbox.setLedOn(LED4, 0);
-  //      Serial.println(F("Down"));
-  //    }
-  //    if (Xbox.getButtonClick(LEFT, 0)) {
-  //      Xbox.setLedOn(LED3, 0);
-  //      Serial.println(F("Left"));
-  //    }
-  //    if (Xbox.getButtonClick(RIGHT, 0)) {
-  //      Xbox.setLedOn(LED2, 0);
-  //      Serial.println(F("Right"));
-  //    }
-  //
-  //    if (Xbox.getButtonClick(START, 0)) {
-  //      Xbox.setLedMode(ALTERNATING, 0);
-  //      Serial.println(F("Start"));
-  //    }
-  //    if (Xbox.getButtonClick(BACK, 0)) {
-  //      Xbox.setLedBlink(ALL, 0);
-  //      Serial.println(F("Back"));
-  //    }
-  //    if (Xbox.getButtonClick(L3, 0))
-  //      Serial.println(F("L3"));
-  //    if (Xbox.getButtonClick(R3, 0))
-  //      Serial.println(F("R3"));
-  //
-  //    if (Xbox.getButtonClick(L1, 0))
-  //      Serial.println(F("L1"));
-  //    if (Xbox.getButtonClick(R1, 0))
-  //      Serial.println(F("R1"));
-  //    if (Xbox.getButtonClick(XBOX, 0)) {
-  //      Xbox.setLedMode(ROTATING, 0);
-  //      Serial.print(F("Xbox (Battery: "));
-  //      Serial.print(Xbox.getBatteryLevel(0)); // The battery level in the range 0-3
-  //      Serial.println(F(")"));
-  //    }
-  //    if (Xbox.getButtonClick(SYNC, 0)) {
-  //      Serial.println(F("Sync"));
-  //      Xbox.disconnect(0);
-  //    }
-  //
-  //    if (Xbox.getButtonClick(A, 0))
-  //      Serial.println(F("A"));
-  //    if (Xbox.getButtonClick(B, 0))
-  //      Serial.println(F("B"));
-  //    if (Xbox.getButtonClick(X, 0))
-  //      Serial.println(F("X"));
-  //    if (Xbox.getButtonClick(Y, 0))
-  //      Serial.println(F("Y"));
+  delay(10);
 }
