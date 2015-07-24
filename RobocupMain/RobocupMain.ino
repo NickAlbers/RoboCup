@@ -14,17 +14,20 @@ Any speed outside this range will be ignored.
 #include <SPI.h>
 #endif
 
-
+//Declare globals
 Servo leftServo;      // create servo object to control a servo
 Servo rightServo;      // create servo object to control a servo
+int operationMode = true;
+
+#define READYSTATE 0
+#define REMOTECONTROL 1
+#define AUTONOMOUS 2
 
 USB Usb;
 XBOXRECV Xbox(&Usb);
 
 void setup()
 {
-  int leftTrackSpeed = 0;
-  int rightTrackSpeed = 0;
   //Setup the Servos
   pinMode(49, OUTPUT);                 //Pin 49 is used to enable IO power
   digitalWrite(49, 1);                 //Enable IO power on main CPU board
@@ -35,7 +38,7 @@ void setup()
   //setup the Xbox Receiver
   Serial.begin(115200);
 #if !defined(__MIPSEL__)
-  while (!Serial); // Wait for serial port to connect - used on Leonardo, Teensy and other boards with built-in USB CDC serial connection
+  while (!Serial); // Wait for serial port to connect
 #endif
   if (Usb.Init() == -1) {
     Serial.print(F("\r\nOSC did not start"));
@@ -48,99 +51,71 @@ void loop()
 {
   Usb.Task();
   if (Xbox.XboxReceiverConnected && Xbox.Xbox360Connected[0]) {
-    
-    //Enable controller rumble
-    if (Xbox.getButtonPress(L2, 0) || Xbox.getButtonPress(R2, 0)) {
-          Xbox.setRumbleOn(Xbox.getButtonPress(L2, 0), Xbox.getButtonPress(R2, 0), 0);
-    }
-    
-    //Enable remote control
-    if (Xbox.getAnalogHat(LeftHatX, 0) > 7500 || Xbox.getAnalogHat(LeftHatX, 0) < -7500
-        || Xbox.getAnalogHat(LeftHatY, 0) > 7500 || Xbox.getAnalogHat(LeftHatY, 0) < -7500
-        || Xbox.getAnalogHat(RightHatX, 0) > 7500 || Xbox.getAnalogHat(RightHatX, 0) < -7500
-        || Xbox.getAnalogHat(RightHatY, 0) > 7500 || Xbox.getAnalogHat(RightHatY, 0) < -7500) {
-
-      //Read joystick values
-      int trackSpeed = Xbox.getAnalogHat(LeftHatY, 0);
-      int trackDiff = Xbox.getAnalogHat(RightHatX, 0);
-
-      //Map to motor ranges
-      trackSpeed  = map(trackSpeed, -32767, 32767, 135, 45); //Flip these if the chasis is flipped
-      trackDiff = map(trackDiff, -32767, 32767, 45, -45);
-
-      //Deadband for Trackspeeds between 85 and 95
-      if (trackSpeed < 100 && trackSpeed > 80) {
-        trackSpeed = 90;
-      }
-
-      //Having one plus and one minus should facilitate movement in opposite
-      //directions. Right on the RightHatX will increase left track speed and
-      //slow right track, vice versa for the other direction
-      int trackLeft = trackSpeed + trackDiff;
-      int trackRight = trackSpeed - trackDiff;
-
-      //Write output values to the motor
-      leftServo.write(trackLeft);
-      rightServo.write(trackRight);
-      Serial.println(trackLeft);
-      Serial.println(trackRight);
-    }
-//
-//    if (Xbox.getButtonClick(UP, 0)) {
-//      Xbox.setLedOn(LED1, 0);
-//      Serial.println(F("Up"));
-//    }
-//    if (Xbox.getButtonClick(DOWN, 0)) {
-//      Xbox.setLedOn(LED4, 0);
-//      Serial.println(F("Down"));
-//    }
-//    if (Xbox.getButtonClick(LEFT, 0)) {
-//      Xbox.setLedOn(LED3, 0);
-//      Serial.println(F("Left"));
-//    }
-//    if (Xbox.getButtonClick(RIGHT, 0)) {
-//      Xbox.setLedOn(LED2, 0);
-//      Serial.println(F("Right"));
-//    }
-//
-//    if (Xbox.getButtonClick(START, 0)) {
-//      Xbox.setLedMode(ALTERNATING, 0);
-//      Serial.println(F("Start"));
-//    }
-//    if (Xbox.getButtonClick(BACK, 0)) {
-//      Xbox.setLedBlink(ALL, 0);
-//      Serial.println(F("Back"));
-//    }
-//    if (Xbox.getButtonClick(L3, 0))
-//      Serial.println(F("L3"));
-//    if (Xbox.getButtonClick(R3, 0))
-//      Serial.println(F("R3"));
-//
-//    if (Xbox.getButtonClick(L1, 0))
-//      Serial.println(F("L1"));
-//    if (Xbox.getButtonClick(R1, 0))
-//      Serial.println(F("R1"));
-//    if (Xbox.getButtonClick(XBOX, 0)) {
-//      Xbox.setLedMode(ROTATING, 0);
-//      Serial.print(F("Xbox (Battery: "));
-//      Serial.print(Xbox.getBatteryLevel(0)); // The battery level in the range 0-3
-//      Serial.println(F(")"));
-//    }
-//    if (Xbox.getButtonClick(SYNC, 0)) {
-//      Serial.println(F("Sync"));
-//      Xbox.disconnect(0);
-//    }
-//
-//    if (Xbox.getButtonClick(A, 0))
-//      Serial.println(F("A"));
-//    if (Xbox.getButtonClick(B, 0))
-//      Serial.println(F("B"));
-//    if (Xbox.getButtonClick(X, 0))
-//      Serial.println(F("X"));
-//    if (Xbox.getButtonClick(Y, 0))
-//      Serial.println(F("Y"));
+    modeSelect();
   }
+
+  //If remote control enabled give user control via the Xbox controller.
+  if (operationMode == REMOTECONTROL){
+    xboxControl();
+    Serial.println("Remote Control");
+  }
+
+  //If remote control disabled enable autonomous control
+  if (operationMode == AUTONOMOUS) {
+    Serial.println("Hello World");
+  }
+
+  //    if (Xbox.getButtonClick(UP, 0)) {
+  //      Xbox.setLedOn(LED1, 0);
+  //      Serial.println(F("Up"));
+  //    }
+  //    if (Xbox.getButtonClick(DOWN, 0)) {
+  //      Xbox.setLedOn(LED4, 0);
+  //      Serial.println(F("Down"));
+  //    }
+  //    if (Xbox.getButtonClick(LEFT, 0)) {
+  //      Xbox.setLedOn(LED3, 0);
+  //      Serial.println(F("Left"));
+  //    }
+  //    if (Xbox.getButtonClick(RIGHT, 0)) {
+  //      Xbox.setLedOn(LED2, 0);
+  //      Serial.println(F("Right"));
+  //    }
+  //
+  //    if (Xbox.getButtonClick(START, 0)) {
+  //      Xbox.setLedMode(ALTERNATING, 0);
+  //      Serial.println(F("Start"));
+  //    }
+  //    if (Xbox.getButtonClick(BACK, 0)) {
+  //      Xbox.setLedBlink(ALL, 0);
+  //      Serial.println(F("Back"));
+  //    }
+  //    if (Xbox.getButtonClick(L3, 0))
+  //      Serial.println(F("L3"));
+  //    if (Xbox.getButtonClick(R3, 0))
+  //      Serial.println(F("R3"));
+  //
+  //    if (Xbox.getButtonClick(L1, 0))
+  //      Serial.println(F("L1"));
+  //    if (Xbox.getButtonClick(R1, 0))
+  //      Serial.println(F("R1"));
+  //    if (Xbox.getButtonClick(XBOX, 0)) {
+  //      Xbox.setLedMode(ROTATING, 0);
+  //      Serial.print(F("Xbox (Battery: "));
+  //      Serial.print(Xbox.getBatteryLevel(0)); // The battery level in the range 0-3
+  //      Serial.println(F(")"));
+  //    }
+  //    if (Xbox.getButtonClick(SYNC, 0)) {
+  //      Serial.println(F("Sync"));
+  //      Xbox.disconnect(0);
+  //    }
+  //
+  //    if (Xbox.getButtonClick(A, 0))
+  //      Serial.println(F("A"));
+  //    if (Xbox.getButtonClick(B, 0))
+  //      Serial.println(F("B"));
+  //    if (Xbox.getButtonClick(X, 0))
+  //      Serial.println(F("X"));
+  //    if (Xbox.getButtonClick(Y, 0))
+  //      Serial.println(F("Y"));
 }
-
-
-
