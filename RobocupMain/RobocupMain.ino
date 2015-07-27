@@ -32,6 +32,7 @@ XBOXRECV Xbox(&Usb);
 //***********************************************************************************************
 void setup()
 {
+  setupIR();
   //Setup the Servos
   pinMode(49, OUTPUT);                 //Pin 49 is used to enable IO power
   digitalWrite(49, 1);                 //Enable IO power on main CPU board
@@ -82,5 +83,6 @@ void loop()
   else if (operationMode == AUTONOMOUS) {
     autonomousControl();
   }
-  delay(10);
+  readIR();
+  delay(10); //This makes stuff work
 }
