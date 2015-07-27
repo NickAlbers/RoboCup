@@ -1,4 +1,20 @@
 //***********************************************************************************************
+// Initialise Xbox Receiver
+//***********************************************************************************************
+void setupXboxReceiver()
+{
+  Serial.begin(115200);
+#if !defined(__MIPSEL__)
+  while (!Serial); // Wait for serial port to connect
+#endif
+  if (Usb.Init() == -1) {
+    Serial.print(F("\r\nOSC did not start"));
+    while (1); //halt
+  }
+  Serial.print(F("\r\nXbox Wireless Receiver Library Started"));
+}
+
+//***********************************************************************************************
 // Changes from autonomous to remote control and vice versa on A "y" button press.
 //***********************************************************************************************
 void modeSelect() {
