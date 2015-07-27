@@ -1,5 +1,6 @@
 const int IR1_Pin = A0;
 const int IR2_Pin = A1;
+const int irTimeDelay = 100;
 
 int IR1_volt = 0;
 int IR2_volt = 0;
@@ -8,7 +9,7 @@ int IR2_cm = 0;
 //***********************************************************************************************
 //
 //***********************************************************************************************
-void setupIR()
+void setupIRMed()
 {
   // initialize serial communications at 9600 bps:
   Serial.begin(9600);
@@ -22,8 +23,14 @@ void setupIR()
 //***********************************************************************************************
 //
 //***********************************************************************************************
-void readIR()
+void readIRMed()
 {
+  static long irNextTime = 0;
+  if (millis() < irNextTime)
+  {
+    return;
+  }
+  //    return;
   // read the analog in value:
   IR1_volt = analogRead(IR1_Pin);
   IR1_volt = map(IR1_volt, 0, 1023, 0, 5000);
@@ -41,6 +48,6 @@ void readIR()
   Serial.print(IR1_cm);
   Serial.print("      ");
   Serial.print(IR2_cm);
-
-  delay(100);
+  
+  int irNextTime = millis() + irTimeDelay;
 }

@@ -10,6 +10,8 @@
 #define READYSTATE 0
 #define REMOTECONTROL 1
 #define AUTONOMOUS 2
+#define GETPACKAGE 3
+#define AVOIDOBSTACLE 4
 
 int operationMode = REMOTECONTROL;
 int xboxConnected = false; //Assume no xbox controller is connected
@@ -26,7 +28,7 @@ XBOXRECV Xbox(&Usb);
 //***********************************************************************************************
 void setup()
 {
-  setupIR();
+  setupIRMed();
   setupDCMotors();
   setupXboxReceiver();
 }
@@ -47,12 +49,8 @@ void loop()
   else if (operationMode == AUTONOMOUS) {
     autonomousControl();
   }
-  
-  //Every tenth loop of main execute this (Time slice scheduler)
-//  if ((loopCount % 10) == 0)
-//  {
-//    readIR();
-//  }
+
+  readIRMed();
 //  delay(10); //This makes stuff work
   loopCount ++;
 }
