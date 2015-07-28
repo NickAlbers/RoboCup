@@ -42,21 +42,19 @@ void autonomousControl() {
 //Function allowing the robot to steer autonomously
 //***********************************************************************************************
 void autonomousDrive() {
-  static long nextTurn = 0;
-  //  //Can I turn yet?
-  //  if (millis() < nextTurn)
-  //    return;
+  static long nextRun = 0;
   
-  //      turnVal = random(-45, 45);
-  //      leftServo.write(turnVal);
-  //      rightServo.write(-turnVal);
-  //      leftServo.write(135);
-  //      rightServo.write(135);
+  //Can I turn yet?
+  if (millis() < nextRun) {
+    return
+  }
+
   switch (driveState) {
     case TURNING:
-      turnTime = random(200, 1000);
-      turnDir = random(1, 2);
-      
+
+      nextRun = random(200, 1000); //Generate a time to turn for
+      int turnDir = random(1, 2); // Select rotation direction
+
       if (turnDir == 1) { //Turn right
         leftServo.write(45);
         rightServo.write(-45);
@@ -65,21 +63,17 @@ void autonomousDrive() {
         leftServo.write(-45);
         rightServo.write(45);
       }
-     case DRIVING:
-      
-       
-      
-      
-    break;
-    case DRIVING:
-    break;
-    
-    
-  }
-      
-    
 
-  //  nextTurn = millis() + random(500, 4000);
+      driveState = DRIVING; //Set the next run to be a drive command
+    case DRIVING:
+      leftServo.write(135);
+      rightServo.write(135);
+
+      //Generate a time to drive for, and set the next state to be turning
+      nextRun = random(500, 4000);
+      driveState = TURNING;
+      break;
+  }
 }
 
 
