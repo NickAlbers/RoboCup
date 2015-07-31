@@ -48,7 +48,6 @@ void loop()
   }
   else if (operationMode == AUTONOMOUS) {
     autonomousControl();
-    autonomousDrive();
   }
 
   readIRMed();
