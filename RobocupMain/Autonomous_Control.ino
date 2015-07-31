@@ -1,3 +1,6 @@
+#define TURNING 0
+#define DRIVING 1
+
 //***********************************************************************************************
 //Function allowing the robot to act autonomously
 //***********************************************************************************************
@@ -43,17 +46,19 @@ void autonomousControl() {
 //***********************************************************************************************
 void autonomousDrive() {
   static long nextRun = 0;
+  static int driveState = 0;
+  static int turnDir = 1;
   
   //Can I turn yet?
   if (millis() < nextRun) {
-    return
+    return;
   }
 
   switch (driveState) {
     case TURNING:
 
       nextRun = random(200, 1000); //Generate a time to turn for
-      int turnDir = random(1, 2); // Select rotation direction
+      turnDir = random(1, 2); // Select rotation direction
 
       if (turnDir == 1) { //Turn right
         leftServo.write(45);
