@@ -13,7 +13,8 @@
 #define AUTONOMOUS 2
 #define GETPACKAGE 3
 #define AVOIDOBSTACLE 4
-
+const int IRright_Pin = A0;
+const int IRleft_Pin = A1;
 
 //OperationType operationMode = REMOTECONTROL;
 int  operationMode = REMOTECONTROL;
@@ -54,7 +55,7 @@ void loop()
     autonomousDrive();
   }
 
-  readIRMed();
+  readIRMed(IRright_Pin);
 //  delay(10); //This makes stuff work
   loopCount ++;
 }
