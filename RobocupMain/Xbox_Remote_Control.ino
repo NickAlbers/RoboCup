@@ -3,44 +3,48 @@
 //***********************************************************************************************
 void setupXboxReceiver()
 {
-  Serial.begin(115200);
+  Serial.begin(2400);
 #if !defined(__MIPSEL__)
   while (!Serial); // Wait for serial port to connect
 #endif
   if (Usb.Init() == -1) {
-    Serial.print(F("\r\nOSC did not start"));
+    Serial.println(F("\r\nOSC did not start"));
     while (1); //halt
   }
-  Serial.print(F("\r\nXbox Wireless Receiver Library Started"));
+  Serial.println(F("\r\nXbox Wireless Receiver Library Started"));
 }
 
 //***********************************************************************************************
 // Changes from autonomous to remote control and vice versa on A "y" button press.
 //***********************************************************************************************
-void modeSelect() {
+void modeSelect() 
+{
   //Enable or Disable remote control when Y is pressed
   if (Xbox.XboxReceiverConnected && Xbox.Xbox360Connected[0]) {
-    if (operationMode == AUTONOMOUS && Xbox.getButtonPress(X, 0)) {
-      operationMode = REMOTECONTROL;
+    if (opMode != REMOTECONTROL && Xbox.getButtonPress(X, 0)) {
+      opMode = REMOTECONTROL;
       Serial.println("Remote control enabled");
     }
-    else if (operationMode == REMOTECONTROL && Xbox.getButtonPress(Y, 0))
+    else if (opMode != AUTONOMOUS && Xbox.getButtonPress(Y, 0))
     {
-      operationMode = AUTONOMOUS;
+      opMode = AUTONOMOUS;
       Serial.println("Autonomous mode activated");
     }
-  }
-  else {
-    operationMode = AUTONOMOUS;
-    Serial.println("Autonomous mode activated, no xbox detected");
+    else if (opMode != HANDBRAKE && Xbox.getButtonPress(A, 0))
+    {
+      opMode = HANDBRAKE;
+      Serial.println("Handbrake on");
+    }
   }
 }
+
 //***********************************************************************************************
 //Function to control the DC motors from an xbox controller.
 //Left analog stick maps speed, right analog controls direction
 //***********************************************************************************************
-void xboxControl() {
-  Serial.println("Remote Control");
+void xboxControl() 
+{
+  //  Serial.println("Remote Control"); Enable for debugging
   if (Xbox.getAnalogHat(LeftHatX, 0) > 1500 || Xbox.getAnalogHat(LeftHatX, 0) < -1500
       || Xbox.getAnalogHat(LeftHatY, 0) > 1500 || Xbox.getAnalogHat(LeftHatY, 0) < -1500
       || Xbox.getAnalogHat(RightHatX, 0) > 1500 || Xbox.getAnalogHat(RightHatX, 0) < -1500
@@ -69,8 +73,7 @@ void xboxControl() {
     //Write output values to the motor
     leftServo.write(trackLeft);
     rightServo.write(trackRight);
-    Serial.println(trackLeft);
-    Serial.println(trackRight);
+    //    Serial.println(trackLeft);
+    //    Serial.println(trackRight);
   }
 }
-//***********************************************************************************************

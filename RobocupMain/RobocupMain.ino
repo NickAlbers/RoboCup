@@ -1,5 +1,6 @@
 #include <Servo.h>
 #include <XBOXRECV.h>
+#include <stdbool.h>
 
 // Satisfy the IDE, which needs to see the include statment in the ino too.
 #ifdef dobogusinclude
@@ -7,15 +8,16 @@
 #include <SPI.h>
 #endif
 
-#define READYSTATE 0
+#define HANDBRAKE 0
 #define REMOTECONTROL 1
 #define AUTONOMOUS 2
 #define GETPACKAGE 3
 #define AVOIDOBSTACLE 4
 #define TURNING 0
 #define DRIVING 1
+#define SAFEDISTANCE 25 //Value in centimeters
 
-int operationMode = REMOTECONTROL;
+int opMode = HANDBRAKE;
 int xboxConnected = false; //Assume no xbox controller is connected
 int loopCount = 0;
 
@@ -44,16 +46,23 @@ void loop()
   modeSelect();
 
   //If remote control enabled give user control via the Xbox controller.
-  //otherwise enable autonomous control
-  if (operationMode == REMOTECONTROL) {
-    xboxControl();
-  }
-  else if (operationMode == AUTONOMOUS) {
-    autonomousControl();
-    autonomousDrive();
+  //Operation mode decision tree
+  switch (opMode) {
+    case HANDBRAKE:
+      leftServo.write(90);
+      rightServo.write(90);
+      break;
+    case REMOTECONTROL:
+      xboxControl();
+      break;
+    case AUTONOMOUS:
+      autonomousControl();
+      autonomousDrive();
+      break;
   }
 
-  readIRMed();
-//  delay(10); //This makes stuff work
+//  collisionDetect();
+//  readIRMed();
   loopCount ++;
+  delay(10); //This makes stuff work
 }

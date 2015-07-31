@@ -44,10 +44,8 @@ void readIRMed()
   if (IR2_volt > 20000) IR2_cm = -1.0;        // out of range
 
   // print the results to the serial monitor:
-  Serial.print("\n" );
-  Serial.print(IR1_cm);
-  Serial.print("      ");
-  Serial.print(IR2_cm);
+  Serial.println(IR1_cm);
+  Serial.println(IR2_cm);
   
   irNextTime = millis() + irTimeDelay;
 }

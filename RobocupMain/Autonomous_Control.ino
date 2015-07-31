@@ -1,84 +1,79 @@
-#define TURNING 0
-#define DRIVING 1
-
-//***********************************************************************************************
-//Function allowing the robot to act autonomously
-//***********************************************************************************************
-void autonomousControl() {
-  static int autoState = 0;
-
-  Serial.println("Hello World");
-  //
-  //  //Can I see a package?
-  //    //autoState = GETPACKAGE
-  //  //Can i detect an obstacle?
-  //    //autoState = AVOIDOBSTACLE
-
-  //
-  //  switch (autoState) {
-  //    case 0:
-  //      leftServo.write(135);
-  //      rightServo.write(135);
-  //      break;
-  //    case 1:
-  //      turnVal = random(-45, 45);
-  //      leftServo.write(turnVal);
-  //      rightServo.write(-turnVal);
-  //      break;
-  //    case 2:
-  //      leftServo.write(45);
-  //      rightServo.write(45);
-  //      break;
-  //    case GETPACKAGE:
-  //      Serial.println("Package detected, collection mechanism engaged");
-  //      break;
-  //    case AVOIDOBSTACLE:
-  //      Serial.println("Obstacle detected, evasive maneouvers");
-  //      break;
-  //  }
-  //
-  //  autoState = (autoState + 1) % 4; // Wraps state machine to 0
-
-}
-
 //***********************************************************************************************
 //Function allowing the robot to steer autonomously
 //***********************************************************************************************
-void autonomousDrive() {
+void autonomousDrive() 
+{
   static long nextRun = 0;
-  static int driveState = 0;
+  static int driveState = DRIVING; // Drive forwards first
   static int turnDir = 1;
-  
+
   //Can I turn yet?
   if (millis() < nextRun) {
     return;
   }
+  else {
+    switch (driveState) {
+      case DRIVING:
+        Serial.println("Driving");
 
-  switch (driveState) {
-    case TURNING:
+        //Generate a time to drive for, and set the next state to be turning
+        nextRun = millis() + random(500, 6000);
+        driveState = TURNING;
 
-      nextRun = random(200, 1000); //Generate a time to turn for
-      turnDir = random(1, 2); // Select rotation direction
-
-      if (turnDir == 1) { //Turn right
+        //Write the Full speed drive value to the motors
         leftServo.write(45);
-        rightServo.write(-45);
-      }
-      else if (turnDir == 2) { //Turn left
-        leftServo.write(-45);
         rightServo.write(45);
-      }
+        break;
 
-      driveState = DRIVING; //Set the next run to be a drive command
-    case DRIVING:
-      leftServo.write(135);
-      rightServo.write(135);
+      case TURNING:
+        Serial.println("Turning");
+        //Generate a time to turn for, Select rotation direction
+        nextRun = millis() + random(500, 2000);
+        turnDir = random(0, 2); //Random function chooses between min and max-1
+        driveState = DRIVING; //Set the next run to be a drive command
 
-      //Generate a time to drive for, and set the next state to be turning
-      nextRun = random(500, 4000);
-      driveState = TURNING;
-      break;
+        switch (turnDir) {
+          case 0: //Turn Right
+            leftServo.write(45);
+            rightServo.write(135);
+            break;
+          case 1: //Turn Left
+            leftServo.write(135);
+            rightServo.write(45);
+            break;
+        }
+        break;
+    }
   }
 }
+
+
+//***********************************************************************************************
+//Function allowing the robot to act autonomously
+//***********************************************************************************************
+void autonomousControl() 
+{
+  static int autoState = 0;
+}
+
+//***********************************************************************************************
+// Read the medium range IR sensors, and execute collision avoidance code if a collision is 
+// imminent, return true if an object is within "safeDistance" centimeters
+//***********************************************************************************************
+//bool collisionDetect() 
+//{
+//  static int collisionDistance = 100;
+//  collisionDistance = readIRMed();
+//  
+//  if (collisionDistance <= SAFEDISTANCE){
+//    return true;
+//  }
+//  else {
+//    return false;
+//  }
+//}
+
+  
+
 
 
