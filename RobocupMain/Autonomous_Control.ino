@@ -1,4 +1,5 @@
-typedef enum DrivingType {TURNING, DRIVING};
+#define TURNING 0
+#define DRIVING 1
 
 //***********************************************************************************************
 //Function allowing the robot to act autonomously
@@ -45,7 +46,7 @@ void autonomousControl() {
 //***********************************************************************************************
 void autonomousDrive() {
   static long nextRun = 0;
-  static DrivingType driveState = DRIVING;
+  static int driveState = 0;
   static int turnDir = 1;
   
   //Can I turn yet?
