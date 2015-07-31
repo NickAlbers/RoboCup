@@ -52,26 +52,30 @@ void autonomousDrive() {
   //      rightServo.write(-turnVal);
   //      leftServo.write(135);
   //      rightServo.write(135);
-//  switch (driveState) {
-//    case TURNING:
-//      turnTime = random(200, 1000);
-//      turnDir = random(1, 2);
-//      
-//      if (turnDir == 1) { //Turn right
-//        leftServo.write(45);
-//        rightServo.write(-45);
-//      }
-//      else if (turnDir == 2) { //Turn left
-//        leftServo.write(-45);
-//        rightServo.write(45);
-//      }
-//     case DRIVING:
-//
-//    break;
-//    case DRIVING:
-//    break;
-//    
-//  }
+  switch (driveState) {
+    case TURNING:
+      turnTime = random(200, 1000);
+      turnDir = random(1, 2);
+      
+      if (turnDir == 1) { //Turn right
+        leftServo.write(45);
+        rightServo.write(-45);
+      }
+      else if (turnDir == 2) { //Turn left
+        leftServo.write(-45);
+        rightServo.write(45);
+      }
+     case DRIVING:
+      
+       
+      
+      
+    break;
+    case DRIVING:
+    break;
+    
+    
+  }
       
     
 
