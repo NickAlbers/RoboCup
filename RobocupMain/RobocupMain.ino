@@ -9,7 +9,6 @@
 #endif
 
 #define HANDBRAKE 0
-#define REMOTECONTROL 1
 #define AUTONOMOUS 2
 #define GETPACKAGE 3
 #define AVOIDOBSTACLE 4
@@ -23,7 +22,6 @@ const int IRleft_Pin = A1;
 
 //OperationType operationMode = REMOTECONTROL;
 int  operationMode = REMOTECONTROL;
->>>>>>> origin/master
 int xboxConnected = false; //Assume no xbox controller is connected
 int loopCount = 0;
 
