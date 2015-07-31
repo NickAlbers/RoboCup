@@ -13,6 +13,10 @@
 #define AUTONOMOUS 2
 #define GETPACKAGE 3
 #define AVOIDOBSTACLE 4
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of 5a9dce9... Fixed readIRMed function
 
 //OperationType operationMode = REMOTECONTROL;
 int  operationMode = REMOTECONTROL;
