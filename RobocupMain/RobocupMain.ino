@@ -7,14 +7,12 @@
 #include <SPI.h>
 #endif
 
-//typdef enum OperationType { READYSTATE, REMOTECONTROL, AUTONOMOUS, GETPACKAGE, AVOIDOBSTACLE};
-#define READYSTATE 0
+
+#define HANDBRAKE 0
 #define REMOTECONTROL 1
 #define AUTONOMOUS 2
 #define GETPACKAGE 3
 #define AVOIDOBSTACLE 4
-const int IRright_Pin = A0;
-const int IRleft_Pin = A1;
 
 //OperationType operationMode = REMOTECONTROL;
 int  operationMode = REMOTECONTROL;
@@ -55,7 +53,7 @@ void loop()
     autonomousDrive();
   }
 
-  readIRMed(IRright_Pin);
+  readIRMed();
 //  delay(10); //This makes stuff work
   loopCount ++;
 }
