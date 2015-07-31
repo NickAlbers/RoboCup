@@ -49,5 +49,5 @@ void readIRMed()
   Serial.print("      ");
   Serial.print(IR2_cm);
   
-  int irNextTime = millis() + irTimeDelay;
+  irNextTime = millis() + irTimeDelay;
 }

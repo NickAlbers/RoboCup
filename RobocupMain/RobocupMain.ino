@@ -12,6 +12,8 @@
 #define AUTONOMOUS 2
 #define GETPACKAGE 3
 #define AVOIDOBSTACLE 4
+#define TURNING 0
+#define DRIVING 1
 
 int operationMode = REMOTECONTROL;
 int xboxConnected = false; //Assume no xbox controller is connected
