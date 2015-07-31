@@ -18,6 +18,12 @@
 #define SAFEDISTANCE 25 //Value in centimeters
 
 int opMode = HANDBRAKE;
+const int IRright_Pin = A0;
+const int IRleft_Pin = A1;
+
+//OperationType operationMode = REMOTECONTROL;
+int  operationMode = REMOTECONTROL;
+>>>>>>> origin/master
 int xboxConnected = false; //Assume no xbox controller is connected
 int loopCount = 0;
 
@@ -60,7 +66,6 @@ void loop()
       autonomousDrive();
       break;
   }
-
 //  collisionDetect();
 //  readIRMed();
   loopCount ++;
