@@ -1,6 +1,5 @@
 #include <Servo.h>
 #include <XBOXRECV.h>
-#include <stdbool.h>
 
 // Satisfy the IDE, which needs to see the include statment in the ino too.
 #ifdef dobogusinclude
