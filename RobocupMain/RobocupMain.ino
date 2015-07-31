@@ -7,15 +7,16 @@
 #include <SPI.h>
 #endif
 
+//typdef enum OperationType { READYSTATE, REMOTECONTROL, AUTONOMOUS, GETPACKAGE, AVOIDOBSTACLE};
 #define READYSTATE 0
 #define REMOTECONTROL 1
 #define AUTONOMOUS 2
 #define GETPACKAGE 3
 #define AVOIDOBSTACLE 4
-#define TURNING 0
-#define DRIVING 1
 
-int operationMode = REMOTECONTROL;
+
+//OperationType operationMode = REMOTECONTROL;
+int  operationMode = REMOTECONTROL;
 int xboxConnected = false; //Assume no xbox controller is connected
 int loopCount = 0;
 
