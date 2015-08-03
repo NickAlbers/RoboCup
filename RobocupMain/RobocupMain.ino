@@ -1,6 +1,6 @@
 #include <Servo.h>
 #include <XBOXRECV.h>
-#include "CONSTS.h"
+#include "Config.h"
 
 // Satisfy the IDE, which needs to see the include statment in the ino too.
 #ifdef dobogusinclude
@@ -10,7 +10,7 @@
 
 
 typedef enum OperationMode { HANDBRAKE, REMOTECONTROL, AUTONOMOUS };
-typedef enum RobotState {TURNING, DRIVING, GETPACKAGE, AVOIDOBSTACLE };
+typedef enum RobotState {TURNING, DRIVING, GETPACKAGE, AVOIDOBSTACLE, EVASIVETACTICS };
 
 #define SAFEDISTANCE 25 //Value in centimeters
 
@@ -31,6 +31,7 @@ XBOXRECV Xbox(&Usb);
 void setup()
 {
   initVcc();
+  initSerial();
   setupXboxReceiver();
   setupDCMotors();
   setupIRMed();
@@ -56,7 +57,6 @@ void loop()
       xboxControl();
       break;
     case AUTONOMOUS:
-      autonomousControl();
       autonomousDrive();
       break;
   }

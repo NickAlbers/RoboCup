@@ -12,11 +12,15 @@ void initVcc()
   pinMode(49, OUTPUT);                 //Pin 49 is used to enable IO power
   digitalWrite(49, 1);
 }
-
-void setupIRMed()
+void initSerial()
 {
   // initialize serial communications at 9600 bps:
-  Serial.begin(9600);
+  Serial.begin(1200);
+}
+  
+void setupIRMed()
+{
+
 
   pinMode(IRmed_L_Pin, INPUT);
   pinMode(IRmed_R_Pin, INPUT);
