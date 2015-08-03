@@ -1,5 +1,3 @@
-//typedef enum DrivingType {TURNING, DRIVING};
-
 //***********************************************************************************************
 //Function allowing the robot to steer autonomously
 //***********************************************************************************************
@@ -7,58 +5,42 @@ void autonomousDrive()
 {
   static long nextRun = 0;
   static RobotState driveState = DRIVING;
-
   static int turnDir = 1;
 
-  //Can I turn yet?
-  if (millis() < nextRun) {
+  //Checkfor collision
+  if (collisionDetect() == true)
+  {
+    driveState = EVASIVETACTICS;
+  }
+
+  //Can I turn yet? Check for the run time and whether or not evasive tactics is enabled
+  if ((millis() < nextRun) && (driveState != EVASIVETACTICS)) {
     return;
   }
 
-  //
-  else {
-    switch (driveState) {
-      case DRIVING:
-        Serial.println("Driving");
+  switch (driveState) {
+    case DRIVING:
+      Serial.println("Driving");
+      //Generate a time to drive for, and set the next state to be turning
+      nextRun = millis() + random(500, 6000);
+      driveForward();
+      driveState = TURNING; // Set the next run to be driving forwards
+      break;
 
-        //Generate a time to drive for, and set the next state to be turning
-        nextRun = millis() + random(500, 6000);
-        driveState = TURNING;
-
-        //Write the Full speed drive value to the motors
-        leftServo.write(45);
-        rightServo.write(45);
-        break;
-
-      case TURNING:
-        Serial.println("Turning");
-        //Generate a time to turn for, Select rotation direction
-        nextRun = millis() + random(500, 2000);
-        turnDir = random(0, 2); //Random function chooses between min and max-1
-        driveState = DRIVING; //Set the next run to be a drive command
-
-        switch (turnDir) {
-          case 0: //Turn Right
-            leftServo.write(45);
-            rightServo.write(135);
-            break;
-          case 1: //Turn Left
-            leftServo.write(135);
-            rightServo.write(45);
-            break;
-        }
-        break;
-    }
+    case TURNING:
+      Serial.println("Turning");
+      //Generate a time to turn for
+      nextRun = millis() + random(500, 2000);
+      driveTurn();
+      driveState = DRIVING; //Set the next run to be a drive command
+      break;
+    case EVASIVETACTICS:
+      Serial.println("Evading");
+      nextRun = millis() + random(500, 6000);
+//      evasiveTactics();
+      driveState = DRIVING;
+      break;
   }
-}
-
-
-//***********************************************************************************************
-//Function allowing the robot to act autonomously
-//***********************************************************************************************
-void autonomousControl()
-{
-  static int autoState = 0;
 }
 
 //***********************************************************************************************
@@ -67,16 +49,19 @@ void autonomousControl()
 //***********************************************************************************************
 bool collisionDetect()
 {
-  static int collisionDistance = 100;
-  collisionDistance = readIRMed();
+  static int collisionDistance1 = readIRMed(A0);
+  static int collisionDistance2 = readIRMed(A1);
 
-  if (collisionDistance <= SAFEDISTANCE){
+  if ((collisionDistance1 || collisionDistance2) <= SAFEDISTANCE) {
     return true;
   }
   else {
     return false;
   }
 }
+
+
+
 
 
 

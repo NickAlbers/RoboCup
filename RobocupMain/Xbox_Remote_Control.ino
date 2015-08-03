@@ -9,7 +9,7 @@ void setupXboxReceiver()
 #endif
   if (Usb.Init() == -1) {
     Serial.println(F("\r\nOSC did not start"));
-    //while (1); //halt
+    //while (1); //hal
   }
   Serial.println(F("\r\nXbox Wireless Receiver Library Started"));
 }
