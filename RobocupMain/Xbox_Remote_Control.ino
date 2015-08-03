@@ -3,13 +3,13 @@
 //***********************************************************************************************
 void setupXboxReceiver()
 {
-  Serial.begin(2400);
+  Serial.begin(9600);
 #if !defined(__MIPSEL__)
   while (!Serial); // Wait for serial port to connect
 #endif
   if (Usb.Init() == -1) {
     Serial.println(F("\r\nOSC did not start"));
-    while (1); //halt
+    //while (1); //halt
   }
   Serial.println(F("\r\nXbox Wireless Receiver Library Started"));
 }

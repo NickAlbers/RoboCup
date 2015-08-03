@@ -1,5 +1,6 @@
 #include <Servo.h>
 #include <XBOXRECV.h>
+#include "CONSTS.h"
 
 // Satisfy the IDE, which needs to see the include statment in the ino too.
 #ifdef dobogusinclude
@@ -7,20 +8,14 @@
 #include <SPI.h>
 #endif
 
-#define HANDBRAKE 0
-#define AUTONOMOUS 2
-#define GETPACKAGE 3
-#define AVOIDOBSTACLE 4
-#define TURNING 0
-#define DRIVING 1
+
+typedef enum OperationMode { HANDBRAKE, REMOTECONTROL, AUTONOMOUS };
+typedef enum RobotState {TURNING, DRIVING, GETPACKAGE, AVOIDOBSTACLE };
+
 #define SAFEDISTANCE 25 //Value in centimeters
 
-int opMode = HANDBRAKE;
-const int IRright_Pin = A0;
-const int IRleft_Pin = A1;
 
-//OperationType operationMode = REMOTECONTROL;
-int  operationMode = REMOTECONTROL;
+OperationMode opMode = HANDBRAKE;
 int xboxConnected = false; //Assume no xbox controller is connected
 int loopCount = 0;
 
@@ -35,9 +30,11 @@ XBOXRECV Xbox(&Usb);
 //***********************************************************************************************
 void setup()
 {
-  setupIRMed();
-  setupDCMotors();
+  initVcc();
   setupXboxReceiver();
+  setupDCMotors();
+  setupIRMed();
+  setup_Ultra();
 }
 
 //***********************************************************************************************
@@ -64,7 +61,8 @@ void loop()
       break;
   }
 //  collisionDetect();
-//  readIRMed();
+  readIRLong(IRlong_Pin);
+  //readIRMed(IRleft_Pin);
   loopCount ++;
-  delay(10); //This makes stuff work
+  delay(100); //This makes stuff work
 }

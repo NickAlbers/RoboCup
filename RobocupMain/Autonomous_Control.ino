@@ -1,59 +1,12 @@
-<<<<<<< HEAD
-=======
-typedef enum DrivingType {TURNING, DRIVING};
+//typedef enum DrivingType {TURNING, DRIVING};
 
-//***********************************************************************************************
-//Function allowing the robot to act autonomously
-//***********************************************************************************************
-void autonomousControl() {
-  static int autoState = 0;
-
-  Serial.println("Hello World");
-  //
-  //  //Can I see a package?
-  //    //autoState = GETPACKAGE
-  //  //Can i detect an obstacle?
-  //    //autoState = AVOIDOBSTACLE
-
-  //
-  //  switch (autoState) {
-  //    case 0:
-  //      leftServo.write(135);
-  //      rightServo.write(135);
-  //      break;
-  //    case 1:
-  //      turnVal = random(-45, 45);
-  //      leftServo.write(turnVal);
-  //      rightServo.write(-turnVal);
-  //      break;
-  //    case 2:
-  //      leftServo.write(45);
-  //      rightServo.write(45);
-  //      break;
-  //    case GETPACKAGE:
-  //      Serial.println("Package detected, collection mechanism engaged");
-  //      break;
-  //    case AVOIDOBSTACLE:
-  //      Serial.println("Obstacle detected, evasive maneouvers");
-  //      break;
-  //  }
-  //
-  //  autoState = (autoState + 1) % 4; // Wraps state machine to 0
-
-}
-
->>>>>>> origin/master
 //***********************************************************************************************
 //Function allowing the robot to steer autonomously
 //***********************************************************************************************
 void autonomousDrive() 
 {
   static long nextRun = 0;
-<<<<<<< HEAD
-  static int driveState = DRIVING; // Drive forwards first
-=======
-  static DrivingType driveState = DRIVING;
->>>>>>> origin/master
+  static RobotState driveState = DRIVING;
   static int turnDir = 1;
 
   //Can I turn yet?
