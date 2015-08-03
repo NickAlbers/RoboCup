@@ -1,20 +1,26 @@
+<<<<<<< HEAD
 //typedef enum DrivingType {TURNING, DRIVING};
 
+=======
+>>>>>>> 1fdd9bf3cbd61388bcb2a545a66bfee4d428a79d
 //***********************************************************************************************
 //Function allowing the robot to steer autonomously
 //***********************************************************************************************
-void autonomousDrive()
+void autonomousDrive() 
 {
   static long nextRun = 0;
+<<<<<<< HEAD
   static RobotState driveState = DRIVING;
-
+=======
+  static int driveState = DRIVING; // Drive forwards first
+>>>>>>> 1fdd9bf3cbd61388bcb2a545a66bfee4d428a79d
   static int turnDir = 1;
 
   //Can I turn yet?
   if (millis() < nextRun) {
     return;
   }
-
+  
   //
   else {
     switch (driveState) {
@@ -56,20 +62,20 @@ void autonomousDrive()
 //***********************************************************************************************
 //Function allowing the robot to act autonomously
 //***********************************************************************************************
-void autonomousControl()
+void autonomousControl() 
 {
   static int autoState = 0;
 }
 
 //***********************************************************************************************
-// Read the medium range IR sensors, and execute collision avoidance code if a collision is
+// Read the medium range IR sensors, and execute collision avoidance code if a collision is 
 // imminent, return true if an object is within "safeDistance" centimeters
 //***********************************************************************************************
-bool collisionDetect()
+bool collisionDetect() 
 {
   static int collisionDistance = 100;
   collisionDistance = readIRMed();
-
+  
   if (collisionDistance <= SAFEDISTANCE){
     return true;
   }
@@ -78,7 +84,7 @@ bool collisionDetect()
   }
 }
 
-
+  
 
 
 
