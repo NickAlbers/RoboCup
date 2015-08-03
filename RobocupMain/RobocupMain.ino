@@ -8,20 +8,10 @@
 #include <SPI.h>
 #endif
 
-<<<<<<< HEAD
 
 typedef enum OperationMode { HANDBRAKE, REMOTECONTROL, AUTONOMOUS };
 typedef enum RobotState {TURNING, DRIVING, GETPACKAGE, AVOIDOBSTACLE };
 
-=======
-#define HANDBRAKE 0
-#define REMOTECONTROL 1
-#define AUTONOMOUS 2
-#define GETPACKAGE 3
-#define AVOIDOBSTACLE 4
-#define TURNING 0
-#define DRIVING 1
->>>>>>> 1fdd9bf3cbd61388bcb2a545a66bfee4d428a79d
 #define SAFEDISTANCE 25 //Value in centimeters
 
 
@@ -71,8 +61,11 @@ void loop()
       break;
   }
 //  collisionDetect();
-  readIRLong(IRlong_Pin);
+  readIRLong(IRlong_L_Pin);
   //readIRMed(IRleft_Pin);
+  int cm = readUltra(Ultratrig_L_Pin, Ultraecho_L_Pin);
+  
+  
   loopCount ++;
-  delay(100); //This makes stuff work
+  delay(10); //This makes stuff work
 }
