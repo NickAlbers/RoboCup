@@ -8,6 +8,7 @@
 #endif
 
 #define HANDBRAKE 0
+#define REMOTECONTROL 1
 #define AUTONOMOUS 2
 #define GETPACKAGE 3
 #define AVOIDOBSTACLE 4
