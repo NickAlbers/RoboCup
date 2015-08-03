@@ -7,7 +7,6 @@
 #include <spi4teensy3.h>
 #include <SPI.h>
 #endif
-
 //***********************************************************************************************
 //Setup Code goes here
 //***********************************************************************************************
@@ -42,8 +41,6 @@ void loop()
       autonomousDrive();
       break;
   }
-  readIRLong(IRlong_Pin);
-  //readIRMed(IRleft_Pin);
   loopCount ++;
-  delay(100); //This makes stuff work
+  delay(10); //This makes stuff work
 }

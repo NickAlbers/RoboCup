@@ -1,16 +1,10 @@
-/*
-Test out the low cost ultrasound sensor
-*/
-const int trigPin = A5;
-const int echoPin = A4;
- 
 void setup_Ultra() 
 {  
-  pinMode(trigPin, OUTPUT);            //Setup ultrasound pins
-  pinMode(echoPin, INPUT);
+  pinMode(Ultratrig_L_Pin, OUTPUT);            //Setup ultrasound pins
+  pinMode(Ultraecho_L_Pin, INPUT);
 }
  
-void readUltra()
+long readUltra(int trigPin, int echoPin)
 {
   long duration, cm;
  
@@ -32,6 +26,9 @@ void readUltra()
   Serial.print(cm);
   Serial.println();
   delay(100);
+  
+  
+  return cm;
 }
  
  
