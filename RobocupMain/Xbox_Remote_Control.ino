@@ -17,7 +17,7 @@ void setupXboxReceiver()
 //***********************************************************************************************
 // Changes from autonomous to remote control and vice versa on A "y" button press.
 //***********************************************************************************************
-void modeSelect() 
+void modeSelect()
 {
   //Enable or Disable remote control when Y is pressed
   if (Xbox.XboxReceiverConnected && Xbox.Xbox360Connected[0]) {
@@ -42,7 +42,7 @@ void modeSelect()
 //Function to control the DC motors from an xbox controller.
 //Left analog stick maps speed, right analog controls direction
 //***********************************************************************************************
-void xboxControl() 
+void xboxControl()
 {
   //  Serial.println("Remote Control"); Enable for debugging
   if (Xbox.getAnalogHat(LeftHatX, 0) > 1500 || Xbox.getAnalogHat(LeftHatX, 0) < -1500

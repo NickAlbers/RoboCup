@@ -1,9 +1,16 @@
+//***********************************************************************************************
+//Setup
+//***********************************************************************************************
 void setup_Ultra() 
 {  
   pinMode(Ultratrig_L_Pin, OUTPUT);            //Setup ultrasound pins
   pinMode(Ultraecho_L_Pin, INPUT);
 }
  
+//***********************************************************************************************
+//Functions for ultrasound
+//***********************************************************************************************
+
 long readUltra(int trigPin, int echoPin)
 {
   long duration, cm;
@@ -25,12 +32,9 @@ long readUltra(int trigPin, int echoPin)
   cm = microsecondsToCentimeters(duration);
   Serial.print(cm);
   Serial.println();
-  delay(100);
-  
-  
   return cm;
 }
- 
+
  
 long microsecondsToCentimeters(long microseconds)
 {

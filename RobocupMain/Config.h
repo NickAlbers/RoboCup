@@ -1,8 +1,18 @@
+#include "circBuf.h"
+
 const int IRright_Pin = A0;
 const int IRleft_Pin = A1;
 const int IRlong_Pin = A2;
 
+//Generate Circular Buffers to store sensor values
+
+#define BUFF_SIZE 10
+circBuf_t  irMedLeftBuff;
+circBuf_t  irMedRightBuff;
+
+
 #define SAFEDISTANCE 25 //Value in centimeters
+#define BAUDRATE 4800
 
 typedef enum OperationMode { HANDBRAKE, REMOTECONTROL, AUTONOMOUS };
 typedef enum RobotState {TURNING, DRIVING, GETPACKAGE, AVOIDOBSTACLE, EVASIVETACTICS };
@@ -10,6 +20,7 @@ typedef enum RobotState {TURNING, DRIVING, GETPACKAGE, AVOIDOBSTACLE, EVASIVETAC
 OperationMode opMode = HANDBRAKE;
 int xboxConnected = false; //Assume no xbox controller is connected
 int loopCount = 0;
+
 
 //Declare globals
 Servo leftServo;      // create servo object to control a servo
