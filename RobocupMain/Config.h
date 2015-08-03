@@ -1,9 +1,5 @@
 #include "circBuf.h"
 
-const int IRright_Pin = A0;
-const int IRleft_Pin = A1;
-const int IRlong_Pin = A2;
-
 //Generate Circular Buffers to store sensor values
 
 #define BUFF_SIZE 10
@@ -16,8 +12,9 @@ circBuf_t  irMedRightBuff;
 
 typedef enum OperationMode { HANDBRAKE, REMOTECONTROL, AUTONOMOUS };
 typedef enum RobotState {TURNING, DRIVING, GETPACKAGE, AVOIDOBSTACLE, EVASIVETACTICS };
-
+typedef enum TurnDirection { Forward = 0, Right = 90, Reverse = 180, Left = 270 };
 OperationMode opMode = HANDBRAKE;
+//OperationMode opMode = AUTONOMOUS;
 int xboxConnected = false; //Assume no xbox controller is connected
 int loopCount = 0;
 
@@ -40,10 +37,10 @@ const int IRlong_L_Pin = A3;
 
 
 //Ultra Sound:
-const int Ultratrig_L_Pin = A5;
-const int Ultraecho_L_Pin = A4;
-const int Ultratrig_R_Pin = A7;
-const int Ultraecho_R_Pin = A6;
+const int Ultra_L_trigPin = A5;
+const int Ultra_L_echoPin = A4;
+const int Ultra_R_trigPin = A7;
+const int Ultra_R_echoPin = A6;
 
 //Robot defintions
 static RobotState driveState = DRIVING;

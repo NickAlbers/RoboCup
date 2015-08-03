@@ -59,12 +59,12 @@ void driveStop()
 //***********************************************************************************************
 void driveTurn(int direction)
 {
-  static int turnDir = direction;
+  static int turnDir = direction; 
   switch (turnDir) {
-    case 0: //Turn Right
+    case Right: //Turn Right
       turnRight();
       break;
-    case 1: //Turn Left
+    case Left: //Turn Left
       turnLeft();
       break;
   }

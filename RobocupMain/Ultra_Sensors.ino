@@ -1,10 +1,12 @@
 //***********************************************************************************************
 //Setup
 //***********************************************************************************************
-void setup_Ultra() 
+void setupUltra() 
 {  
-  pinMode(Ultratrig_L_Pin, OUTPUT);            //Setup ultrasound pins
-  pinMode(Ultraecho_L_Pin, INPUT);
+  pinMode(Ultra_L_trigPin, OUTPUT);            //Setup ultrasound pins
+  pinMode(Ultra_L_echoPin, INPUT);
+  pinMode(Ultra_R_trigPin, OUTPUT);
+  pinMode(Ultra_R_echoPin, INPUT);
 }
  
 //***********************************************************************************************
@@ -30,8 +32,6 @@ long readUltra(int trigPin, int echoPin)
  
   // convert the time into a distance
   cm = microsecondsToCentimeters(duration);
-  Serial.print(cm);
-  Serial.println();
   return cm;
 }
 

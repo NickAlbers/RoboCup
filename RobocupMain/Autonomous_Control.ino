@@ -3,16 +3,17 @@ static long nextRun = 0;
 //***********************************************************************************************
 //Function allowing the robot to steer autonomously
 //***********************************************************************************************
-void autonomousDrive()
+void autonomousDrive(_Robot *Bagger)
 {
   static RobotState driveState = DRIVING;
 
-  static int turnDir = 1;
-
+  static TurnDirection turnDir = Right;
+  long rand;
   //Can I turn yet? Check for the run time and whether or not evasive tactics is enabled
   if ((millis() < nextRun) && (driveState != EVASIVETACTICS)) {
     return;
   }
+
 
   switch (driveState) {
     case DRIVING:
@@ -26,11 +27,22 @@ void autonomousDrive()
     case TURNING:
       Serial.println("Turning");
       //Generate a time to turn for
-      turnDir = random(0, 2); //Random function chooses between min and max-1
+      rand = random(0, 2);
+      if (rand==0){ 
+        turnDir = Left;
+      } 
+      else if(rand==1){
+        turnDir = Right;
+      }//Random function chooses between min and max-1
+      
       nextRun = millis() + random(1000, 3000);
       driveTurn(turnDir);
       driveState = DRIVING; //Set the next run to be a drive command
       break;
+      
+    case EVASIVETACTICS:
+    Serial.println("Avoiding Object");
+      evasiveManeouvers(Bagger);
   }
 }
 
@@ -38,19 +50,20 @@ void autonomousDrive()
 // Read the medium range IR sensors, and execute collision avoidance code if a collision is
 // imminent, return true if an object is within "safeDistance" centimeters
 //***********************************************************************************************
-void collisionDetect()
+void collisionDetect(_Robot *Bagger)
 {
-  static int collisionDist1 = avg_Circ_Buff(irMedLeftBuff);
-  static int collisionDist2 = avg_Circ_Buff(irMedRightBuff);
-  Serial.println(collisionDist1);
-  Serial.println(collisionDist2);
+//  static int collisionDist1 = avg_Circ_Buff(irMedLeftBuff);
+//  static int collisionDist2 = avg_Circ_Buff(irMedRightBuff);      //Already average from sharp library and only accepting readings that are within 93% of the average
+
+
   
-  if ((collisionDist2  <= SAFEDISTANCE) || (collisionDist2  <= SAFEDISTANCE)) {
+  if ((Bagger->IRmed_L  <= SAFEDISTANCE) || (Bagger->IRmed_R  <= SAFEDISTANCE)) {
     Serial.println("COLLISION DETECTED");
-    evasiveManeouvers();
+    driveState = EVASIVETACTICS;
     return;
   }
   else {
+    driveState = DRIVING;
     return;
   }
 }
@@ -58,8 +71,9 @@ void collisionDetect()
 //***********************************************************************************************
 // Scan for packages and inititiate relevant code
 //***********************************************************************************************
-void packageDetect()
+void packageDetect(_Robot *Bagger)
 {
+  //if ultraSound detects but IR does not(at the same distance).
   return;
 }
 
@@ -68,15 +82,22 @@ void packageDetect()
 // THIS FUNCTION IS BLOCKING
 //***********************************************************************************************
 
-void evasiveManeouvers()
+void evasiveManeouvers(_Robot *Bagger)
 {
   static long nextRun = 0;
-  Serial.println("EVASIVE MANOUEVERS");
+//  Serial.println("");
+//  Serial.println("EVASIVE MANOUEVERS");
   //Read the collision detection sensors and guess the shortest path out of the collision
-  int leftSensor = avg_Circ_Buff(irMedLeftBuff);
-  int rightSensor = avg_Circ_Buff(irMedRightBuff);
+//  int leftSensor = avg_Circ_Buff(irMedLeftBuff);
+//  int rightSensor = avg_Circ_Buff(irMedRightBuff);
 
-  int collisionDirection = (leftSensor - rightSensor); //Work out fastest turn direction to avoid collision
+  signed int collisionDirection = (Bagger->IRmed_L - Bagger->IRmed_R); //Work out fastest turn direction to avoid collision
+  
+  Serial.println(Bagger->IRmed_L);
+  Serial.print("  ");
+  Serial.print(Bagger->IRmed_R);
+  Serial.print("    Collision Direction: ");
+  Serial.println(collisionDirection);
 
   if (collisionDirection < 0) //Right sensor reads further away than left sensor
   {
@@ -90,7 +111,7 @@ void evasiveManeouvers()
     nextRun = millis() + random(500, 1000);
     Serial.println("LEFT");
   }
-  driveState = DRIVING; //The next run should be to drive forwards
+  //driveState = DRIVING; //The next run should be to drive forwards
 }
 
 
@@ -98,35 +119,47 @@ void evasiveManeouvers()
 // This function reads all sensors and writes them into an averaging circular buffer
 //***********************************************************************************************
 
-void updateSensors()
+void updateSensors(_Robot *Bagger)
 {
-  readSensor(readIRMed(A0), irMedLeftBuff);
-  readSensor(readIRMed(A1), irMedRightBuff);
+//readSensor(readIRMed(A0), irMedLeftBuff);
+//readSensor(readIRMed(A1), irMedRightBuff);
+
+  Bagger->IRlong_L = readIRMed(IRlong_L_Pin);
+  Bagger->IRlong_R = readIRMed(IRlong_R_Pin);
+  Bagger->IRmed_L = readIRMed(IRmed_L_Pin);
+  Bagger->IRmed_R = readIRMed(IRmed_R_Pin);
+  //Bagger->Ultra_L = readUltra(Ultra_L_trigPin, Ultra_L_echoPin);
+  //Bagger->Ultra_R = readUltra(Ultra_R_trigPin, Ultra_R_echoPin);
+  
+//  
+//  Serial.print(Bagger->IRmed_L);
+//  Serial.print("  ");
+//  Serial.println(Bagger->IRmed_R);
 }
 
-void readSensor(int sensor, circBuf_t buffer)
-{
-  buffer.data[irMedLeftBuff.windex] = (int) sensor;
-  buffer.windex ++; // Incremeant the write pointer
-  if (buffer.windex >= buffer.size) // Wrap the buffer if its reached the end
-    buffer.windex = 0;
-}
-
-int avg_Circ_Buff(circBuf_t buffer)
-{
-  //Average the values in the buffer
-  int avg;
-  int sum;
-  unsigned int i;
-
-  //Sum the current values in the buffer
-  for (i = 0; i < BUFF_SIZE; i++) {
-    sum = sum + Read_Circ_Buff (&buffer);
-  }
-  //Calculate the average
-  avg = (sum / BUFF_SIZE);
-  return avg;
-}
+//void readSensor(int sensor, circBuf_t buffer)
+//{
+//  buffer.data[irMedLeftBuff.windex] = (int) sensor;
+//  buffer.windex ++; // Incremeant the write pointer
+//  if (buffer.windex >= buffer.size) // Wrap the buffer if its reached the end
+//    buffer.windex = 0;
+//}
+//
+//int avg_Circ_Buff(circBuf_t buffer)
+//{
+//  //Average the values in the buffer
+//  int avg;
+//  int sum;
+//  unsigned int i;
+//
+//  //Sum the current values in the buffer
+//  for (i = 0; i < BUFF_SIZE; i++) {
+//    sum = sum + Read_Circ_Buff (&buffer);
+//  }
+//  //Calculate the average
+//  avg = (sum / BUFF_SIZE);
+//  return avg;
+//}
   
 
 
