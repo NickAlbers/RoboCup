@@ -73,7 +73,5 @@ void xboxControl()
     //Write output values to the motor
     leftServo.write(trackLeft);
     rightServo.write(trackRight);
-    //    Serial.println(trackLeft);
-    //    Serial.println(trackRight);
   }
 }

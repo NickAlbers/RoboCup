@@ -31,14 +31,15 @@ void loop()
   //Operation mode decision tree
   switch (opMode) {
     case HANDBRAKE:
-      leftServo.write(90);
-      rightServo.write(90);
+      driveStop();
       break;
     case REMOTECONTROL:
       xboxControl();
       break;
     case AUTONOMOUS:
       autonomousDrive();
+      collisionDetect();//Poll collision detection sensors and evade if neccessary
+      packageDetect();
       break;
   }
   loopCount ++;
