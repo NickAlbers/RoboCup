@@ -7,7 +7,7 @@ circBuf_t  irMedLeftBuff;
 circBuf_t  irMedRightBuff;
 
 
-#define SAFEDISTANCE 14 //Value in centimeters
+#define SAFEDISTANCE 45 //Value in centimeters
 #define BAUDRATE 4800
 
 typedef enum OperationMode { HANDBRAKE, REMOTECONTROL, AUTONOMOUS };
@@ -15,8 +15,7 @@ typedef enum RobotState {TURNING, DRIVING, GETPACKAGE, AVOIDOBSTACLE, EVASIVETAC
 typedef enum TurnDirection {  Reverse = -180, Left = 0, Forward = 10, Right = 90};
 
 
-//OperationMode opMode = HANDBRAKE;
-OperationMode opMode = AUTONOMOUS;
+OperationMode opMode = HANDBRAKE;
 int xboxConnected = false; //Assume no xbox controller is connected
 int loopCount = 0;
 
@@ -26,6 +25,16 @@ Servo leftServo;      // create servo object to control a servo
 Servo rightServo;      // create servo object to control a servo
 USB Usb;
 XBOXRECV Xbox(&Usb);
+
+//***********************************************************************************************
+// DRIVING CONSTANTS
+//***********************************************************************************************
+#define COLLISION_MIN_TIME 200  
+#define COLLISION_MAX_TIME 500
+#define DRIVING_MIN_TIME 1000
+#define DRIVING_MAX_TIME 6000
+#define TURNING_MIN_TIME 200 
+#define TURNING_MAX_TIME 1000
 
 
 //***********************************************************************************************

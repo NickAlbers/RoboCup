@@ -18,7 +18,7 @@ void autonomousDrive(_Robot *Bagger)
     case DRIVING:
       Serial.println("Driving");
       //Generate a time to drive for, and set the next state to be turning
-      nextRun = millis() + random(1000, 6000);
+      nextRun = millis() + random(DRIVING_MIN_TIME, DRIVING_MAX_TIME);
       driveForward();
       Bagger->driveState = TURNING; // Set the next run to be driving forwards
       break;
@@ -34,7 +34,7 @@ void autonomousDrive(_Robot *Bagger)
         turnDir = Right;
       }//Random function chooses between min and max-1
       
-      nextRun = millis() + random(1000, 3000);
+      nextRun = millis() + random(TURNING_MIN_TIME, TURNING_MAX_TIME);
       driveTurn(turnDir);
       Bagger->driveState = DRIVING; //Set the next run to be a drive command
       break;
@@ -102,13 +102,13 @@ void evasiveManeouvers(_Robot *Bagger)
   if (collisionDirection < 0) //Right sensor reads further away than left sensor
   {
     driveTurn(Left);
-    nextRun = millis() + random(500, 1000);
+    nextRun = millis() + random(COLLISION_MIN_TIME, COLLISION_MAX_TIME);
     Serial.println("LEFT");
   }
   else if (collisionDirection >= 0) //Left sensor reads further away than right sensor
   {
     driveTurn(Right);
-    nextRun = millis() + random(500, 1000);
+    nextRun = millis() + random(COLLISION_MIN_TIME, COLLISION_MAX_TIME);
     Serial.println("RIGHT");
   }
   //driveState = DRIVING; //The next run should be to drive forwards
