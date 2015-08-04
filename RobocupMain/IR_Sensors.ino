@@ -43,10 +43,17 @@ int readIRMed(int IR_Pin)
   
   
   //Check to see if sensor readin gis within valid range
-  if (IR_volt>400 && IR_volt<2700){
-    IR_cm = sharp.distance();
+//  if (IR_volt>400 && IR_volt<2700){
+//    IR_cm = sharp.distance();
+//  }
+//  else IR_cm = -1;      //Set distance to '-1' if sensor is out of range
+  if (IR_volt <400){
+    IR_cm = 0;
   }
-  else IR_cm = -1;      //Set distance to '-1' if sensor is out of range
+  else if (IR_volt > 2700){
+    IR_cm = 80;
+  }
+  else  IR_cm = sharp.distance();
   
   return IR_cm;
 }
