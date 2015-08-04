@@ -7,12 +7,14 @@ circBuf_t  irMedLeftBuff;
 circBuf_t  irMedRightBuff;
 
 
-#define SAFEDISTANCE 25 //Value in centimeters
+#define SAFEDISTANCE 14 //Value in centimeters
 #define BAUDRATE 4800
 
 typedef enum OperationMode { HANDBRAKE, REMOTECONTROL, AUTONOMOUS };
 typedef enum RobotState {TURNING, DRIVING, GETPACKAGE, AVOIDOBSTACLE, EVASIVETACTICS };
-typedef enum TurnDirection { Forward = 0, Right = 90, Reverse = 180, Left = 270 };
+typedef enum TurnDirection {  Reverse = -180, Left = 0, Forward = 10, Right = 90};
+
+
 OperationMode opMode = HANDBRAKE;
 //OperationMode opMode = AUTONOMOUS;
 int xboxConnected = false; //Assume no xbox controller is connected

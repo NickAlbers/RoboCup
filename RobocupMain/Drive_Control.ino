@@ -59,7 +59,11 @@ void driveStop()
 //***********************************************************************************************
 void driveTurn(int direction)
 {
-  static int turnDir = direction; 
+  static signed int turnDir = direction; 
+  
+  Serial.print("TurnDir:  ");
+  Serial.println(turnDir);
+  
   switch (turnDir) {
     case Right: //Turn Right
       turnRight();

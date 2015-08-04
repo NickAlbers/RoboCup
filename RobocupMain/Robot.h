@@ -11,5 +11,6 @@ struct _Robot
 
   Servo motor_L ;
   Servo motor_R ;
-
+  
+  RobotState driveState = DRIVING;
 };

@@ -5,23 +5,22 @@ static long nextRun = 0;
 //***********************************************************************************************
 void autonomousDrive(_Robot *Bagger)
 {
-  static RobotState driveState = DRIVING;
 
-  static TurnDirection turnDir = Right;
+  static TurnDirection turnDir = Left;
   long rand;
   //Can I turn yet? Check for the run time and whether or not evasive tactics is enabled
-  if ((millis() < nextRun) && (driveState != EVASIVETACTICS)) {
+  if ((millis() < nextRun) && (Bagger->driveState != EVASIVETACTICS)) {
     return;
   }
+  
 
-
-  switch (driveState) {
+  switch (Bagger->driveState) {
     case DRIVING:
       Serial.println("Driving");
       //Generate a time to drive for, and set the next state to be turning
-      nextRun = millis() + random(500, 6000);
+      nextRun = millis() + random(1000, 6000);
       driveForward();
-      driveState = TURNING; // Set the next run to be driving forwards
+      Bagger->driveState = TURNING; // Set the next run to be driving forwards
       break;
 
     case TURNING:
@@ -37,7 +36,7 @@ void autonomousDrive(_Robot *Bagger)
       
       nextRun = millis() + random(1000, 3000);
       driveTurn(turnDir);
-      driveState = DRIVING; //Set the next run to be a drive command
+      Bagger->driveState = DRIVING; //Set the next run to be a drive command
       break;
       
     case EVASIVETACTICS:
@@ -58,12 +57,12 @@ void collisionDetect(_Robot *Bagger)
 
   
   if ((Bagger->IRmed_L  <= SAFEDISTANCE) || (Bagger->IRmed_R  <= SAFEDISTANCE)) {
-    Serial.println("COLLISION DETECTED");
-    driveState = EVASIVETACTICS;
+    //Serial.println("COLLISION DETECTED");
+    Bagger->driveState = EVASIVETACTICS;
     return;
   }
   else {
-    driveState = DRIVING;
+    Bagger->driveState = DRIVING;
     return;
   }
 }
@@ -101,15 +100,15 @@ void evasiveManeouvers(_Robot *Bagger)
 
   if (collisionDirection < 0) //Right sensor reads further away than left sensor
   {
-    driveTurn(1);
+    driveTurn(Left);
     nextRun = millis() + random(500, 1000);
-    Serial.println("RIGHT");
+    Serial.println("LEFT");
   }
   else if (collisionDirection >= 0) //Left sensor reads further away than right sensor
   {
-    driveTurn(0);
+    driveTurn(Right);
     nextRun = millis() + random(500, 1000);
-    Serial.println("LEFT");
+    Serial.println("RIGHT");
   }
   //driveState = DRIVING; //The next run should be to drive forwards
 }
