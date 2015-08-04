@@ -39,7 +39,6 @@ void loop()
   //Create the robot "Bagger"!!!
   static _Robot Bagger;
   
-  opMode = AUTONOMOUS;
   //If remote control enabled give user control via the Xbox controller.
   //Operation mode decision tree
   switch (opMode) {

@@ -15,7 +15,8 @@ typedef enum RobotState {TURNING, DRIVING, GETPACKAGE, AVOIDOBSTACLE, EVASIVETAC
 typedef enum TurnDirection {  Reverse = -180, Left = 0, Forward = 10, Right = 90};
 
 
-OperationMode opMode = HANDBRAKE;
+//OperationMode opMode = HANDBRAKE;
+OperationMode opMode = AUTONOMOUS;
 int xboxConnected = false; //Assume no xbox controller is connected
 int loopCount = 0;
 

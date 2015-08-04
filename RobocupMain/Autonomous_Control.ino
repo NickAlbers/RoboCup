@@ -92,10 +92,11 @@ void evasiveManeouvers(_Robot *Bagger)
 
   signed int collisionDirection = (Bagger->IRmed_L - Bagger->IRmed_R); //Work out fastest turn direction to avoid collision
   
-  Serial.println(Bagger->IRmed_L);
-  Serial.print("  ");
+  Serial.print("IR:  ");
+  Serial.print(Bagger->IRmed_L);
+  Serial.print(",  ");
   Serial.print(Bagger->IRmed_R);
-  Serial.print("    Collision Direction: ");
+  Serial.print("  |  Collision Direction: ");
   Serial.println(collisionDirection);
 
   if (collisionDirection < 0) //Right sensor reads further away than left sensor
