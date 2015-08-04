@@ -22,29 +22,29 @@ void setupDCMotors()
 //left
 void turnLeft()
 {
-  leftServo.write(135);
-  rightServo.write(45);
+  leftServo.write((45*SPEED_PERC)/100 + 90);
+  rightServo.write(90 - (45*SPEED_PERC)/100);
 }
 
 //Right
 void turnRight()
 {
-  leftServo.write(45);
-  rightServo.write(135);
+  leftServo.write(90 - (45*SPEED_PERC)/100);
+  rightServo.write((45*SPEED_PERC)/100 + 90);
 }
 
 //Forward
 void driveForward()
 {
-  leftServo.write(45);
-  rightServo.write(45);
+  leftServo.write(90 - (45*SPEED_PERC)/100);
+  rightServo.write(90 - (45*SPEED_PERC)/100);
 }
 
 //Reverse
 void driveReverse()
 {
-  leftServo.write(135);
-  rightServo.write(135);
+  leftServo.write((45*SPEED_PERC)/100 + 90);
+  rightServo.write((45*SPEED_PERC)/100 + 90 );
 }
 
 //Stop
@@ -59,11 +59,11 @@ void driveStop()
 //***********************************************************************************************
 void driveTurn(int direction)
 {
-  static signed int turnDir = direction; 
+  signed int turnDir = direction; 
   
   Serial.print("TurnDir:  ");
-  Serial.println(turnDir);
-  
+  Serial.print(turnDir);
+  Serial.print(" ");
   switch (turnDir) {
     case Right: //Turn Right
       turnRight();

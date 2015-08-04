@@ -40,7 +40,7 @@ void autonomousDrive(_Robot *Bagger)
       break;
       
     case EVASIVETACTICS:
-    Serial.println("Avoiding Object");
+      Serial.print("Avoiding Object");
       evasiveManeouvers(Bagger);
   }
 }
@@ -73,6 +73,32 @@ void collisionDetect(_Robot *Bagger)
 void packageDetect(_Robot *Bagger)
 {
   //if ultraSound detects but IR does not(at the same distance).
+  static int object_L = FALSE;
+  static int object_R = FALSE;
+  static int object_C = FALSE;
+  
+  if (Bagger->Ultra_L < (Bagger->IRmed_L - PACKAGE_CONST)){
+    object_L = TRUE;
+  }
+  else object_L = FALSE;
+  
+  if (Bagger->Ultra_R < (Bagger->IRmed_R - PACKAGE_CONST)){
+    object_R = TRUE;
+  }
+  else object_R = FALSE;
+  
+  if (object_L == TRUE && object_R == TRUE) {
+    object_C = TRUE;
+  }
+  else object_C = FALSE;
+  
+  Serial.print("| ");
+  Serial.print(object_L);
+  Serial.print(" ");
+  Serial.print(object_R);
+    Serial.print(" ");
+  Serial.print(object_C);
+    Serial.print(" |  ");
   return;
 }
 
@@ -92,20 +118,23 @@ void evasiveManeouvers(_Robot *Bagger)
 
   signed int collisionDirection = (Bagger->IRmed_L - Bagger->IRmed_R); //Work out fastest turn direction to avoid collision
   
+  
+  Serial.print(" ||    ");
   Serial.print("IR:  ");
   Serial.print(Bagger->IRmed_L);
   Serial.print(",  ");
   Serial.print(Bagger->IRmed_R);
   Serial.print("  |  Collision Direction: ");
-  Serial.println(collisionDirection);
-
-  if (collisionDirection < 0) //Right sensor reads further away than left sensor
+  Serial.print(collisionDirection);
+  Serial.print("  |  ");
+  
+  if (collisionDirection < 0) //Left sensor reads further away than right sensor
   {
     driveTurn(Left);
     nextRun = millis() + random(COLLISION_MIN_TIME, COLLISION_MAX_TIME);
     Serial.println("LEFT");
   }
-  else if (collisionDirection >= 0) //Left sensor reads further away than right sensor
+  else if (collisionDirection >= 0) //Right sensor reads further away than left sensor
   {
     driveTurn(Right);
     nextRun = millis() + random(COLLISION_MIN_TIME, COLLISION_MAX_TIME);
@@ -121,46 +150,19 @@ void evasiveManeouvers(_Robot *Bagger)
 
 void updateSensors(_Robot *Bagger)
 {
-//readSensor(readIRMed(A0), irMedLeftBuff);
-//readSensor(readIRMed(A1), irMedRightBuff);
 
   Bagger->IRlong_L = readIRMed(IRlong_L_Pin);
   Bagger->IRlong_R = readIRMed(IRlong_R_Pin);
   Bagger->IRmed_L = readIRMed(IRmed_L_Pin);
   Bagger->IRmed_R = readIRMed(IRmed_R_Pin);
-  //Bagger->Ultra_L = readUltra(Ultra_L_trigPin, Ultra_L_echoPin);
-  //Bagger->Ultra_R = readUltra(Ultra_R_trigPin, Ultra_R_echoPin);
+  Bagger->Ultra_L = readUltra(Ultra_L_trigPin, Ultra_L_echoPin);
+  Bagger->Ultra_R = readUltra(Ultra_R_trigPin, Ultra_R_echoPin);
   
-//  
+ 
 //  Serial.print(Bagger->IRmed_L);
 //  Serial.print("  ");
-//  Serial.println(Bagger->IRmed_R);
+//  Serial.print(Bagger->IRmed_R);
 }
-
-//void readSensor(int sensor, circBuf_t buffer)
-//{
-//  buffer.data[irMedLeftBuff.windex] = (int) sensor;
-//  buffer.windex ++; // Incremeant the write pointer
-//  if (buffer.windex >= buffer.size) // Wrap the buffer if its reached the end
-//    buffer.windex = 0;
-//}
-//
-//int avg_Circ_Buff(circBuf_t buffer)
-//{
-//  //Average the values in the buffer
-//  int avg;
-//  int sum;
-//  unsigned int i;
-//
-//  //Sum the current values in the buffer
-//  for (i = 0; i < BUFF_SIZE; i++) {
-//    sum = sum + Read_Circ_Buff (&buffer);
-//  }
-//  //Calculate the average
-//  avg = (sum / BUFF_SIZE);
-//  return avg;
-//}
-  
 
 
 
