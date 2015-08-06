@@ -1,29 +1,48 @@
 #include "Herkulex.h"
-int Smart_1=1; //motor ID - verify your ID !!!!
-int Smart_2=2;
+int Smart_1 = 1; //motor ID - verify your ID !!!!
+int Smart_2 = 2;
 /*
 0xfd or 253 is the default
 0xfe or 254 is broadcast, ie all motors
 */
- 
-void setupSmartServos() 
+
+void setupSmartServos()
 {
   pinMode(49, OUTPUT);                 //Pin 49 is used to enable IO power
   digitalWrite(49, 1);                 //Enable IO power on main CPU board
-  
+
   Herkulex.beginSerial2(115200); //open serial port 2 to talk to the motors
   Herkulex.reboot(1);            //reboot motor
   Herkulex.reboot(2);            //reboot motor
   delay(500);
-  
+
   Herkulex.initialize();         //initialize motors
 }
- 
-void moveSmartServo(int servo)
+
+void sweepServos(int servo1, int servo2)
 {
-  Herkulex.moveOneAngle(servo, -100, 1000, LED_BLUE); //move motor backward
-  delay(1200);
-  Herkulex.moveOneAngle(servo, 100, 1000, LED_GREEN); //move motor forward
-  delay(1200);   
+  static long nextSweep = millis();
+  static SweepDir sweepState= SWEEPIN;
+
+  if (millis() <= nextSweep) {
+    return;
+  }
+  
+  switch (sweepState) {
+    case SWEEPIN:
+      Herkulex.moveOneAngle(servo1, 0, 500, LED_BLUE); //move motor backward
+      Herkulex.moveOneAngle(servo2, 0, 500, LED_BLUE); //move motor forward
+      Serial.println("Sweeping In");
+      sweepState = SWEEPOUT;
+      break;
+    case SWEEPOUT: 
+      Herkulex.moveOneAngle(servo1, 90, 500, LED_BLUE); //move motor backward
+      Herkulex.moveOneAngle(servo2, -90, 500, LED_BLUE); //move motor forward
+      Serial.println("Sweeping Out");
+      sweepState = SWEEPIN;
+      break;
+  }
+  nextSweep = millis() + 1500;
 }
+
 

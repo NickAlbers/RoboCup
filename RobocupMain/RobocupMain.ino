@@ -1,3 +1,4 @@
+
 #include <Adafruit_TCS34725.h>
 
 #include "Herkulex.h"
@@ -37,8 +38,7 @@ void setup()
 //***********************************************************************************************
 void loop()
 {
-  moveSmartServo(1);
-  moveSmartServo(2);
+  sweepServos(1, 2);
   Usb.Task();
   modeSelect();
   

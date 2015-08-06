@@ -8,6 +8,7 @@
 typedef enum OperationMode { HANDBRAKE, REMOTECONTROL, AUTONOMOUS };
 typedef enum RobotState {TURNING, DRIVING, GETPACKAGE, AVOIDOBSTACLE, EVASIVETACTICS, FINDWEIGHT };
 typedef enum TurnDirection {  Reverse = -180, Left = -90, Forward = 0, Right = 90};
+typedef enum SweepDir {  SWEEPIN, SWEEPOUT};
 
 
 OperationMode opMode = HANDBRAKE;
