@@ -1,8 +1,10 @@
+
+//***********************************************************************************************
+// CONSTATNS
+//***********************************************************************************************
 #define TRUE 1
 #define FALSE 0
 
-
-#define SAFEDISTANCE 40 //Value in centimeters
 #define BAUDRATE 4800
 
 typedef enum OperationMode { HANDBRAKE, REMOTECONTROL, AUTONOMOUS };
@@ -10,14 +12,16 @@ typedef enum RobotState {TURNING, DRIVING, GETPACKAGE, AVOIDOBSTACLE, EVASIVETAC
 typedef enum TurnDirection {  Reverse = -180, Left = -90, Forward = 0, Right = 90};
 typedef enum SweepDir {  SWEEPIN, SWEEPOUT};
 
-
+//***********************************************************************************************
+//Declare globals Robot defintions
+//***********************************************************************************************
 OperationMode opMode = HANDBRAKE;
 int xboxConnected = false; //Assume no xbox controller is connected
 int loopCount = 0;
 int nextRun = 0;
 
 
-//Declare globals
+static RobotState driveState = DRIVING;
 Servo leftServo;      // create servo object to control a servo
 Servo rightServo;      // create servo object to control a servo
 Servo leftTrayServo;
@@ -56,11 +60,14 @@ const int Ultra_L_trigPin = A5;
 const int Ultra_L_echoPin = A4;
 const int Ultra_R_trigPin = A7;
 const int Ultra_R_echoPin = A6;
-#define ULTRA_OFFSET 20
+#define ULTRA_OFFSET 29
 
-//Robot defintions
-static RobotState driveState = DRIVING;
-
+//***********************************************************************************************
+// COLLISION & PACKAGE IDENTIFICATION
+//***********************************************************************************************
+//Collision Detection
+#define SAFEDISTANCE 40 //Value in centimeters
 
 //Package Detection
-#define PACKAGE_CONST 10
+#define PACKAGE_IDENT_CONST 10 //10cm
+#define MANEOUVER_CONST 1

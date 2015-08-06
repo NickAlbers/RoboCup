@@ -90,12 +90,12 @@ void packageDetect(_Robot *Bagger)
   static int object_C = FALSE;
   
   
-  if (Bagger->Ultra_L < (Bagger->IRmed_L - PACKAGE_CONST)){
+  if (Bagger->Ultra_L < (Bagger->IRmed_L - PACKAGE_IDENT_CONST)){
     object_L = TRUE;
   }
   else object_L = FALSE;
   
-  if (Bagger->Ultra_R < (Bagger->IRmed_R - PACKAGE_CONST)){
+  if (Bagger->Ultra_R < (Bagger->IRmed_R - PACKAGE_IDENT_CONST)){
     object_R = TRUE;
   }
   else object_R = FALSE;
@@ -165,8 +165,17 @@ void evasiveManeouvers(_Robot *Bagger)
 
 void Maneouver2Weight(_Robot *Bagger)
 {
-  signed int package_xPos = ((Bagger->Ultra_L)^2 - (Bagger->Ultra_R)^2)  / (4*ULTRA_OFFSET);
+  signed int package_xPos
   
+  if (package_C) {
+     package_xPos= ((Bagger->Ultra_L)^2 - (Bagger->Ultra_R)^2)  / (4*ULTRA_OFFSET);
+     Bagger->turnDir = package_xPos * MANEOUVER_CONST;
+  }
+  else if(package_L) {
+    Bagger->turnDir--;
+  else (package_R) {
+    Bagger->turnDir++;
+  }
   
   drive(Bagger->Speed, Bagger->turnDir);
   

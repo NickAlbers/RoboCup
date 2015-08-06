@@ -64,6 +64,7 @@ void loop()
       autonomousDrive(&Bagger);
       break;
   }
+  
   readColourSensor();
   //----------------
   //TESTING:
