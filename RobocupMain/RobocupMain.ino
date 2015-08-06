@@ -1,7 +1,6 @@
 #include <Servo.h>
 #include <XBOXRECV.h>
 #include "Config.h"
-#include "circBuf.h"
 #include "Robot.h"
 
 // Satisfy the IDE, which needs to see the include statment in the ino too.
@@ -22,7 +21,6 @@ void setup()
   setupDCMotors();
   setupIR();
   setupUltra();
-  
 
 }
 
