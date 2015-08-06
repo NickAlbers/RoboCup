@@ -1,4 +1,10 @@
-#define SAFEDISTANCE 40 //Value in centimeters
+
+//***********************************************************************************************
+// CONSTATNS
+//***********************************************************************************************
+#define TRUE 1
+#define FALSE 0
+
 #define BAUDRATE 4800
 
 typedef enum OperationMode { HANDBRAKE, REMOTECONTROL, AUTONOMOUS };
@@ -6,8 +12,9 @@ typedef enum RobotState {TURNING, DRIVING, GETPACKAGE, AVOIDOBSTACLE, EVASIVETAC
 typedef enum TurnDirection {  Reverse = -180, Left = -90, Forward = 0, Right = 90};
 typedef enum SweepDir {  SWEEPIN, SWEEPOUT};
 
-//Robot defintions  & struct
-
+//***********************************************************************************************
+//Declare globals Robot defintions
+//***********************************************************************************************
 struct _Robot
 {
   int IRlong_L = 0;
@@ -25,18 +32,16 @@ struct _Robot
   RobotState driveState = DRIVING;
 };
 
-
+//Robot defintions
 static RobotState driveState = DRIVING;
 static OperationMode opMode = HANDBRAKE;
 static SweepDir sweepState = SWEEPIN;
 //int xboxConnected = false; //Assume no xbox controller is connected
+
 int loopCount = 0;
 int nextRun = 0;
 long nextSweep = millis();
 
-
-
-//Declare globals
 Servo leftServo;      // create servo object to control a servo
 Servo rightServo;      // create servo object to control a servo
 
@@ -72,8 +77,14 @@ const int Ultra_L_trigPin = A5;
 const int Ultra_L_echoPin = A4;
 const int Ultra_R_trigPin = A7;
 const int Ultra_R_echoPin = A6;
-#define ULTRA_OFFSET 20
+#define ULTRA_OFFSET 29
 
+//***********************************************************************************************
+// COLLISION & PACKAGE IDENTIFICATION
+//***********************************************************************************************
+//Collision Detection
+#define SAFEDISTANCE 40 //Value in centimeters
 
 //Package Detection
-#define PACKAGE_CONST 10
+#define PACKAGE_IDENT_CONST 10 //10cm
+#define MANEOUVER_CONST 1

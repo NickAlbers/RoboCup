@@ -160,20 +160,30 @@ void evasiveManeouvers(_Robot *Bagger)
 
 //void Maneouver2Weight(_Robot *Bagger)
 //{
-//  signed int package_xPos = ((Bagger->Ultra_L) ^ 2 - (Bagger->Ultra_R) ^ 2)  / (4 * ULTRA_OFFSET);
-//
-//
+//  signed int package_xPos;
+//  
+//  if (Bagger->package_C) {
+//     package_xPos = ((Bagger->Ultra_L)^2 - (Bagger->Ultra_R)^2)  / (4*ULTRA_OFFSET);
+//     Bagger->turnDir = package_xPos * MANEOUVER_CONST;
+//  }
+//  else if (Bagger->package_L) {
+//    Bagger->turnDir = Left;     //Maybe should use some proportional constant here!
+//  }    
+//  else (Bagger->package_R) {
+//    Bagger->turnDir = Right;      //and here...
+//  }
+//  
 //  drive(Bagger->Speed, Bagger->turnDir);
-
-  //  if (PackageDirection < 0) //Left sensor reads further away than right sensor
-  //  {
-  //    driveTurn(Right);
-  //    nextRun = millis() + random(PACKAGE_MIN_TIME, PACKAGE_MAX_TIME);
-  //  }
-  //  else if (PackageDirection >= 0) //Right sensor reads further away than left sensor
-  //  {
-  //    driveTurn(Left);
-  //    nextRun = millis() + random(PACKAGE_MIN_TIME, PACKAGE_MAX_TIME);
-  //  }
+  
+//  if (PackageDirection < 0) //Left sensor reads further away than right sensor
+//  {
+//    driveTurn(Right);
+//    nextRun = millis() + random(PACKAGE_MIN_TIME, PACKAGE_MAX_TIME);
+//  }
+//  else if (PackageDirection >= 0) //Right sensor reads further away than left sensor
+//  {
+//    driveTurn(Left);
+//    nextRun = millis() + random(PACKAGE_MIN_TIME, PACKAGE_MAX_TIME);
+//  }
 
 //}

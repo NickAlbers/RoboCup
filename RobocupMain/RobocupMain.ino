@@ -53,9 +53,7 @@ void loop()
       autonomousDrive(&Bagger);
       break;
   }
-  
 //  LEDGradient();
-  
   
  //Do this every 10th loop
 //  if ((loopCount % 10) == 0){
