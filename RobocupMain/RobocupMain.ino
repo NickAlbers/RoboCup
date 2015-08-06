@@ -1,4 +1,4 @@
- 
+
 #include "PololuLedStrip.h"
 #include <Servo.h>
 #include <XBOXRECV.h>
@@ -31,7 +31,6 @@ void setup()
 //***********************************************************************************************
 void loop()
 {
-//  sweepServos(1, 2);
   Usb.Task();
   modeSelect();
   //Create the robot "Bagger"!!!
@@ -48,18 +47,21 @@ void loop()
       break;
     case AUTONOMOUS:
       updateSensors(&Bagger);
-//      packageDetect(&Bagger);
+      //      packageDetect(&Bagger);
       collisionDetect(&Bagger);//Poll collision detection sensors and evade if neccessary
-      autonomousDrive(&Bagger);
+      if ((loopCount % 10) == 0) {
+        autonomousDrive(&Bagger);
+        sweepServos(1, 2);
+      }
       break;
   }
-//  LEDGradient();
-  
- //Do this every 25th loop
-  if ((loopCount % 25) == 0){
+  //  LEDGradient();
+
+  //Do this every 25th loop
+  if ((loopCount % 25) == 0) {
     readColourSensor();
   }
-  
+
   //----------------
   //TESTING:
   //collisionDetect(&Bagger);

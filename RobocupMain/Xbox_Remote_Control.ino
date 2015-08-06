@@ -103,5 +103,10 @@ void xboxControl()
   if (Xbox.getButtonPress(R3, 0)) {
     UpdateLED(0, 0, 255);
   }
+  
+    //Clear LED
+  if (Xbox.getButtonPress(L3, 0)) {
+    UpdateLED(0, 0, 0);
+  }
 
 }

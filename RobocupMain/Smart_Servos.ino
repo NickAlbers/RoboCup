@@ -19,7 +19,7 @@ void setupSmartServos()
   Herkulex.initialize();         //initialize motors
 }
 
-void sweepServos(int servo1, int servo2)
+void sweepServo(int servo1, int servo2)
 {
   if (millis() <= nextSweep) {
     return;

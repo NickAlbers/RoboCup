@@ -125,36 +125,21 @@ void packageDetect(_Robot *Bagger)
 
 void evasiveManeouvers(_Robot *Bagger)
 {
-  //  Serial.println("");
-  //  Serial.println("EVASIVE MANOUEVERS");
-  //Read the collision detection sensors and guess the shortest path out of the collision
-  //  int leftSensor = avg_Circ_Buff(irMedLeftBuff);
-  //  int rightSensor = avg_Circ_Buff(irMedRightBuff);
-
+  static long cornerTime = millis() + CORNER_TIMEOUT;
   signed int collisionDirection = (Bagger->IRmed_L - Bagger->IRmed_R); //Work out fastest turn direction to avoid collision
-
-  //  Serial.print(" ||    ");
-  //  Serial.print("IR:  ");
-  //  Serial.print(Bagger->IRmed_L);
-  //  Serial.print(",  ");
-  //  Serial.print(Bagger->IRmed_R);
-  //  Serial.print("  |  Collision Direction: ");
-  //  Serial.print(collisionDirection);
-  //  Serial.print("  |  ");
 
   if (collisionDirection < 0) //Left sensor reads further away than right sensor
   {
-    //    drive(Bagger->Speed, Left);
     turnLeft();
     nextRun = millis() + random(COLLISION_MIN_TIME, COLLISION_MAX_TIME);
   }
   else if (collisionDirection >= 0) //Right sensor reads further away than left sensor
   {
-    //    drive(Bagger->Speed, Right);
     turnRight();
     nextRun = millis() + random(COLLISION_MIN_TIME, COLLISION_MAX_TIME);
   }
   driveState = DRIVING; //The next run should be to drive forwards
+  
 }
 
 
