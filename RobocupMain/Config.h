@@ -51,10 +51,11 @@ const int Ultra_L_trigPin = A5;
 const int Ultra_L_echoPin = A4;
 const int Ultra_R_trigPin = A7;
 const int Ultra_R_echoPin = A6;
+#define ULTRA_OFFSET 20
 
 //Robot defintions
 static RobotState driveState = DRIVING;
 
 
 //Package Detection
-#define PACKAGE_CONST 20
+#define PACKAGE_CONST 10

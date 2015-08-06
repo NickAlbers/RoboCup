@@ -57,19 +57,24 @@ void driveStop()
 //***********************************************************************************************
 // Turn the robot in a specified direction
 //***********************************************************************************************
-void driveTurn(int direction)
+void drive(int Speed, TurnDirection angle)
 {
-  signed int turnDir = direction; 
-  
-//  Serial.print("TurnDir:  ");
-//  Serial.print(turnDir);
-//  Serial.print(" ");
-  switch (turnDir) {
-    case Right: //Turn Right
-      turnRight();
-      break;
-    case Left: //Turn Left
-      turnLeft();
-      break;
+    //Map to motor ranges
+    //Flip 135 and 45 if the chasis is flipped
+    int trackSpeed  = map(Speed, -100, 100, 135, 45);
+    int trackDiff = map(angle, Left, Right, 45, -45);
+
+    //Deadband for Trackspeeds between 85 and 95
+    if (trackSpeed < 100 && trackSpeed > 80) {
+      trackSpeed = 90;
+    }
+
+    //Right on the RightHatX will increase left track speed and
+    //slow right track, vice versa for the other direction
+    int trackLeft = trackSpeed + trackDiff;
+    int trackRight = trackSpeed - trackDiff;
+    
+    //Write output values to the motor
+    leftServo.write(trackLeft);
+    rightServo.write(trackRight);
   }
-}

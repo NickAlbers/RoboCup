@@ -9,6 +9,8 @@ struct _Robot
   long Ultra_L = 0;
   long Ultra_R = 0;
 
+  int Speed = 100;  //Percentage
+  TurnDirection turnDir = Forward;
   Servo motor_L ;
   Servo motor_R ;
   

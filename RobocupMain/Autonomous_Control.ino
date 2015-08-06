@@ -8,7 +8,7 @@ void autonomousDrive(_Robot *Bagger)
   static TurnDirection turnDir = Left;
   long rand;
   //Can I turn yet? Check for the run time and whether or not evasive tactics is enabled
-  if ((millis() < nextRun) && (Bagger->driveState != EVASIVETACTICS)) {
+  if ((millis() < nextRun) && ((Bagger->driveState != EVASIVETACTICS) || (Bagger->driveState != FINDWEIGHT))) {
     return;
   }
   
@@ -18,7 +18,7 @@ void autonomousDrive(_Robot *Bagger)
       Serial.println("Driving");
       //Generate a time to drive for, and set the next state to be turning
       nextRun = millis() + random(DRIVING_MIN_TIME, DRIVING_MAX_TIME);
-      driveForward();
+      drive(Bagger->Speed, Forward);
       Bagger->driveState = TURNING; // Set the next run to be driving forwards
       break;
 
@@ -27,14 +27,14 @@ void autonomousDrive(_Robot *Bagger)
       //Generate a time to turn for
       rand = random(0, 2);
       if (rand==0){ 
-        turnDir = Left;
+        Bagger->turnDir = Left;
       } 
       else if(rand==1){
-        turnDir = Right;
+        Bagger->turnDir = Right;
       }//Random function chooses between min and max-1
       
       nextRun = millis() + random(TURNING_MIN_TIME, TURNING_MAX_TIME);
-      driveTurn(turnDir);
+      drive(0, Bagger->turnDir);
       Bagger->driveState = DRIVING; //Set the next run to be a drive command
       break;
       
@@ -153,15 +153,13 @@ void evasiveManeouvers(_Robot *Bagger)
   
   if (collisionDirection < 0) //Left sensor reads further away than right sensor
   {
-    driveTurn(Left);
+    drive(Bagger->Speed, Left);
     nextRun = millis() + random(COLLISION_MIN_TIME, COLLISION_MAX_TIME);
-//    Serial.println("LEFT");
   }
   else if (collisionDirection >= 0) //Right sensor reads further away than left sensor
   {
-    driveTurn(Right);
+    drive(Bagger->Speed, Right);
     nextRun = millis() + random(COLLISION_MIN_TIME, COLLISION_MAX_TIME);
-//    Serial.println("RIGHT");
   }
   //driveState = DRIVING; //The next run should be to drive forwards
 }
@@ -175,20 +173,20 @@ void evasiveManeouvers(_Robot *Bagger)
 
 void Maneouver2Weight(_Robot *Bagger)
 {
-  static long nextRun = 0;
-
-
-  signed int PackageDirection = (Bagger->Ultra_L - Bagger->Ultra_R); //Work out fastest turn direction to avoid collision
+  
+  signed int package_xPos = ((Bagger->Ultra_L)^2 - (Bagger->Ultra_R)^2)  / (4*ULTRA_OFFSET);
   
   
-  if (PackageDirection < 0) //Left sensor reads further away than right sensor
-  {
-    driveTurn(Right);
-    nextRun = millis() + random(PACKAGE_MIN_TIME, PACKAGE_MAX_TIME);
-  }
-  else if (PackageDirection >= 0) //Right sensor reads further away than left sensor
-  {
-    driveTurn(Left);
-    nextRun = millis() + random(PACKAGE_MIN_TIME, PACKAGE_MAX_TIME);
-  }
+  drive(Bagger->Speed, Bagger->turnDir);
+  
+//  if (PackageDirection < 0) //Left sensor reads further away than right sensor
+//  {
+//    driveTurn(Right);
+//    nextRun = millis() + random(PACKAGE_MIN_TIME, PACKAGE_MAX_TIME);
+//  }
+//  else if (PackageDirection >= 0) //Right sensor reads further away than left sensor
+//  {
+//    driveTurn(Left);
+//    nextRun = millis() + random(PACKAGE_MIN_TIME, PACKAGE_MAX_TIME);
+//  }
 }
