@@ -8,7 +8,8 @@ void autonomousDrive(_Robot *Bagger)
   static TurnDirection turnDir = Left;
   long rand;
   //Can I turn yet? Check for the run time and whether or not evasive tactics is enabled
-  if ((millis() < nextRun) && ((Bagger->driveState != EVASIVETACTICS) || (Bagger->driveState != FINDWEIGHT))) {
+//  if ((millis() < nextRun) && ((Bagger->driveState != EVASIVETACTICS) || (Bagger->driveState != FINDWEIGHT))) {
+  if ((millis() < nextRun) && ((Bagger->driveState != EVASIVETACTICS))) {
     return;
   }
 
@@ -17,7 +18,8 @@ void autonomousDrive(_Robot *Bagger)
       Serial.println("Driving");
       //Generate a time to drive for, and set the next state to be turning
       nextRun = millis() + random(DRIVING_MIN_TIME, DRIVING_MAX_TIME);
-      drive(Bagger->Speed, Forward);
+//      drive(Bagger->Speed, Forward);
+       driveForward();
       Bagger->driveState = TURNING; // Set the next run to be driving forwards
       break;
 
@@ -26,14 +28,16 @@ void autonomousDrive(_Robot *Bagger)
       //Generate a time to turn for
       rand = random(0, 2);
       if (rand==0){ 
-        Bagger->turnDir = Left;
+//        Bagger->turnDir = Left;
+        turnRight();
       } 
       else if(rand==1){
-        Bagger->turnDir = Right;
+        turnLeft();
+//        Bagger->turnDir = Right;
       }//Random function chooses between min and max-1
       
       nextRun = millis() + random(TURNING_MIN_TIME, TURNING_MAX_TIME);
-      drive(0, Bagger->turnDir);
+//      drive(0, Bagger->turnDir);
       Bagger->driveState = DRIVING; //Set the next run to be a drive command
       break;
       
@@ -85,25 +89,26 @@ void collisionDetect(_Robot *Bagger)
 void packageDetect(_Robot *Bagger)
 {
   //if ultraSound detects but IR does not(at the same distance).
-  static int object_L = FALSE;
-  static int object_R = FALSE;
-  static int object_C = FALSE;
+  static int object_L = false;
+  static int object_R = false;
+  static int object_C = false;
   
   
-  if (Bagger->Ultra_L < (Bagger->IRmed_L - PACKAGE_IDENT_CONST)){
-    object_L = TRUE;
+
+  if (Bagger->Ultra_L < (Bagger->IRmed_L - PACKAGE_CONST)){
+    object_L = true;
   }
-  else object_L = FALSE;
+  else object_L = false;
   
-  if (Bagger->Ultra_R < (Bagger->IRmed_R - PACKAGE_IDENT_CONST)){
-    object_R = TRUE;
+  if (Bagger->Ultra_R < (Bagger->IRmed_R - PACKAGE_CONST)){
+    object_R = true;
   }
-  else object_R = FALSE;
+  else object_R = false;
   
-  if (object_L == TRUE && object_R == TRUE) {
-    object_C = TRUE;
+  if (object_L == true && object_R == true) {
+    object_C = true;
   }
-  else object_C = FALSE;
+  else object_C = false;
   
   if (object_L || object_R || object_C) {
     Bagger->driveState = FINDWEIGHT;
