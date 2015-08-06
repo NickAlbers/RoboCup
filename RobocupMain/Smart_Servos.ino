@@ -21,8 +21,6 @@ void setupSmartServos()
 
 void sweepServos(int servo1, int servo2)
 {
-
-
   if (millis() <= nextSweep) {
     return;
   }

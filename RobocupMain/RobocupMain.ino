@@ -1,7 +1,8 @@
+ 
+#include "PololuLedStrip.h"
 #include <Servo.h>
 #include <XBOXRECV.h>
 #include "Config.h"
-#include "Robot.h"
 #include "Herkulex.h"
 
 // Satisfy the IDE, which needs to see the include statment in the ino too.
@@ -22,6 +23,7 @@ void setup()
   setupUltra();
   setupSmartServos();
   setupColourSensor();
+  setupLED();
 }
 
 //***********************************************************************************************
@@ -46,11 +48,13 @@ void loop()
       break;
     case AUTONOMOUS:
       updateSensors(&Bagger);
-      packageDetect(&Bagger);
+//      packageDetect(&Bagger);
       collisionDetect(&Bagger);//Poll collision detection sensors and evade if neccessary
       autonomousDrive(&Bagger);
       break;
   }
+  
+//  LEDGradient();
   
   
  //Do this every 10th loop
@@ -64,7 +68,6 @@ void loop()
   //updateSensors(&Bagger);
   //readIRMed(IRmed_L_Pin);
   //----------------
-
   loopCount ++;
-//  delay(10); //This makes stuff work
+  delay(10); //This makes stuff work
 }

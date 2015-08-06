@@ -6,7 +6,26 @@ typedef enum RobotState {TURNING, DRIVING, GETPACKAGE, AVOIDOBSTACLE, EVASIVETAC
 typedef enum TurnDirection {  Reverse = -180, Left = -90, Forward = 0, Right = 90};
 typedef enum SweepDir {  SWEEPIN, SWEEPOUT};
 
-//Robot defintions
+//Robot defintions  & struct
+
+struct _Robot
+{
+  int IRlong_L = 0;
+  int IRlong_R = 0;
+  int IRmed_L = 0;
+  int IRmed_R = 0;
+  long Ultra_L = 0;
+  long Ultra_R = 0;
+
+  int Speed = 100;  //Percentage
+  TurnDirection turnDir = Forward;
+  Servo motor_L ;
+  Servo motor_R ;
+  
+  RobotState driveState = DRIVING;
+};
+
+
 static RobotState driveState = DRIVING;
 static OperationMode opMode = HANDBRAKE;
 static SweepDir sweepState = SWEEPIN;
@@ -30,14 +49,14 @@ XBOXRECV Xbox(&Usb);
 #define COLLISION_MIN_TIME 200  
 #define COLLISION_MAX_TIME 500
 #define DRIVING_MIN_TIME 1000
-#define DRIVING_MAX_TIME 6000
-#define TURNING_MIN_TIME 200 
+#define DRIVING_MAX_TIME 2000
+#define TURNING_MIN_TIME 500 
 #define TURNING_MAX_TIME 1000
 #define PACKAGE_MIN_TIME 200
 #define PACKAGE_MAX_TIME 500
 
 //Driving speed of robot 0-100
-#define SPEED_PERC 60 
+#define SPEED_PERC 100
 
 //***********************************************************************************************
 // SENSORS
@@ -48,14 +67,12 @@ const int IRmed_L_Pin = A1;
 const int IRlong_R_Pin = A2;
 const int IRlong_L_Pin = A3;
 
-
 //Ultra Sound:
 const int Ultra_L_trigPin = A5;
 const int Ultra_L_echoPin = A4;
 const int Ultra_R_trigPin = A7;
 const int Ultra_R_echoPin = A6;
 #define ULTRA_OFFSET 20
-
 
 
 //Package Detection

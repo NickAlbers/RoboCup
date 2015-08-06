@@ -1,6 +1,5 @@
 #include <SharpIR.h>
 
-
 //***********************************************************************************************
 // Initialisation functions
 //***********************************************************************************************
@@ -19,7 +18,6 @@ void initSerial()
   
 void setupIR()
 {
-
   pinMode(IRmed_L_Pin, INPUT);
   pinMode(IRmed_R_Pin, INPUT);
   pinMode(IRlong_L_Pin, INPUT);
