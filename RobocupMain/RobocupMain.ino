@@ -29,8 +29,6 @@ void setup()
   setupUltra();
   setupSmartServos();
   setupColourSensor();
-  
-
 }
 
 //***********************************************************************************************
@@ -38,15 +36,11 @@ void setup()
 //***********************************************************************************************
 void loop()
 {
-  sweepServos(1, 2);
+//  sweepServos(1, 2);
   Usb.Task();
   modeSelect();
-  
-
   //Create the robot "Bagger"!!!
   static _Robot Bagger;
-//  static int servoSpin = 1000;
-  static long nextServoTest = millis();
 
   //If remote control enabled give user control via the Xbox controller.
   //Operation mode decision tree
@@ -64,7 +58,13 @@ void loop()
       autonomousDrive(&Bagger);
       break;
   }
-  readColourSensor();
+  
+  
+ //Do this every 10th loop
+//  if ((loopCount % 10) == 0){
+//    readColourSensor();
+//  }
+  
   //----------------
   //TESTING:
   //collisionDetect(&Bagger);
@@ -72,17 +72,6 @@ void loop()
   //readIRMed(IRmed_L_Pin);
   //----------------
 
-//    if (servoSpin == 1000) {
-//      servoSpin = 1900;
-//      leftTrayServo.writeMicroseconds(servoSpin);
-//    }
-//    else if (servoSpin == 1900) {
-//      servoSpin = 1000;
-//      leftTrayServo.writeMicroseconds(servoSpin);
-//    }
-//    nextServoTest = millis() + 1500;
-//    Serial.println(servoSpin);
-
   loopCount ++;
-  delay(10); //This makes stuff work
+//  delay(10); //This makes stuff work
 }

@@ -11,7 +11,7 @@ void setupColourSensor()
   pinMode(49, OUTPUT);                 //Pin 49 is used to enable IO power
   digitalWrite(49, 1);                 //Enable IO power on main CPU board
 
-  Serial.begin(9600);
+  Serial.begin(BAUDRATE);
   Serial.println("Color View Test!");
 
   if (tcs.begin())
@@ -31,7 +31,7 @@ void readColourSensor()
 
   tcs.setInterrupt(false);      // turn on LED
 
-  delay(60);  // takes 50ms to read
+//  delay(60);  // takes 50ms to read //Commenting this out may cause errors
 
   tcs.getRawData(&red, &green, &blue, &clear);
 
