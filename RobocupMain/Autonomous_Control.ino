@@ -75,33 +75,39 @@ void collisionDetect(_Robot *Bagger)
 //***********************************************************************************************
 // Scan for packages and inititiate relevant code
 //***********************************************************************************************
-//void packageDetect(_Robot *Bagger)
-//{
-//  //if ultraSound detects but IR does not(at the same distance).
-//  static int object_L = false;
-//  static int object_R = false;
-//  static int object_C = false;
-//
-//
-//  if (Bagger->Ultra_L < (Bagger->IRmed_L - PACKAGE_CONST)) {
-//    object_L = true;
-//  }
-//  else object_L = false;
-//
-//  if (Bagger->Ultra_R < (Bagger->IRmed_R - PACKAGE_CONST)) {
-//    object_R = true;
-//  }
-//  else object_R = false;
-//
-//  if (object_L == true && object_R == true) {
-//    object_C = true;
-//  }
-//  else object_C = false;
-//
-////  if (object_L || object_R || object_C) {
-////    Bagger->driveState = FINDWEIGHT;
-////  }
-//
+void packageDetect(_Robot *Bagger)
+{
+  //if ultraSound detects but IR does not(at the same distance).
+  static int object_L = false;
+  static int object_R = false;
+  static int object_C = false;
+  Bagger->package_C = false;
+  Bagger->package_L = false;
+  Bagger->package_R = false;
+
+  // object in sensor range ??
+  if (Bagger->Ultra_L < (Bagger->IRmed_L - PACKAGE_IDENT_CONST)) {     //'PACKAGE_CONST' to try account for sensors not being calibrated and sharp having narrower
+    object_L = true;  }
+  if (Bagger->Ultra_R < (Bagger->IRmed_R - PACKAGE_IDENT_CONST)) {
+    object_R = true;  }
+  if (object_L == true && object_R == true) {
+    object_C = true;  }
+
+  //Is that object to the left or right of the robot??
+  if (object_C) {
+    Bagger->package_C = true;
+  }
+  else if (  (object_L && (Bagger->Ultra_L < ULTRA_OFFSET))||(object_R && (Bagger->Ultra_R > sqrt(2)*ULTRA_OFFSET))  ) {
+    Bagger->package_L = true;
+  }
+  else if (  (object_R && (Bagger->Ultra_R < ULTRA_OFFSET))||(object_L && (Bagger->Ultra_L > sqrt(2)*ULTRA_OFFSET))  ) {
+    Bagger->package_R = true;
+  }
+  
+
+  if (object_L || object_R || object_C) {
+    Bagger->driveState = FINDWEIGHT;  }
+
 //  Serial.print("| ");
 //  Serial.print(object_L);
 //  Serial.print(" ");
@@ -110,7 +116,7 @@ void collisionDetect(_Robot *Bagger)
 //  Serial.print(object_C);
 //  Serial.println(" |  ");
 //  return;
-//}
+}
 
 //***********************************************************************************************
 // Check the collision sensors, then execute avoidance maneouveres THESE VALUES REQUIRE TWEAKING
@@ -158,22 +164,22 @@ void evasiveManeouvers(_Robot *Bagger)
 // THIS FUNCTION IS BLOCKING
 //***********************************************************************************************
 
-//void Maneouver2Weight(_Robot *Bagger)
-//{
-//  signed int package_xPos;
-//  
-//  if (Bagger->package_C) {
-//     package_xPos = ((Bagger->Ultra_L)^2 - (Bagger->Ultra_R)^2)  / (4*ULTRA_OFFSET);
-//     Bagger->turnDir = package_xPos * MANEOUVER_CONST;
-//  }
-//  else if (Bagger->package_L) {
-//    Bagger->turnDir = Left;     //Maybe should use some proportional constant here!
-//  }    
+void Maneouver2Weight(_Robot *Bagger)
+{
+  signed int package_xPos;
+  
+  if (Bagger->package_C) {
+     package_xPos = ((Bagger->Ultra_L)^2 - (Bagger->Ultra_R)^2)  / (4*ULTRA_OFFSET);
+     Bagger->turnDir = (TurnDirection) (package_xPos * MANEOUVER_CONST);
+  }
+  else if (Bagger->package_L) {
+    Bagger->turnDir = Left;     //Maybe should use some proportional constant here!
+  }    
 //  else (Bagger->package_R) {
 //    Bagger->turnDir = Right;      //and here...
 //  }
-//  
-//  drive(Bagger->Speed, Bagger->turnDir);
+  
+  drive(Bagger->Speed, Bagger->turnDir);
   
 //  if (PackageDirection < 0) //Left sensor reads further away than right sensor
 //  {
@@ -186,4 +192,4 @@ void evasiveManeouvers(_Robot *Bagger)
 //    nextRun = millis() + random(PACKAGE_MIN_TIME, PACKAGE_MAX_TIME);
 //  }
 
-//}
+}

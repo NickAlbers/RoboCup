@@ -30,6 +30,9 @@ struct _Robot
   Servo motor_R ;
   
   RobotState driveState = DRIVING;
+  int package_L = false;
+  int package_R = false;
+  int package_C = false;
 };
 
 //Robot defintions
@@ -78,7 +81,6 @@ const int Ultra_L_echoPin = A4;
 const int Ultra_R_trigPin = A7;
 const int Ultra_R_echoPin = A6;
 #define ULTRA_OFFSET 29
-
 //***********************************************************************************************
 // COLLISION & PACKAGE IDENTIFICATION
 //***********************************************************************************************
