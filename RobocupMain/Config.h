@@ -28,7 +28,6 @@ long nextSweep = millis();
 
 
 
-static RobotState driveState = DRIVING;
 Servo leftServo;      // create servo object to control a servo
 Servo rightServo;      // create servo object to control a servo
 

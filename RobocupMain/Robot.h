@@ -15,4 +15,7 @@ struct _Robot
   Servo motor_R ;
   
   RobotState driveState = DRIVING;
+  int package_L = false;
+  int package_R = false;
+  int package_C = false;
 };

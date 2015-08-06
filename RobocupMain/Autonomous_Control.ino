@@ -89,37 +89,38 @@ void collisionDetect(_Robot *Bagger)
 void packageDetect(_Robot *Bagger)
 {
   //if ultraSound detects but IR does not(at the same distance).
-  static int object_L = false;
-  static int object_R = false;
-  static int object_C = false;
+  
+  Bagger->package_L = false;
+  Bagger->package_R = false;
+  Bagger->package_C = false;
   
   
 
-  if (Bagger->Ultra_L < (Bagger->IRmed_L - PACKAGE_CONST)){
-    object_L = true;
+  if (Bagger->Ultra_L < (Bagger->IRmed_L - PACKAGE_IDENT_CONST)){
+    Bagger->package_L = true;
   }
-  else object_L = false;
+  else Bagger->package_L = false;
   
-  if (Bagger->Ultra_R < (Bagger->IRmed_R - PACKAGE_CONST)){
-    object_R = true;
+  if (Bagger->Ultra_R < (Bagger->IRmed_R - PACKAGE_IDENT_CONST)){
+    Bagger->package_R = true;
   }
-  else object_R = false;
+  else Bagger->package_R = false;
   
-  if (object_L == true && object_R == true) {
-    object_C = true;
+  if (Bagger->package_L == true && Bagger->package_R == true) {
+    Bagger->package_C = true;
   }
-  else object_C = false;
+  else Bagger->package_C = false;
   
-  if (object_L || object_R || object_C) {
+  if (Bagger->package_L || Bagger->package_R || Bagger->package_C) {
     Bagger->driveState = FINDWEIGHT;
   }
   
   Serial.print("| ");
-  Serial.print(object_L);
+  Serial.print(Bagger->package_L);
   Serial.print(" ");
-  Serial.print(object_R);
+  Serial.print(Bagger->package_R);
   Serial.print(" ");
-  Serial.print(object_C);
+  Serial.print(Bagger->package_C);
   Serial.println(" |  ");
   return;
 }
@@ -170,16 +171,17 @@ void evasiveManeouvers(_Robot *Bagger)
 
 void Maneouver2Weight(_Robot *Bagger)
 {
-  signed int package_xPos
+  signed int package_xPos;
   
-  if (package_C) {
-     package_xPos= ((Bagger->Ultra_L)^2 - (Bagger->Ultra_R)^2)  / (4*ULTRA_OFFSET);
+  if (Bagger->package_C) {
+     package_xPos = ((Bagger->Ultra_L)^2 - (Bagger->Ultra_R)^2)  / (4*ULTRA_OFFSET);
      Bagger->turnDir = package_xPos * MANEOUVER_CONST;
   }
-  else if(package_L) {
-    Bagger->turnDir--;
-  else (package_R) {
-    Bagger->turnDir++;
+  else if (Bagger->package_L) {
+    Bagger->turnDir = Left;     //Maybe should use some proportional constant here!
+  }    
+  else (Bagger->package_R) {
+    Bagger->turnDir = Right;      //and here...
   }
   
   drive(Bagger->Speed, Bagger->turnDir);
