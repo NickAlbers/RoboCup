@@ -15,17 +15,22 @@ typedef enum SweepDir {  SWEEPIN, SWEEPOUT};
 //***********************************************************************************************
 //Declare globals Robot defintions
 //***********************************************************************************************
-OperationMode opMode = HANDBRAKE;
-int xboxConnected = false; //Assume no xbox controller is connected
+
+//Robot defintions
+static RobotState driveState = DRIVING;
+static OperationMode opMode = HANDBRAKE;
+static SweepDir sweepState = SWEEPIN;
+//int xboxConnected = false; //Assume no xbox controller is connected
+
 int loopCount = 0;
 int nextRun = 0;
+long nextSweep = millis();
+
 
 
 static RobotState driveState = DRIVING;
 Servo leftServo;      // create servo object to control a servo
 Servo rightServo;      // create servo object to control a servo
-Servo leftTrayServo;
-Servo rightTrayServo;
 
 USB Usb;
 XBOXRECV Xbox(&Usb);

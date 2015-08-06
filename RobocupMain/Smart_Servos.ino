@@ -14,15 +14,14 @@ void setupSmartServos()
   Herkulex.beginSerial2(115200); //open serial port 2 to talk to the motors
   Herkulex.reboot(1);            //reboot motor
   Herkulex.reboot(2);            //reboot motor
+  
   delay(500);
-
   Herkulex.initialize();         //initialize motors
 }
 
 void sweepServos(int servo1, int servo2)
 {
-  static long nextSweep = millis();
-  static SweepDir sweepState= SWEEPIN;
+
 
   if (millis() <= nextSweep) {
     return;

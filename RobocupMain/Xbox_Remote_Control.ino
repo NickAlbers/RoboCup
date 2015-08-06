@@ -1,4 +1,9 @@
 //***********************************************************************************************
+//  Buttons in use: X, Y, A LefthatY, RightHatX
+//***********************************************************************************************
+
+
+//***********************************************************************************************
 // Initialise Xbox Receiver
 //***********************************************************************************************
 void setupXboxReceiver()
@@ -74,4 +79,19 @@ void xboxControl()
     leftServo.write(trackLeft);
     rightServo.write(trackRight);
   }
+  
+  
+  //Sweep the servos for package collection
+  if (Xbox.getButtonPress(B, 0)) {
+    sweepServos(1, 2);
+  }
+  
+  if (Xbox.getButtonPress(L1, 0)) {
+    setupSmartServos();
+  }
+    
+  
+  
+  
+  
 }
