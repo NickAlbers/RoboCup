@@ -13,6 +13,7 @@ typedef enum TurnDirection {  Reverse = -180, Left = -90, Forward = 0, Right = 9
 OperationMode opMode = AUTONOMOUS;
 int xboxConnected = false; //Assume no xbox controller is connected
 int loopCount = 0;
+int nextRun = 0;
 
 
 //Declare globals
