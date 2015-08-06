@@ -13,6 +13,8 @@ void setupDCMotors()
 
   leftServo.attach(3);  // attaches the servo pin 3 to the servo object
   rightServo.attach(2);  // attaches the servo pin 2 to the servo object
+//  leftTrayServo.attach(33);
+//  rightTrayServo.attach(32);
 }
 
 //***********************************************************************************************

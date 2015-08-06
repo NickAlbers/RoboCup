@@ -10,7 +10,7 @@ typedef enum RobotState {TURNING, DRIVING, GETPACKAGE, AVOIDOBSTACLE, EVASIVETAC
 typedef enum TurnDirection {  Reverse = -180, Left = -90, Forward = 0, Right = 90};
 
 
-OperationMode opMode = AUTONOMOUS;
+OperationMode opMode = HANDBRAKE;
 int xboxConnected = false; //Assume no xbox controller is connected
 int loopCount = 0;
 int nextRun = 0;
@@ -19,6 +19,9 @@ int nextRun = 0;
 //Declare globals
 Servo leftServo;      // create servo object to control a servo
 Servo rightServo;      // create servo object to control a servo
+Servo leftTrayServo;
+Servo rightTrayServo;
+
 USB Usb;
 XBOXRECV Xbox(&Usb);
 

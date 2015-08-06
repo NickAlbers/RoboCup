@@ -1,4 +1,4 @@
-static long nextRun = 0;
+
 //***********************************************************************************************
 //Function allowing the robot to steer autonomously
 //***********************************************************************************************
@@ -11,7 +11,6 @@ void autonomousDrive(_Robot *Bagger)
   if ((millis() < nextRun) && (Bagger->driveState != EVASIVETACTICS)) {
     return;
   }
-  
 
   switch (Bagger->driveState) {
     case DRIVING:
@@ -67,10 +66,6 @@ void updateSensors(_Robot *Bagger)
  
 }
 
-
-
-
-
 //***********************************************************************************************
 // Read the medium range IR sensors, and execute collision avoidance code if a collision is
 // imminent, return true if an object is within "safeDistance" centimeters
@@ -82,7 +77,6 @@ void collisionDetect(_Robot *Bagger)
     Bagger->driveState = EVASIVETACTICS;
     return;
   }
-
 }
 
 //***********************************************************************************************
@@ -132,7 +126,6 @@ void packageDetect(_Robot *Bagger)
 
 void evasiveManeouvers(_Robot *Bagger)
 {
-  static long nextRun = 0;
 //  Serial.println("");
 //  Serial.println("EVASIVE MANOUEVERS");
   //Read the collision detection sensors and guess the shortest path out of the collision
@@ -140,7 +133,6 @@ void evasiveManeouvers(_Robot *Bagger)
 //  int rightSensor = avg_Circ_Buff(irMedRightBuff);
 
   signed int collisionDirection = (Bagger->IRmed_L - Bagger->IRmed_R); //Work out fastest turn direction to avoid collision
-  
   
 //  Serial.print(" ||    ");
 //  Serial.print("IR:  ");
@@ -175,11 +167,7 @@ void evasiveManeouvers(_Robot *Bagger)
 
 void Maneouver2Weight(_Robot *Bagger)
 {
-  static long nextRun = 0;
-
-
   signed int PackageDirection = (Bagger->Ultra_L - Bagger->Ultra_R); //Work out fastest turn direction to avoid collision
-  
   
   if (PackageDirection < 0) //Left sensor reads further away than right sensor
   {
