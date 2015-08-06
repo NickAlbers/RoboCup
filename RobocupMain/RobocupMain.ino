@@ -55,10 +55,10 @@ void loop()
   }
 //  LEDGradient();
   
- //Do this every 10th loop
-//  if ((loopCount % 10) == 0){
-//    readColourSensor();
-//  }
+ //Do this every 25th loop
+  if ((loopCount % 25) == 0){
+    readColourSensor();
+  }
   
   //----------------
   //TESTING:
