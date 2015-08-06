@@ -1,20 +1,12 @@
-#include "circBuf.h"
-
-//Generate Circular Buffers to store sensor values
-
 #define TRUE 1
 #define FALSE 0
 
-#define BUFF_SIZE 10
-circBuf_t  irMedLeftBuff;
-circBuf_t  irMedRightBuff;
 
-
-#define SAFEDISTANCE 35 //Value in centimeters
+#define SAFEDISTANCE 40 //Value in centimeters
 #define BAUDRATE 4800
 
 typedef enum OperationMode { HANDBRAKE, REMOTECONTROL, AUTONOMOUS };
-typedef enum RobotState {TURNING, DRIVING, GETPACKAGE, AVOIDOBSTACLE, EVASIVETACTICS };
+typedef enum RobotState {TURNING, DRIVING, GETPACKAGE, AVOIDOBSTACLE, EVASIVETACTICS, FINDWEIGHT };
 typedef enum TurnDirection {  Reverse = -180, Left = -90, Forward = 0, Right = 90};
 
 
@@ -38,9 +30,11 @@ XBOXRECV Xbox(&Usb);
 #define DRIVING_MAX_TIME 6000
 #define TURNING_MIN_TIME 200 
 #define TURNING_MAX_TIME 1000
+#define PACKAGE_MIN_TIME 200
+#define PACKAGE_MAX_TIME 500
 
 //Driving speed of robot 0-100
-#define SPEED_PERC 0 
+#define SPEED_PERC 60 
 
 //***********************************************************************************************
 // SENSORS
@@ -63,4 +57,4 @@ static RobotState driveState = DRIVING;
 
 
 //Package Detection
-#define PACKAGE_CONST 10
+#define PACKAGE_CONST 20

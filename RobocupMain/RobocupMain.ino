@@ -22,8 +22,6 @@ void setup()
   setupDCMotors();
   setupIR();
   setupUltra();
-  Init_Circ_Buff (&irMedLeftBuff, BUFF_SIZE);
-  Init_Circ_Buff (&irMedRightBuff, BUFF_SIZE);
   
 
 }
@@ -50,8 +48,8 @@ void loop()
       break;
     case AUTONOMOUS:
       updateSensors(&Bagger);
-      collisionDetect(&Bagger);//Poll collision detection sensors and evade if neccessary
       packageDetect(&Bagger);
+      collisionDetect(&Bagger);//Poll collision detection sensors and evade if neccessary
       
       autonomousDrive(&Bagger);
       break;
