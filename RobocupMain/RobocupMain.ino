@@ -22,8 +22,8 @@ void setup()
   setupIR();
   setupUltra();
   setupSmartServos();
-  setupColourSensor();
-  setupLED();
+  //setupColourSensor();
+  //setupLED();
 }
 
 //***********************************************************************************************
@@ -47,10 +47,13 @@ void loop()
       break;
     case AUTONOMOUS:
       updateSensors(&Bagger);
-      //      packageDetect(&Bagger);
+      packageDetect(&Bagger);
       collisionDetect(&Bagger);//Poll collision detection sensors and evade if neccessary
-      if ((loopCount % 10) == 0) {
-        autonomousDrive(&Bagger);
+      
+      autonomousDrive(&Bagger);
+      Serial.println(millis());
+      Serial.println(collectionTime);
+      if ((millis() > collectionTime) && (millis() > nextSweep)) {
         sweepServos(1, 2);
       }
       break;
@@ -58,9 +61,9 @@ void loop()
   //  LEDGradient();
 
   //Do this every 25th loop
-  if ((loopCount % 25) == 0) {
-    readColourSensor();
-  }
+//  if ((loopCount % 25) == 0) {
+//    readColourSensor();
+//  }
 
   //----------------
   //TESTING:
@@ -69,5 +72,5 @@ void loop()
   //readIRMed(IRmed_L_Pin);
   //----------------
   loopCount ++;
-  delay(10); //This makes stuff work
+  //delay(10); //This makes stuff work
 }

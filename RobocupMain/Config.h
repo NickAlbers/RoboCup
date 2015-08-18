@@ -24,7 +24,7 @@ struct _Robot
   long Ultra_L = 0;
   long Ultra_R = 0;
 
-  int Speed = 100;  //Percentage
+  int Speed = 30;  //Percentage
   TurnDirection turnDir = Forward;
   Servo motor_L ;
   Servo motor_R ;
@@ -37,12 +37,14 @@ struct _Robot
 
 //Robot defintions
 static RobotState driveState = DRIVING;
-static OperationMode opMode = HANDBRAKE;
+static OperationMode opMode = AUTONOMOUS;
 static SweepDir sweepState = SWEEPIN;
 //int xboxConnected = false; //Assume no xbox controller is connected
 
 int loopCount = 0;
-int nextRun = 0;
+long nextRun = 0;
+int cornerFlag = false;
+long cornerTime = 0;
 long nextSweep = millis();
 
 Servo leftServo;      // create servo object to control a servo
@@ -57,16 +59,13 @@ XBOXRECV Xbox(&Usb);
 #define COLLISION_MIN_TIME 200  
 #define COLLISION_MAX_TIME 500
 #define DRIVING_MIN_TIME 1000
-#define DRIVING_MAX_TIME 6000
+#define DRIVING_MAX_TIME 3500
 #define TURNING_MIN_TIME 200 
-#define TURNING_MAX_TIME 1500
+#define TURNING_MAX_TIME 1000
 #define PACKAGE_MIN_TIME 200
 #define PACKAGE_MAX_TIME 500
 
-3define CORNER_TIMEOUT 2000;
-
-//Driving speed of robot 0-100
-#define SPEED_PERC 100
+#define CORNER_TIMEOUT 2000;
 
 //***********************************************************************************************
 // SENSORS
@@ -90,5 +89,8 @@ const int Ultra_R_echoPin = A6;
 #define SAFEDISTANCE 40 //Value in centimeters
 
 //Package Detection
-#define PACKAGE_IDENT_CONST 10 //10cm
-#define MANEOUVER_CONST 1
+#define PACKAGE_IDENT_CONST 30 //30cm
+#define MANEOUVER2WEIGHT_CONST 1
+int collectFlag = false;
+long collectionTime = 0;
+#define COLLECTION_TIME 1000

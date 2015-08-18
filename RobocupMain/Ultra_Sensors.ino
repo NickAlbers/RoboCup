@@ -38,5 +38,6 @@ long readUltra(int trigPin, int echoPin)
  
 long microsecondsToCentimeters(long microseconds)
 {
-  return microseconds / 29 / 2;
+  //return microseconds / 29 / 2;
+  return (microseconds / 82);
 } 

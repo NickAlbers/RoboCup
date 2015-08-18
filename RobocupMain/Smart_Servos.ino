@@ -19,7 +19,7 @@ void setupSmartServos()
   Herkulex.initialize();         //initialize motors
 }
 
-void sweepServo(int servo1, int servo2)
+void sweepServos(int servo1, int servo2)
 {
   if (millis() <= nextSweep) {
     return;
@@ -30,16 +30,38 @@ void sweepServo(int servo1, int servo2)
       Herkulex.moveOneAngle(servo1, 0, 500, LED_BLUE); //move motor backward
       Herkulex.moveOneAngle(servo2, 0, 500, LED_BLUE); //move motor forward
       Serial.println("Sweeping In");
-      sweepState = SWEEPOUT;
+//      sweepState = SWEEPOUT;
       break;
     case SWEEPOUT: 
       Herkulex.moveOneAngle(servo1, 90, 500, LED_BLUE); //move motor backward
       Herkulex.moveOneAngle(servo2, -90, 500, LED_BLUE); //move motor forward
       Serial.println("Sweeping Out");
-      sweepState = SWEEPIN;
+//      sweepState = SWEEPIN;
       break;
   }
   nextSweep = millis() + 1500;
 }
 
 
+
+//void moveServos(int servo1, int servo2)
+//{
+//  if (millis() <= nextSweep) {
+//    return;
+//  }
+//  
+//  switch (sweepState) {
+//    case SWEEPIN:
+//      Herkulex.moveOneAngle(servo1, 0, 500, LED_BLUE); //move motor backward
+//      Herkulex.moveOneAngle(servo2, 0, 500, LED_BLUE); //move motor forward
+//      Serial.println("Sweeping In");
+//      break;
+//    case SWEEPOUT: 
+//      Herkulex.moveOneAngle(servo1, 90, 500, LED_BLUE); //move motor backward
+//      Herkulex.moveOneAngle(servo2, -90, 500, LED_BLUE); //move motor forward
+//      Serial.println("Sweeping Out");
+//      sweepState = SWEEPIN;
+//      break;
+//  }
+//  nextSweep = millis() + 1500;
+//}
