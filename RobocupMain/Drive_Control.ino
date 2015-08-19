@@ -19,8 +19,6 @@ void setupDCMotors()
 // Directional Driving Functions
 //***********************************************************************************************
 
-
-
 //Stop
 void driveStop()
 {

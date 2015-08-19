@@ -33,11 +33,13 @@ struct _Robot
   int package_L = false;
   int package_R = false;
   int package_C = false;
+  
+  int packageCount = 0;
 };
 
 //Robot defintions
 static RobotState driveState = DRIVING;
-static OperationMode opMode = AUTONOMOUS;
+static OperationMode opMode = HANDBRAKE;
 static SweepDir sweepState = SWEEPIN;
 //int xboxConnected = false; //Assume no xbox controller is connected
 
@@ -65,6 +67,7 @@ XBOXRECV Xbox(&Usb);
 #define PACKAGE_MIN_TIME 200
 #define PACKAGE_MAX_TIME 500
 
+#define COLLECTION_DELAY 500;
 #define CORNER_TIMEOUT 2000;
 
 //***********************************************************************************************
@@ -81,7 +84,7 @@ const int Ultra_L_trigPin = A5;
 const int Ultra_L_echoPin = A4;
 const int Ultra_R_trigPin = A7;
 const int Ultra_R_echoPin = A6;
-#define ULTRA_OFFSET 29
+#define ULTRA_OFFSET 29 //Distance between the two ultrasonic sensors
 //***********************************************************************************************
 // COLLISION & PACKAGE IDENTIFICATION
 //***********************************************************************************************
@@ -94,3 +97,10 @@ const int Ultra_R_echoPin = A6;
 int collectFlag = false;
 long collectionTime = 0;
 #define COLLECTION_TIME 1000
+
+//***********************************************************************************************
+// SMART SERVO PARAMETERS
+//***********************************************************************************************
+#define SWEEPTIME 200
+int Smart_1 = 1; //motor ID - verify your ID !!!!
+int Smart_2 = 2;

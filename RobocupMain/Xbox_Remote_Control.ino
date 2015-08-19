@@ -82,7 +82,7 @@ void xboxControl()
   
   //Sweep the servos for package collection
   if (Xbox.getButtonPress(B, 0)) {
-    sweepServos(1, 2);
+    toggleJaws(1, 2);
   }
 
   if (Xbox.getButtonPress(L1, 0)) {
@@ -90,23 +90,23 @@ void xboxControl()
   }
 
   //Flash LED Green
-  if (Xbox.getButtonPress(R1, 0)) {
-    UpdateLED(0, 255, 0);
-  }
-
-  //Flash LED red
-  if (Xbox.getButtonPress(R2, 0)) {
-    UpdateLED(255, 0, 0);
-  }
-  
-  //Flash LED blue
-  if (Xbox.getButtonPress(R3, 0)) {
-    UpdateLED(0, 0, 255);
-  }
-  
-    //Clear LED
-  if (Xbox.getButtonPress(L3, 0)) {
-    UpdateLED(0, 0, 0);
-  }
+//  if (Xbox.getButtonPress(R1, 0)) {
+//    UpdateLED(0, 255, 0);
+//  }
+//
+//  //Flash LED red
+//  if (Xbox.getButtonPress(R2, 0)) {
+//    UpdateLED(255, 0, 0);
+//  }
+//  
+//  //Flash LED blue
+//  if (Xbox.getButtonPress(R3, 0)) {
+//    UpdateLED(0, 0, 255);
+//  }
+//  
+//    //Clear LED
+//  if (Xbox.getButtonPress(L3, 0)) {
+//    UpdateLED(0, 0, 0);
+//  }
 
 }

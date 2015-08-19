@@ -1,3 +1,6 @@
+#include <Herkulex.h>
+//#include <SoftwareSerial.h>
+
 
 #include "PololuLedStrip.h"
 #include <Servo.h>
@@ -47,18 +50,54 @@ void loop()
       break;
     case AUTONOMOUS:
       updateSensors(&Bagger);
-      packageDetect(&Bagger);
       collisionDetect(&Bagger);//Poll collision detection sensors and evade if neccessary
-      
-      autonomousDrive(&Bagger);
-      Serial.println(millis());
-      Serial.println(collectionTime);
-      if ((millis() > collectionTime) && (millis() > nextSweep)) {
-        sweepServos(1, 2);
+      packageDetect(&Bagger);
+      if (collectFlag == true) //Tell the robot to collect the weight
+      {
+        openJaws(1, 2); // Open Jaws ready for next package
+        while (packageCollect(&Bagger) == false)
+        {
+          //Do stuff
+        }
       }
+      autonomousDrive(&Bagger);
       break;
   }
-  //  LEDGradient();
+  
+//  //Replacement Kernel
+//  if (millis < nextRun)
+//  {
+//    autonomousDrive();
+//  }
+//  
+//  updateSensors();
+//  if (collisionDetect() == true)
+//  {
+//    //Execute Avoidance Code
+//  }
+//  else if (packageDetect() == true)
+//  {
+//    //Execute Collection Code
+//    packageCollect()
+//    packageCount++;
+//  }
+//  
+//  if (packageCount == 3)
+//  {
+//    while (onBase != true)
+//    {
+//    homeSeek();
+//    if (collisionDetect() == true)
+//    {
+//      //Execute Avoidance Code
+//    }
+//  }  
+//  else if (onBase == true)
+//  {
+//    //UnloadPackages
+//    packageCount = 0;
+//  }
+    
 
   //Do this every 25th loop
 //  if ((loopCount % 25) == 0) {
@@ -72,5 +111,5 @@ void loop()
   //readIRMed(IRmed_L_Pin);
   //----------------
   loopCount ++;
-  //delay(10); //This makes stuff work
+  delay(10); //This makes stuff work
 }

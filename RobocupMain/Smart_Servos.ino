@@ -1,6 +1,5 @@
 #include "Herkulex.h"
-int Smart_1 = 1; //motor ID - verify your ID !!!!
-int Smart_2 = 2;
+
 /*
 0xfd or 253 is the default
 0xfe or 254 is broadcast, ie all motors
@@ -14,54 +13,56 @@ void setupSmartServos()
   Herkulex.beginSerial2(115200); //open serial port 2 to talk to the motors
   Herkulex.reboot(1);            //reboot motor
   Herkulex.reboot(2);            //reboot motor
-  
+
   delay(500);
   Herkulex.initialize();         //initialize motors
+
+  //Assert the servos to the forwards position and set the LEDS to red to indicate ready
+  Herkulex.moveOne(1, 512, 1000, LED_RED);
+  Herkulex.moveOne(2, 512, 1000, LED_RED);
+  sweepState = SWEEPIN;
+
 }
 
-void sweepServos(int servo1, int servo2)
+void toggleJaws(int servo1, int servo2)
 {
-  if (millis() <= nextSweep) {
+  static long nextSweep = 0;
+
+  if ((millis() <= nextSweep)) {
     return;
   }
-  
+
   switch (sweepState) {
-    case SWEEPIN:
-      Herkulex.moveOneAngle(servo1, 0, 500, LED_BLUE); //move motor backward
-      Herkulex.moveOneAngle(servo2, 0, 500, LED_BLUE); //move motor forward
+    case SWEEPIN: //Green LED indicates in
+      Herkulex.moveOne(servo1, 812, SWEEPTIME, LED_GREEN); // A change of 300 indicates a 90 degree angle
+      Herkulex.moveOne(servo2, 212, SWEEPTIME, LED_GREEN);
       Serial.println("Sweeping In");
-//      sweepState = SWEEPOUT;
+      sweepState = SWEEPOUT;
       break;
-    case SWEEPOUT: 
-      Herkulex.moveOneAngle(servo1, 90, 500, LED_BLUE); //move motor backward
-      Herkulex.moveOneAngle(servo2, -90, 500, LED_BLUE); //move motor forward
+    case SWEEPOUT: //Blue LED indicates in
+      Herkulex.moveOne(servo1, 512, SWEEPTIME, LED_BLUE);
+      Herkulex.moveOne(servo2, 512, SWEEPTIME, LED_BLUE);
       Serial.println("Sweeping Out");
-//      sweepState = SWEEPIN;
+      sweepState = SWEEPIN;
       break;
   }
-  nextSweep = millis() + 1500;
+
+  nextSweep = millis() + SWEEPTIME;
 }
 
+void closeJaws(int servo1, int servo2)
+{
+  UpdateLED(0,0,255); //Flash LED strips blue to simulate jaws closing
+  Herkulex.moveOne(servo1, 812, SWEEPTIME, LED_GREEN); // A change of 300 indicates a 90 degree angle
+  Herkulex.moveOne(servo2, 212, SWEEPTIME, LED_GREEN);
+  Serial.println("Sweeping In");
+}
 
+void openJaws(int servo1, int servo2)
+{
+  UpdateLED(0,255,0); //Flash LED strips green to simulate jaws opening
+  Herkulex.moveOne(servo1, 512, SWEEPTIME, LED_BLUE);
+  Herkulex.moveOne(servo2, 512, SWEEPTIME, LED_BLUE);
+  Serial.println("Sweeping In");
+}
 
-//void moveServos(int servo1, int servo2)
-//{
-//  if (millis() <= nextSweep) {
-//    return;
-//  }
-//  
-//  switch (sweepState) {
-//    case SWEEPIN:
-//      Herkulex.moveOneAngle(servo1, 0, 500, LED_BLUE); //move motor backward
-//      Herkulex.moveOneAngle(servo2, 0, 500, LED_BLUE); //move motor forward
-//      Serial.println("Sweeping In");
-//      break;
-//    case SWEEPOUT: 
-//      Herkulex.moveOneAngle(servo1, 90, 500, LED_BLUE); //move motor backward
-//      Herkulex.moveOneAngle(servo2, -90, 500, LED_BLUE); //move motor forward
-//      Serial.println("Sweeping Out");
-//      sweepState = SWEEPIN;
-//      break;
-//  }
-//  nextSweep = millis() + 1500;
-//}
