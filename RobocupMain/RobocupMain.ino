@@ -1,7 +1,5 @@
 #include <Herkulex.h>
 //#include <SoftwareSerial.h>
-
-
 #include "PololuLedStrip.h"
 #include <Servo.h>
 #include <XBOXRECV.h>
@@ -17,6 +15,14 @@
 //***********************************************************************************************
 //Setup Code goes here
 //***********************************************************************************************
+
+void initVcc()
+{
+  // turn Vcc on (5V)
+  pinMode(49, OUTPUT);                 //Pin 49 is used to enable IO power
+  digitalWrite(49, 1);
+}
+
 void setup()
 {
   initVcc();

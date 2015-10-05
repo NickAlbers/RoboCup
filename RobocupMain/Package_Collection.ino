@@ -1,6 +1,3 @@
-
-
-
 //***********************************************************************************************
 // Check the collision sensors, then execute avoidance maneouveres THESE VALUES REQUIRE TWEAKING
 // THIS FUNCTION IS BLOCKING
