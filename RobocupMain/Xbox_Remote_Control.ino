@@ -88,6 +88,11 @@ void xboxControl()
   if (Xbox.getButtonPress(L1, 0)) {
     setupSmartServos();
   }
+  
+    if (Xbox.getButtonPress(L2, 0)) {
+    readIMU();
+  }
+  
 
   //Flash LED Green
 //  if (Xbox.getButtonPress(R1, 0)) {

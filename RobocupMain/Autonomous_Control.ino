@@ -1,4 +1,3 @@
-
 //***********************************************************************************************
 //Function allowing the robot to steer autonomously
 //***********************************************************************************************
@@ -105,9 +104,3 @@ void evasiveManeouvers(_Robot *Bagger)
   driveState = DRIVING; //The next run should be to drive forwards
 
 }
-
-
-
-
-
-

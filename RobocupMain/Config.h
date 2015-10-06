@@ -45,6 +45,7 @@ static SweepDir sweepState = SWEEPIN;
 
 int loopCount = 0;
 long nextRun = 0;
+long nextIMUread = millis();
 int cornerFlag = false;
 long cornerTime = 0;
 long nextSweep = millis();

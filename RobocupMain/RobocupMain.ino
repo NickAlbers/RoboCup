@@ -31,6 +31,7 @@ void setup()
   setupIR();
   setupUltra();
   setupSmartServos();
+  setupIMU();
   //setupColourSensor();
   //setupLED();
 }
@@ -53,9 +54,14 @@ void loop()
       break;
     case REMOTECONTROL:
       xboxControl();
+      if (millis() > nextIMUread) {
+      readIMU();
+      nextIMUread = millis() + 1000;
+      }
       break;
     case AUTONOMOUS:
       updateSensors(&Bagger);
+      readIMU();
       collisionDetect(&Bagger);//Poll collision detection sensors and evade if neccessary
       packageDetect(&Bagger);
       if (collectFlag == true) //Tell the robot to collect the weight

@@ -25,7 +25,7 @@ int melody[] = {
 int noteDurations[] = {
   4, 8, 8, 4,4,4,4,4 };
 
-void setup() {
+void setupTones() {
   // iterate over the notes of the melody:
   for (int thisNote = 0; thisNote < 8; thisNote++) {
 
@@ -44,6 +44,3 @@ void setup() {
   }
 }
 
-void loop() {
-  // no need to repeat the melody.
-}
