@@ -66,7 +66,7 @@ void setupIMU()
 
 long int cpt = 0;
 // Main loop, read and display data
-void readIMU()
+void readIMU(_Robot *Bagger)
 {
   // _______________
   // ::: Counter :::

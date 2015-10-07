@@ -41,10 +41,11 @@ void setup()
 //***********************************************************************************************
 void loop()
 {
-  Usb.Task();
-  modeSelect();
   //Create the robot "Bagger"!!!
   static _Robot Bagger;
+  
+  Usb.Task();
+  modeSelect(&Bagger);
 
   //If remote control enabled give user control via the Xbox controller.
   //Operation mode decision tree
@@ -55,14 +56,15 @@ void loop()
     case REMOTECONTROL:
       xboxControl();
       if (millis() > nextIMUread) {
-      readIMU();
+      readIMU(&Bagger);
       nextIMUread = millis() + 1000;
       }
       break;
     case AUTONOMOUS:
-      updateSensors(&Bagger);
-      readIMU();
-      collisionDetect(&Bagger);//Poll collision detection sensors and evade if neccessary
+      Task_Scheduler(&Bagger);
+//      updateSensors(&Bagger);
+//      readIMU(&Bagger);
+//      collisionDetect(&Bagger);//Poll collision detection sensors and evade if neccessary
       packageDetect(&Bagger);
       if (collectFlag == true) //Tell the robot to collect the weight
       {
@@ -76,17 +78,6 @@ void loop()
       break;
   }
   
-//  //Replacement Kernel
-//  if (millis < nextRun)
-//  {
-//    autonomousDrive();
-//  }
-//  
-//  updateSensors();
-//  if (collisionDetect() == true)
-//  {
-//    //Execute Avoidance Code
-//  }
 //  else if (packageDetect() == true)
 //  {
 //    //Execute Collection Code
@@ -108,12 +99,6 @@ void loop()
 //  {
 //    //UnloadPackages
 //    packageCount = 0;
-//  }
-    
-
-  //Do this every 25th loop
-//  if ((loopCount % 25) == 0) {
-//    readColourSensor();
 //  }
 
   //----------------

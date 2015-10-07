@@ -18,7 +18,7 @@ typedef struct
 {
   long Interval;              /*Defines how often a task will run*/
   long LastTick;              /*Stores the last tick task was ran*/
-  void (*FunctionPtr) (void); /* Function pointer to the task */
+  void (*FunctionPtr) (_Robot *Bagger); /* Function pointer to the task */
 } TaskType;
 
 //***********************************************************************************************
@@ -29,10 +29,10 @@ typedef struct
 static TaskType Tasks[] =
 {
   {0              ,   0,    modeSelect        },
-  {INTERVAL_10MS  ,   0,    Tsk_10ms          },
   {INTERVAL_50MS  ,   0,    updateSensors     },
-  {INTERVAL_100MS ,   0,    Tsk_100ms         },
-  {INTERVAL_500MS ,   0,    readMagnetometer  },
+  {INTERVAL_100MS ,   0,    collisionDetect   },
+  {INTERVAL_100MS ,   0,    packageDetect     },
+  {INTERVAL_100MS ,   0,    autonomousDrive   },
   {INTERVAL_1000MS,   0,    readIMU           },
   {INTERVAL_1000MS,   0,    readColourSensor  },
 };
@@ -73,7 +73,7 @@ uint8_t Task_GetNumTasks(void)
   return sizeof(Tasks) / sizeof(*Tasks);
 }
 
-int Task_Scheduler(void)
+int Task_Scheduler(_Robot *Bagger)
 {
   //This goes in setup
   static uint32_t tick = 0;     //System Tick
@@ -87,7 +87,7 @@ int Task_Scheduler(void)
   Task_ptr = Task_GetConfig(); //Get a pointer to the task configuration
 
   //The main while loop. This goes in loop.
-  while (opMode = autonomous)
+  while (opMode = AUTONOMOUS)
   {
     tick = millis(); //Get current system tick
 
@@ -97,18 +97,18 @@ int Task_Scheduler(void)
      *  execute the task.
      ********************************************************************************************/
 
-    for (TaskIndex = 0; TaskIndex < Num_Tasks; TaskIndex++)
+    for (TaskIndex = 0; TaskIndex < NumTasks; TaskIndex++)
     {
       if (Task_ptr[TaskIndex].Interval == 0)
       {
         //Run Continuous Tasks
-        (*Task_ptr[TaskIndex].FunctionPtr)()
+        (*Task_ptr[TaskIndex].FunctionPtr)(Bagger);
       }
       else if ((tick - Task_ptr[TaskIndex].LastTick) >= Task_ptr[TaskIndex].Interval)
       {
-        (*Task_ptr[TaskIndex].FunctionPtr)();   //Execute Task
+        (*Task_ptr[TaskIndex].FunctionPtr)(Bagger);   //Execute Task
 
-        Task_ptr[TaskIndex].LastTick = tick     //Save last tick the task was ran
+        Task_ptr[TaskIndex].LastTick = tick;     //Save last tick the task was ran
       }
     }//End for
   }//End while
