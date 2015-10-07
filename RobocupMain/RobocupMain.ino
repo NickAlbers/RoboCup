@@ -65,7 +65,7 @@ void loop()
 //      updateSensors(&Bagger);
 //      readIMU(&Bagger);
 //      collisionDetect(&Bagger);//Poll collision detection sensors and evade if neccessary
-      packageDetect(&Bagger);
+//      packageDetect(&Bagger);
       if (collectFlag == true) //Tell the robot to collect the weight
       {
         openJaws(1, 2); // Open Jaws ready for next package

@@ -28,7 +28,7 @@ typedef struct
 //***********************************************************************************************
 static TaskType Tasks[] =
 {
-  {0              ,   0,    modeSelect        },
+  {0              ,   0,    modeSelect        }, // Continously check for the controller safeguard
   {INTERVAL_50MS  ,   0,    updateSensors     },
   {INTERVAL_100MS ,   0,    collisionDetect   },
   {INTERVAL_100MS ,   0,    packageDetect     },
