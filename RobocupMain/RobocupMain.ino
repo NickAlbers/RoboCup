@@ -53,7 +53,8 @@ void loop()
 {
   //Create the robot "Bagger"!!!
   static _Robot Bagger;
-  
+
+  //Select the mode of operation for the main loop
   Usb.Task();
   modeSelect(&Bagger);
 
@@ -113,13 +114,7 @@ void loop()
 //    packageCount = 0;
 //  }
 
-  //----------------
-  //TESTING:
-  //collisionDetect(&Bagger);
-  //updateSensors(&Bagger);
-  //readIRMed(IRmed_L_Pin);
-  //----------------
   
   loopCount ++;
-  delay(10); //This makes stuff work
+//  delay(10); //This makes stuff work
 }

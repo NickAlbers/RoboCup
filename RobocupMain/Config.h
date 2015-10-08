@@ -44,13 +44,13 @@ struct _Robot
   uint8_t MagBuf[6];
 };
 
-//Robot defintions
+//Robot Control States
 static RobotState driveState = DRIVING;
 static OperationMode opMode = HANDBRAKE;
 static SweepDir sweepState = SWEEPIN;
-//int xboxConnected = false; //Assume no xbox controller is connected
+//int xboxConnected = false; //Assume no xbox controller is connected leave this so morgan can operate robot
 
-int loopCount = 0;
+int loopCount = 0; //Counts the number of loops in main, probably unnecessary
 
 int cornerFlag = false;
 long nextRun = 0;
@@ -62,6 +62,9 @@ long nextSweep = 0;
 Servo leftServo;      // create servo object to control a servo
 Servo rightServo;      // create servo object to control a servo
 
+//***********************************************************************************************
+// XBOX CONTROLLER DEFINITIONS
+//***********************************************************************************************
 USB Usb;
 XBOXRECV Xbox(&Usb);
 
@@ -77,7 +80,7 @@ XBOXRECV Xbox(&Usb);
 #define PACKAGE_MIN_TIME 200
 #define PACKAGE_MAX_TIME 500
 
-#define COLLECTION_DELAY 500;
+
 #define CORNER_TIMEOUT 2000;
 
 //***********************************************************************************************
@@ -94,7 +97,10 @@ const int Ultra_L_trigPin = A1;
 const int Ultra_L_echoPin = A0;
 const int Ultra_R_trigPin = A7;
 const int Ultra_R_echoPin = A6;
+
+//Sensor Constants
 #define ULTRA_OFFSET 29 //Distance between the two ultrasonic sensors
+#define PULSE_TIMEOUT 50000 //Number of microseconds to wait for pin to change, 50000us = 50ms
 //***********************************************************************************************
 // COLLISION & PACKAGE IDENTIFICATION
 //***********************************************************************************************
@@ -102,14 +108,18 @@ const int Ultra_R_echoPin = A6;
 #define SAFEDISTANCE 40 //Value in centimeters
 
 //Package Detection
-#define PACKAGE_IDENT_CONST 30 //30cm
-#define MANEOUVER2WEIGHT_CONST 1
 int collectFlag = false;
 long collectionTime = 0;
-#define COLLECTION_TIME 1000
 
+#define COLLECTION_DELAY 500; //Amount of time to force forward driving to ensure package collection
+#define PACKAGE_IDENT_CONST 30 //30cm
+#define MANEOUVER2WEIGHT_CONST 1 ?
+#define COLLECTION_TIME 1000 //?
+#define SWEEPTIME 200 // Speed of the smart servo arm sweep
 
-#define SWEEPTIME 200
+//***********************************************************************************************
+// SMART SERVO PARAMETERS & ID
+//***********************************************************************************************
 int Smart_1 = 1; //motor ID - verify your ID !!!!
 int Smart_2 = 2;
 

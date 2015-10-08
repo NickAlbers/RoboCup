@@ -66,19 +66,16 @@ void setupIMU()
 // Main loop, read and display data
 void readIMU(_Robot *Bagger)
 {
-  if (millis() < nextIMUread) { return; }
-
-  //Update the IMU read time
-  nextIMUread = millis() + 1000;
+//  if (millis() < nextIMUread) { return; }
+//
+//  //Update the IMU read time
+//  nextIMUread = millis() + 1000;
   // _______________
   // ::: Counter :::
 
   // Display data counter
 //  Serial.print (cpt++, DEC);
 //  Serial.print ("\t");
-
-  // ____________________________________
-  // :::  accelerometer and gyroscope :::
 
   // Read accelerometer and gyroscope
   uint8_t Buf[14];
@@ -108,21 +105,9 @@ void readIMU(_Robot *Bagger)
   Serial.print("az: ");
   Serial.print (az, DEC);
   Serial.print ("\t");
-
-  // Gyroscope
-//  Serial.print("gx: ");
-//  Serial.print (gx, DEC);
-//  Serial.print ("\t");
-//  Serial.print("gy: ");
-//  Serial.print (gy, DEC);
-//  Serial.print ("\t");
-//  Serial.print("gz: ");
-//  Serial.print (gz, DEC);
-//  Serial.print ("\t");
-
 }
 
-void readMagnetometer()
+void readMagnetometer(_Robot *Bagger)
 {
   Serial.println("Reading Magnetometer");
 
@@ -130,10 +115,6 @@ void readMagnetometer()
 
   //Update Compass Read Time
   nextCompassRead = millis() + 1000;
-  
-    // _____________________
-  // :::  Magnetometer :::
-
 
   // Read register Status 1 and wait for the DRDY: Data Ready
   uint8_t ST1;
@@ -153,17 +134,13 @@ void readMagnetometer()
 
   // Create 16 bits values from 8 bits data
 
-  // Magnetometer
+  // Magnetometer Readouts
   int16_t mx = Mag[1] << 8 | Mag[0];
   int16_t my = Mag[3] << 8 | Mag[2];
   int16_t mz = Mag[5] << 8 | Mag[4];
-
   
+  /* Calculate the angle made with true north */
   int16_t compassAngle = atan2(my, mx) * 180.0 / M_PI;
-  
-  Serial.print("mz: ");
-  Serial.print (mz, DEC);
-  Serial.print ("\t");
   
   // Magnetometer
   Serial.print("mx: ");
@@ -182,6 +159,5 @@ void readMagnetometer()
 
   // End of line
   Serial.println("");
-  //  delay(100);
 }
 
