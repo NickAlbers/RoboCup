@@ -33,7 +33,7 @@ void Maneouver2Weight(_Robot *Bagger)
 //***********************************************************************************************
 void packageDetect(_Robot *Bagger)
 {
-  Serial.println("Scanning for Package");
+//  Serial.println("Scanning for Package");
   Bagger->package_C = false;
   Bagger->package_L = false;
   Bagger->package_R = false;
@@ -43,13 +43,13 @@ void packageDetect(_Robot *Bagger)
 
   if ( (Bagger->Ultra_L < ULTRA_OFFSET) && (Bagger->Ultra_L < (Bagger->IRmed_L - PACKAGE_IDENT_CONST)) ) {
     Bagger->package_L = true;
-    //Sehhrial.println("Left");
+    Serial.println("Left");
   }
 
   //object on right???
   if ( (Bagger->Ultra_R < ULTRA_OFFSET) && (Bagger->Ultra_R < (Bagger->IRmed_R - PACKAGE_IDENT_CONST)) ) {
     Bagger->package_R = true;
-    //Serial.println("Right");
+    Serial.println("Right");
   }
 
   //object in centre???
@@ -59,8 +59,8 @@ void packageDetect(_Robot *Bagger)
     Bagger->package_C = true;
     collectFlag = true;
     collectionTime = millis() + COLLECTION_DELAY;
-    //Serial.print("   ");
-    //Serial.println("Centre");
+    Serial.print("   ");
+    Serial.println("Centre");
 
   }
   if (Bagger->package_L || Bagger->package_R) {

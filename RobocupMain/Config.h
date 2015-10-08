@@ -95,6 +95,10 @@ const int Ultra_L_echoPin = A0;
 const int Ultra_R_trigPin = A7;
 const int Ultra_R_echoPin = A6;
 #define ULTRA_OFFSET 29 //Distance between the two ultrasonic sensors
+
+
+NewPing Ultra_L(Ultra_L_trigPin, Ultra_L_echoPin, 80);
+NewPing Ultra_R(Ultra_R_trigPin, Ultra_R_echoPin, 80);
 //***********************************************************************************************
 // COLLISION & PACKAGE IDENTIFICATION
 //***********************************************************************************************

@@ -4,6 +4,7 @@
 #define INTERVAL_10MS   10
 #define INTERVAL_50MS   50
 #define INTERVAL_100MS  100
+#define INTERVAL_200MS  200
 #define INTERVAL_500MS  500
 #define INTERVAL_1000MS 1000
 
@@ -36,12 +37,12 @@ static TaskType Tasks[] =
   //  {0               ,   0,    modeSelect        }, // Continously check for the controller safeguard
   {0              ,   0,    placeHolderTask   }, // Continously check for the controller safeguard
   {INTERVAL_100MS ,   0,    modeSelect        }, // Also make it a scheduled task for safety
-  {INTERVAL_100MS ,   0,    updateSensors     },
-  {INTERVAL_100MS ,   0,    collisionDetect   },
-  {INTERVAL_100MS ,   0,    packageDetect     },
-  {INTERVAL_1000MS,   0,    autonomousDrive   },
-  {INTERVAL_1000MS,   0,    readIMU           },
-  {INTERVAL_1000MS,   0,    readColourSensor  },
+  {INTERVAL_10MS ,   0,    updateSensors     },
+  {INTERVAL_10MS ,   0,    collisionDetect   },
+  {INTERVAL_10MS ,   0,    packageDetect     },
+  {INTERVAL_10MS,   0,    autonomousDrive   },
+//  {INTERVAL_1000MS,   0,    readIMU           },
+//  {INTERVAL_1000MS,   0,    readColourSensor  },
 };
 
 // Function Declarations
@@ -108,8 +109,8 @@ int Task_Scheduler(_Robot *Bagger)
     for (TaskIndex = 0; ((TaskIndex < NumTasks) && (opMode == AUTONOMOUS)); TaskIndex++)
     {
       modeSelect(Bagger);
-      Serial.print("opMode: ");
-      Serial.println(opMode, DEC);
+//      Serial.print("opMode: ");
+//      Serial.println(opMode, DEC);
 
       if (Task_ptr[TaskIndex].Interval == 0)
       {
@@ -129,8 +130,8 @@ int Task_Scheduler(_Robot *Bagger)
         //Print the Runtime
         Task_RunTime = Task_StopTime - Task_StartTime;
 
-        Serial.print("Runtime:  ");
-        Serial.println(Task_RunTime, DEC);
+//        Serial.print("Runtime:  ");
+//        Serial.println(Task_RunTime, DEC);
 
         //Save last tick the task was run
         Task_ptr[TaskIndex].LastTick = tick;

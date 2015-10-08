@@ -15,6 +15,11 @@ This example code is in the public domain.
  http://arduino.cc/en/Tutorial/Tone
  
  */
+ 
+ 
+ 
+ /*
+ 
  #include "pitches.h"
 
 // notes in the melody:
@@ -44,3 +49,5 @@ void setupTones() {
   }
 }
 
+
+*/

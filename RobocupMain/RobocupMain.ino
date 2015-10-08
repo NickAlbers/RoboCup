@@ -6,6 +6,7 @@
 #include "PololuLedStrip.h"
 #include "Herkulex.h"
 //#include "Scheduler.h"
+#include <NewPing.h>
 
 //Declare this last as the configuration file depends on the other includes
 #include "Config.h"
@@ -20,6 +21,7 @@
 //Setup Code goes here
 //***********************************************************************************************
 
+  
 void initVcc()
 {
   // turn Vcc on (5V)
@@ -65,9 +67,9 @@ void loop()
 //      }
       break;
     case AUTONOMOUS:
-    Serial.println("TO SCHEDULER");
+//    Serial.println("TO SCHEDULER");
       Task_Scheduler(&Bagger);
-    Serial.println("BACK FROM SCHEDULER");
+//    Serial.println("BACK FROM SCHEDULER");
 //      updateSensors(&Bagger);
 //      readIMU(&Bagger);
 //      collisionDetect(&Bagger);//Poll collision detection sensors and evade if neccessary
@@ -115,5 +117,5 @@ void loop()
   //----------------
   
   loopCount ++;
-  delay(10); //This makes stuff work
+  //delay(10); //This makes stuff work
 }
