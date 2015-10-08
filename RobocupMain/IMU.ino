@@ -13,7 +13,7 @@
 #define    ACC_FULL_SCALE_8_G        0x10
 #define    ACC_FULL_SCALE_16_G       0x18
 
-
+long int cpt = 0;
 
 // This function read Nbytes bytes from I2C device at address Address.
 // Put read bytes starting at register Register in the Data array.
@@ -64,16 +64,19 @@ void setupIMU()
 }
 
 
-long int cpt = 0;
-// Main loop, read and display data
+// Read and display acceleration and gyroscope data
 void readIMU()
 {
+  if (millis() < nextIMUread) { return; }
+
+  //Update the IMU read time
+  nextIMUread = millis() + 1000;
   // _______________
   // ::: Counter :::
 
   // Display data counter
-  Serial.print (cpt++, DEC);
-  Serial.print ("\t");
+//  Serial.print (cpt++, DEC);
+//  Serial.print ("\t");
 
   // ____________________________________
   // :::  accelerometer and gyroscope :::
@@ -118,8 +121,17 @@ void readIMU()
 //  Serial.print (gz, DEC);
 //  Serial.print ("\t");
 
+}
 
-  // _____________________
+void readMagnetometer()
+{
+
+  if (millis() < nextCompassRead) { return; }
+
+  //Update Compass Read Time
+  nextCompassRead = millis() + 1000;
+  
+    // _____________________
   // :::  Magnetometer :::
 
 
@@ -137,7 +149,6 @@ void readIMU()
 
   // Request next magnetometer single measurement
   I2CwriteByte(MAG_ADDRESS, 0x0A, 0x01);
-
 
 
   // Create 16 bits values from 8 bits data
@@ -163,3 +174,4 @@ void readIMU()
   Serial.println("");
   //  delay(100);
 }
+

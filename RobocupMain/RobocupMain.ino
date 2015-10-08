@@ -1,10 +1,14 @@
 #include <Herkulex.h>
-//#include <SoftwareSerial.h>
-#include "PololuLedStrip.h"
 #include <Servo.h>
 #include <XBOXRECV.h>
-#include "Config.h"
+#include <stdio.h>
+//#include <SoftwareSerial.h>
+#include "PololuLedStrip.h"
 #include "Herkulex.h"
+//#include "Scheduler.h"
+
+//Declare this last as the configuration file depends on the other includes
+#include "Config.h"
 
 // Satisfy the IDE, which needs to see the include statment in the ino too.
 #ifdef dobogusinclude
@@ -54,16 +58,16 @@ void loop()
       break;
     case REMOTECONTROL:
       xboxControl();
-      if (millis() > nextIMUread) {
       readIMU();
-      nextIMUread = millis() + 1000;
-      }
+      readMagnetometer();
       break;
     case AUTONOMOUS:
       updateSensors(&Bagger);
       readIMU();
+      readMagnetometer();
       collisionDetect(&Bagger);//Poll collision detection sensors and evade if neccessary
       packageDetect(&Bagger);
+      packageCollect(&Bagger);
       if (collectFlag == true) //Tell the robot to collect the weight
       {
         openJaws(1, 2); // Open Jaws ready for next package
@@ -73,26 +77,8 @@ void loop()
         }
       }
       autonomousDrive(&Bagger);
-      break;
-  }
-  
-//  //Replacement Kernel
-//  if (millis < nextRun)
-//  {
-//    autonomousDrive();
-//  }
-//  
-//  updateSensors();
-//  if (collisionDetect() == true)
-//  {
-//    //Execute Avoidance Code
-//  }
-//  else if (packageDetect() == true)
-//  {
-//    //Execute Collection Code
-//    packageCollect()
 //    packageCount++;
-//  }
+  }
 //  
 //  if (packageCount == 3)
 //  {
@@ -109,9 +95,15 @@ void loop()
 //    //UnloadPackages
 //    packageCount = 0;
 //  }
-    
+//  else if (onBase == true)
+//  {
+//    //UnloadPackages
+//    packageCount = 0;
+//  }
+//      break;
+//  }
 
-  //Do this every 25th loop
+//Do this every 25th loop
 //  if ((loopCount % 25) == 0) {
 //    readColourSensor();
 //  }
@@ -122,6 +114,7 @@ void loop()
   //updateSensors(&Bagger);
   //readIRMed(IRmed_L_Pin);
   //----------------
+  
   loopCount ++;
   delay(10); //This makes stuff work
 }

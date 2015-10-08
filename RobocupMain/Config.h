@@ -1,6 +1,5 @@
-
 //***********************************************************************************************
-// CONSTATNS
+// CONSTANTS
 //***********************************************************************************************
 #define TRUE 1
 #define FALSE 0
@@ -44,11 +43,13 @@ static SweepDir sweepState = SWEEPIN;
 //int xboxConnected = false; //Assume no xbox controller is connected
 
 int loopCount = 0;
-long nextRun = 0;
-long nextIMUread = millis();
+
 int cornerFlag = false;
+long nextRun = 0;
+long nextIMUread = 0;
+long nextCompassRead = 0;
 long cornerTime = 0;
-long nextSweep = millis();
+long nextSweep = 0;
 
 Servo leftServo;      // create servo object to control a servo
 Servo rightServo;      // create servo object to control a servo
@@ -99,9 +100,7 @@ int collectFlag = false;
 long collectionTime = 0;
 #define COLLECTION_TIME 1000
 
-//***********************************************************************************************
-// SMART SERVO PARAMETERS
-//***********************************************************************************************
+
 #define SWEEPTIME 200
 int Smart_1 = 1; //motor ID - verify your ID !!!!
 int Smart_2 = 2;
