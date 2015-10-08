@@ -21,7 +21,13 @@
 //Setup Code goes here
 //***********************************************************************************************
 
-  
+//// Getter function for any robot struct
+//_Robot *Robot_GetConfig(void)
+//{
+//  return &Bagger;
+//}
+
+
 void initVcc()
 {
   // turn Vcc on (5V)
@@ -49,7 +55,8 @@ void loop()
 {
   //Create the robot "Bagger"!!!
   static _Robot Bagger;
-  
+
+  //Select the mode of operation for the main loop
   Usb.Task();
   modeSelect(&Bagger);
 
@@ -109,13 +116,11 @@ void loop()
 //    packageCount = 0;
 //  }
 
-  //----------------
-  //TESTING:
-  //collisionDetect(&Bagger);
-  //updateSensors(&Bagger);
-  //readIRMed(IRmed_L_Pin);
-  //----------------
   
   loopCount ++;
+<<<<<<< HEAD
   //delay(10); //This makes stuff work
+=======
+//  delay(10); //This makes stuff work
+>>>>>>> a353def6009e27be4d3c943961342587790a60e6
 }

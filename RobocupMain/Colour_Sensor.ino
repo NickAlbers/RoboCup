@@ -33,7 +33,7 @@ void readColourSensor(_Robot *Bagger)
 
   tcs.setInterrupt(false);      // turn on LED
 
-  //  //  delay(60);  // takes 50ms to read //Commenting this out may cause errors
+  delay(60);  // takes 50ms to read //Commenting this out may cause errors
 
   tcs.getRawData(&red, &green, &blue, &clear);
 

@@ -22,36 +22,40 @@ typedef struct
   void (*FunctionPtr) (_Robot *Bagger); /* Function pointer to the task */
 } TaskType;
 
+// Function Declarations
+TaskType *Task_GetConfig(void);
+uint8_t Task_GetNumTasks(void);
+void Task_Placeholder(_Robot *bagger);
+
+
 //***********************************************************************************************
 // Task Configuration Table, Holds the task interval, last time executed and the function to
 // be executed. A continuous task is defined as a task with an interval of 0. Last time excecuted
 // is set to 0.
 //***********************************************************************************************
-void placeHolderTask(_Robot *bagger)
-{
-  //do nothing
-}
 
 static TaskType Tasks[] =
 {
-  //  {0               ,   0,    modeSelect        }, // Continously check for the controller safeguard
-  {0              ,   0,    placeHolderTask   }, // Continously check for the controller safeguard
+  //  {0              ,   0,    modeSelect        }, // Continously check for the controller safeguard
+  {0              ,   0,    Task_Placeholder  }, //Placeholder task, allowing us to do whatever we want within the
   {INTERVAL_100MS ,   0,    modeSelect        }, // Also make it a scheduled task for safety
+<<<<<<< HEAD
   {INTERVAL_10MS ,   0,    updateSensors     },
   {INTERVAL_10MS ,   0,    collisionDetect   },
   {INTERVAL_10MS ,   0,    packageDetect     },
   {INTERVAL_10MS,   0,    autonomousDrive   },
 //  {INTERVAL_1000MS,   0,    readIMU           },
 //  {INTERVAL_1000MS,   0,    readColourSensor  },
+=======
+  {INTERVAL_100MS ,   0,    updateSensors     },
+  {INTERVAL_100MS ,   0,    collisionDetect   },
+  {INTERVAL_100MS ,   0,    packageDetect     },
+  {INTERVAL_1000MS,   0,    autonomousDrive   },
+  {INTERVAL_1000MS,   0,    readIMU           },
+  {INTERVAL_1000MS,   0,    readMagnetometer  },
+  {INTERVAL_1000MS,   0,    readColourSensor  },
+>>>>>>> a353def6009e27be4d3c943961342587790a60e6
 };
-
-// Function Declarations
-TaskType *Task_GetConfig(void);
-uint8_t Task_GetNumTasks(void);
-
-// Function Declarations
-TaskType *Task_GetConfig(void);
-uint8_t Task_GetNumTasks(void);
 
 //static TaskType Tasks[] =
 //{
@@ -62,8 +66,17 @@ uint8_t Task_GetNumTasks(void);
 //  {INTERVAL_500MS ,   0,    Tsk_500ms    },
 //  {INTERVAL_1000MS,   0,    Tsk_1000ms   },
 //  {INTERVAL_1000MS,   0,    Tsk_5000ms   },
-//
 //}
+
+
+/* Function: Task_Placeholder
+ *  Allows us to do whatever we want in the continuous loop
+ */
+void Task_Placeholder(_Robot *bagger)
+{
+  //do nothing
+}
+
 
 /* Function: Task_GetConfig()
  *  Returns the a pointer to the task configuration table
@@ -73,6 +86,7 @@ TaskType *Task_GetConfig(void)
   return Tasks;
 }
 
+
 /* Function: Task_GetNumTasks()
  *  Returns the number of tasks in the task configuration table
  */
@@ -81,16 +95,21 @@ uint8_t Task_GetNumTasks(void)
   return sizeof(Tasks) / sizeof(*Tasks);
 }
 
+/* Function: Task_Scheduler()
+ * Executes the scheduled tasks in order, based on whether or not they are ready to run
+ */
 int Task_Scheduler(_Robot *Bagger)
 {
   //This goes in setup
   static uint32_t tick = 0;     //System Tick
   static TaskType *Task_ptr;    //Task pointer
   static uint8_t TaskIndex = 0; //Task Index
+  const  uint8_t NumTasks = Task_GetNumTasks(); //Number of Tasks
+
+  //Task Timer Variables
   static uint32_t Task_StartTime = 0;
   static uint32_t Task_StopTime = 0;
   static uint32_t Task_RunTime = 0; //Time for task to execute
-  const  uint8_t NumTasks = Task_GetNumTasks(); //Number of Tasks
 
 
   /***********************************************************************************************
@@ -101,13 +120,27 @@ int Task_Scheduler(_Robot *Bagger)
   tick = millis(); //Get current system tick
 
   /*********************************************************************************************
-   *  Loop through all tasks. First runr all continous tasks. Then if the number of ticks
+   *  Loop through all tasks. First run all continous tasks. Then if the number of ticks
    *  since the last time the task was run is greater than or equal to the task interval,
    *  execute the task.
+   *
+   *
+   *  For a generic scheduler, this for loop would be enclused in a while(1) loop, in this the
+   *  program the main loop acheives the same task
    ********************************************************************************************/
 
-    for (TaskIndex = 0; ((TaskIndex < NumTasks) && (opMode == AUTONOMOUS)); TaskIndex++)
+  for (TaskIndex = 0; ((TaskIndex < NumTasks) && (opMode == AUTONOMOUS)); TaskIndex++)
+  {
+
+    if (Task_ptr[TaskIndex].Interval == 0)
     {
+      //Run continuous tasks
+      (*Task_ptr[TaskIndex].FunctionPtr)(Bagger);
+    }
+
+    else if ((tick - Task_ptr[TaskIndex].LastTick) >= Task_ptr[TaskIndex].Interval)
+    {
+<<<<<<< HEAD
       modeSelect(Bagger);
 //      Serial.print("opMode: ");
 //      Serial.println(opMode, DEC);
@@ -139,6 +172,26 @@ int Task_Scheduler(_Robot *Bagger)
       modeSelect(Bagger);
     }//End for
   //  }//End while
+=======
+      //Start task stopwatch, execute the task, stop the stopwatch and print out the runtime.
+      Task_StartTime = micros();
+      (*Task_ptr[TaskIndex].FunctionPtr)(Bagger);
+      Task_StopTime = micros();
+
+      //Print the Runtime
+      Task_RunTime = Task_StopTime - Task_StartTime;
+      Serial.print("Runtime:  ");
+      Serial.println(Task_RunTime, DEC);
+
+      //Save last tick the task was run
+      Task_ptr[TaskIndex].LastTick = tick;
+    }
+
+    /* Check if the user has requested control, and break out of the scheduler if so */
+    modeSelect(Bagger);
+
+  }//End for
+>>>>>>> a353def6009e27be4d3c943961342587790a60e6
 }//End scheduler
 
 

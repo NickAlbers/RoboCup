@@ -24,7 +24,10 @@ void setupXboxReceiver()
 //***********************************************************************************************
 void modeSelect(_Robot *Bagger)
 {
-//  Serial.println("Checking Operation mode");
+
+  //Get the latest data on pressed buttons from the Xbox receiver
+  Usb.Task();
+
   // Enable or Disable remote control when Y is pressed
   if (Xbox.XboxReceiverConnected && Xbox.Xbox360Connected[0])
   {
@@ -57,6 +60,9 @@ void modeSelect(_Robot *Bagger)
 //***********************************************************************************************
 void xboxControl()
 {
+  //Get the latest data on pressed buttons from the Xbox receiver
+  Usb.Task();
+  
   //  Serial.println("Polling Xbox Controller");
   //  Serial.println("Remote Control"); Enable for debugging
   if (Xbox.getAnalogHat(LeftHatX, 0) > 1500 || Xbox.getAnalogHat(LeftHatX, 0) < -1500
