@@ -26,6 +26,7 @@ void setupColourSensor()
 
 void readColourSensor(_Robot *Bagger)
 {
+  Serial.println("Reading Colour Sensor");
   Serial.println(" ");
 
   uint16_t clear, red, green, blue;

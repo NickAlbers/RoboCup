@@ -24,24 +24,32 @@ void setupXboxReceiver()
 //***********************************************************************************************
 void modeSelect(_Robot *Bagger)
 {
-  //Enable or Disable remote control when Y is pressed
-  if (Xbox.XboxReceiverConnected && Xbox.Xbox360Connected[0]) {
-    if (opMode != REMOTECONTROL && Xbox.getButtonPress(X, 0)) {
+//  Serial.println("Checking Operation mode");
+  // Enable or Disable remote control when Y is pressed
+  if (Xbox.XboxReceiverConnected && Xbox.Xbox360Connected[0])
+  {
+    
+    if (opMode != REMOTECONTROL && Xbox.getButtonPress(X, 0))
+    {
       opMode = REMOTECONTROL;
       Serial.println("Remote control enabled");
     }
+    
     else if (opMode != AUTONOMOUS && Xbox.getButtonPress(Y, 0))
     {
       opMode = AUTONOMOUS;
       Serial.println("Autonomous mode activated");
     }
+    
     else if (opMode != HANDBRAKE && Xbox.getButtonPress(A, 0))
     {
-      opMode = HANDBRAKE;
+      opMode =  HANDBRAKE;
       Serial.println("Handbrake on");
     }
   }
 }
+
+
 
 //***********************************************************************************************
 //Function to control the DC motors from an xbox controller.
@@ -49,6 +57,7 @@ void modeSelect(_Robot *Bagger)
 //***********************************************************************************************
 void xboxControl()
 {
+  //  Serial.println("Polling Xbox Controller");
   //  Serial.println("Remote Control"); Enable for debugging
   if (Xbox.getAnalogHat(LeftHatX, 0) > 1500 || Xbox.getAnalogHat(LeftHatX, 0) < -1500
       || Xbox.getAnalogHat(LeftHatY, 0) > 1500 || Xbox.getAnalogHat(LeftHatY, 0) < -1500
@@ -79,7 +88,7 @@ void xboxControl()
     leftServo.write(trackLeft);
     rightServo.write(trackRight);
   }
-  
+
   //Sweep the servos for package collection
   if (Xbox.getButtonPress(B, 0)) {
     toggleJaws(1, 2);
@@ -88,30 +97,30 @@ void xboxControl()
   if (Xbox.getButtonPress(L1, 0)) {
     setupSmartServos();
   }
-  
-//    if (Xbox.getButtonPress(L2, 0)) {
-//    readIMU(&Bagger);
-//  }
-  
+
+  //    if (Xbox.getButtonPress(L2, 0)) {
+  //    readIMU(&Bagger);
+  //  }
+
 
   //Flash LED Green
-//  if (Xbox.getButtonPress(R1, 0)) {
-//    UpdateLED(0, 255, 0);
-//  }
-//
-//  //Flash LED red
-//  if (Xbox.getButtonPress(R2, 0)) {
-//    UpdateLED(255, 0, 0);
-//  }
-//  
-//  //Flash LED blue
-//  if (Xbox.getButtonPress(R3, 0)) {
-//    UpdateLED(0, 0, 255);
-//  }
-//  
-//    //Clear LED
-//  if (Xbox.getButtonPress(L3, 0)) {
-//    UpdateLED(0, 0, 0);
-//  }
+  //  if (Xbox.getButtonPress(R1, 0)) {
+  //    UpdateLED(0, 255, 0);
+  //  }
+  //
+  //  //Flash LED red
+  //  if (Xbox.getButtonPress(R2, 0)) {
+  //    UpdateLED(255, 0, 0);
+  //  }
+  //
+  //  //Flash LED blue
+  //  if (Xbox.getButtonPress(R3, 0)) {
+  //    UpdateLED(0, 0, 255);
+  //  }
+  //
+  //    //Clear LED
+  //  if (Xbox.getButtonPress(L3, 0)) {
+  //    UpdateLED(0, 0, 0);
+  //  }
 
 }

@@ -42,8 +42,6 @@ struct _Robot
   //Robot IMU readings
   uint8_t IMUBuf[14];
   uint8_t MagBuf[6];
-
-  
 };
 
 //Robot defintions
@@ -86,14 +84,14 @@ XBOXRECV Xbox(&Usb);
 // SENSORS
 //***********************************************************************************************
 // IR:
-const int IRmed_R_Pin = A0;
-const int IRmed_L_Pin = A1;
-const int IRlong_R_Pin = A2;
+const int IRmed_R_Pin = A4;
+const int IRmed_L_Pin = A2;
+const int IRlong_R_Pin = A5;
 const int IRlong_L_Pin = A3;
 
 //Ultra Sound:
-const int Ultra_L_trigPin = A5;
-const int Ultra_L_echoPin = A4;
+const int Ultra_L_trigPin = A1;
+const int Ultra_L_echoPin = A0;
 const int Ultra_R_trigPin = A7;
 const int Ultra_R_echoPin = A6;
 #define ULTRA_OFFSET 29 //Distance between the two ultrasonic sensors

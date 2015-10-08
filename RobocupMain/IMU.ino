@@ -63,7 +63,6 @@ void setupIMU()
   I2CwriteByte(MAG_ADDRESS, 0x0A, 0x01);
 }
 
-long int cpt = 0;
 // Main loop, read and display data
 void readIMU(_Robot *Bagger)
 {
@@ -125,6 +124,7 @@ void readIMU(_Robot *Bagger)
 
 void readMagnetometer()
 {
+  Serial.println("Reading Magnetometer");
 
   if (millis() < nextCompassRead) { return; }
 

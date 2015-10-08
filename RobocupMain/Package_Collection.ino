@@ -5,6 +5,7 @@
 
 void Maneouver2Weight(_Robot *Bagger)
 {
+  Serial.println("maneouvering to Weight");
   signed int package_xPos;
 
   if (Bagger->package_C) {
@@ -32,6 +33,7 @@ void Maneouver2Weight(_Robot *Bagger)
 //***********************************************************************************************
 void packageDetect(_Robot *Bagger)
 {
+  Serial.println("Scanning for Package");
   Bagger->package_C = false;
   Bagger->package_L = false;
   Bagger->package_R = false;

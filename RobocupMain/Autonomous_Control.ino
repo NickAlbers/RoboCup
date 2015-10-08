@@ -3,6 +3,8 @@
 //***********************************************************************************************
 void autonomousDrive(_Robot *Bagger)
 {
+  Serial.println("AutonomousDrive");
+  
   static TurnDirection turnDir = Left;
   long rand;
 
@@ -49,15 +51,16 @@ void autonomousDrive(_Robot *Bagger)
 
 void updateSensors(_Robot *Bagger)
 {
-
+  Serial.println("Update Sensors");
   Bagger->IRlong_L = readIRMed(IRlong_L_Pin);
   Bagger->IRlong_R = readIRMed(IRlong_R_Pin);
+  
+  
   Bagger->IRmed_L = readIRMed(IRmed_L_Pin);
   Bagger->IRmed_R = readIRMed(IRmed_R_Pin);
+  
   Bagger->Ultra_L = readUltra(Ultra_L_trigPin, Ultra_L_echoPin);
   Bagger->Ultra_R = readUltra(Ultra_R_trigPin, Ultra_R_echoPin);
-  //Serial.println(Bagger->IRmed_L);
-
 }
 
 //***********************************************************************************************
@@ -66,6 +69,8 @@ void updateSensors(_Robot *Bagger)
 //***********************************************************************************************
 void collisionDetect(_Robot *Bagger)
 {
+  Serial.println("Collision Check");
+  
   if ((Bagger->IRmed_L  <= SAFEDISTANCE) || (Bagger->IRmed_R  <= SAFEDISTANCE)) {
     Bagger->driveState = EVASIVETACTICS;
     return;

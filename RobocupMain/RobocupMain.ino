@@ -59,26 +59,28 @@ void loop()
       break;
     case REMOTECONTROL:
       xboxControl();
-      if (millis() > nextIMUread) {
-      readIMU(&Bagger);
-      nextIMUread = millis() + 1000;
-      }
+//      if (millis() > nextIMUread) {
+//      readIMU(&Bagger);
+//      nextIMUread = millis() + 1000;
+//      }
       break;
     case AUTONOMOUS:
+    Serial.println("TO SCHEDULER");
       Task_Scheduler(&Bagger);
+    Serial.println("BACK FROM SCHEDULER");
 //      updateSensors(&Bagger);
 //      readIMU(&Bagger);
 //      collisionDetect(&Bagger);//Poll collision detection sensors and evade if neccessary
 //      packageDetect(&Bagger);
-      if (collectFlag == true) //Tell the robot to collect the weight
-      {
-        openJaws(1, 2); // Open Jaws ready for next package
-        while (packageCollect(&Bagger) == false)
-        {
-          //Do stuff
-        }
-      }
-      autonomousDrive(&Bagger);
+//      if (collectFlag == true) //Tell the robot to collect the weight
+//      {
+//        openJaws(1, 2); // Open Jaws ready for next package
+//        while (packageCollect(&Bagger) == false)
+//        {
+//          //Do stuff
+//        }
+//      }
+//      autonomousDrive(&Bagger);
       break;
   }
   
@@ -87,7 +89,7 @@ void loop()
 //    //Execute Collection Code
 //    packageCollect()
 //    packageCount++;
-  }
+  
 //  
 //  if (packageCount == 3)
 //  {

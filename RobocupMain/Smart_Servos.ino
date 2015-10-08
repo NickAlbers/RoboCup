@@ -7,6 +7,7 @@
 
 void setupSmartServos()
 {
+ Serial.println("SetUp Smart Servos");
   pinMode(49, OUTPUT);                 //Pin 49 is used to enable IO power
   digitalWrite(49, 1);                 //Enable IO power on main CPU board
 
@@ -26,6 +27,7 @@ void setupSmartServos()
 
 void toggleJaws(int servo1, int servo2)
 {
+  Serial.println("Toggling Smart Servos");
   static long nextSweep = 0;
 
   if ((millis() <= nextSweep)) {
@@ -51,7 +53,9 @@ void toggleJaws(int servo1, int servo2)
 }
 
 void closeJaws(int servo1, int servo2)
-{
+{ 
+  Serial.println("Closing jaws");
+  
   UpdateLED(0,0,255); //Flash LED strips blue to simulate jaws closing
   Herkulex.moveOne(servo1, 812, SWEEPTIME, LED_GREEN); // A change of 300 indicates a 90 degree angle
   Herkulex.moveOne(servo2, 212, SWEEPTIME, LED_GREEN);

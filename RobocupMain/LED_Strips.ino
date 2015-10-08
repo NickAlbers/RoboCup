@@ -46,6 +46,7 @@ void setupLED()
 
 void UpdateLED(int red, int green, int blue)
 {
+  Serial.println("Updating Led Strips");
   // If any digit is received, we will go into integer parsing mode
   // until all three calls to parseInt return an interger or time out.
   // Read the color from the computer.
