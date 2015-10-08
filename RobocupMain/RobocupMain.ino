@@ -20,6 +20,12 @@
 //Setup Code goes here
 //***********************************************************************************************
 
+//// Getter function for any robot struct
+//_Robot *Robot_GetConfig(void)
+//{
+//  return &Bagger;
+//}
+
 void initVcc()
 {
   // turn Vcc on (5V)

@@ -158,7 +158,13 @@ void readMagnetometer()
   int16_t my = Mag[3] << 8 | Mag[2];
   int16_t mz = Mag[5] << 8 | Mag[4];
 
-
+  
+  int16_t compassAngle = atan2(my, mx) * 180.0 / M_PI;
+  
+  Serial.print("mz: ");
+  Serial.print (mz, DEC);
+  Serial.print ("\t");
+  
   // Magnetometer
   Serial.print("mx: ");
   Serial.print (mx, DEC);
@@ -168,6 +174,10 @@ void readMagnetometer()
   Serial.print ("\t");
   Serial.print("mz: ");
   Serial.print (mz, DEC);
+  Serial.print ("\t");
+
+  Serial.print("Angle: ");
+  Serial.print (compassAngle, DEC);
   Serial.print ("\t");
 
   // End of line
