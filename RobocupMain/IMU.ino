@@ -63,9 +63,9 @@ void setupIMU()
   I2CwriteByte(MAG_ADDRESS, 0x0A, 0x01);
 }
 
-
-// Read and display acceleration and gyroscope data
-void readIMU()
+long int cpt = 0;
+// Main loop, read and display data
+void readIMU(_Robot *Bagger)
 {
   if (millis() < nextIMUread) { return; }
 

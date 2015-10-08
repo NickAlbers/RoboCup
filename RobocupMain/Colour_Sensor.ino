@@ -24,7 +24,7 @@ void setupColourSensor()
   }
 }
 
-void readColourSensor()
+void readColourSensor(_Robot *Bagger)
 {
   Serial.println(" ");
 

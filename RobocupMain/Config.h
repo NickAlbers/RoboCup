@@ -16,6 +16,8 @@ typedef enum SweepDir {  SWEEPIN, SWEEPOUT};
 //***********************************************************************************************
 struct _Robot
 {
+
+ //Robot Sensors
   int IRlong_L = 0;
   int IRlong_R = 0;
   int IRmed_L = 0;
@@ -23,17 +25,25 @@ struct _Robot
   long Ultra_L = 0;
   long Ultra_R = 0;
 
+  //Robot drive control
   int Speed = 30;  //Percentage
   TurnDirection turnDir = Forward;
   Servo motor_L ;
   Servo motor_R ;
-  
   RobotState driveState = DRIVING;
+
+  //Robot Package Collection
   int package_L = false;
   int package_R = false;
   int package_C = false;
   
   int packageCount = 0;
+
+  //Robot IMU readings
+  uint8_t IMUBuf[14];
+  uint8_t MagBuf[6];
+
+  
 };
 
 //Robot defintions

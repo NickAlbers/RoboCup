@@ -22,7 +22,7 @@ void setupXboxReceiver()
 //***********************************************************************************************
 // Changes from autonomous to remote control and vice versa on A "y" button press.
 //***********************************************************************************************
-void modeSelect()
+void modeSelect(_Robot *Bagger)
 {
   //Enable or Disable remote control when Y is pressed
   if (Xbox.XboxReceiverConnected && Xbox.Xbox360Connected[0]) {
@@ -89,9 +89,9 @@ void xboxControl()
     setupSmartServos();
   }
   
-    if (Xbox.getButtonPress(L2, 0)) {
-    readIMU();
-  }
+//    if (Xbox.getButtonPress(L2, 0)) {
+//    readIMU(&Bagger);
+//  }
   
 
   //Flash LED Green

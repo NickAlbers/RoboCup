@@ -45,10 +45,11 @@ void setup()
 //***********************************************************************************************
 void loop()
 {
-  Usb.Task();
-  modeSelect();
   //Create the robot "Bagger"!!!
   static _Robot Bagger;
+  
+  Usb.Task();
+  modeSelect(&Bagger);
 
   //If remote control enabled give user control via the Xbox controller.
   //Operation mode decision tree
@@ -58,16 +59,17 @@ void loop()
       break;
     case REMOTECONTROL:
       xboxControl();
-      readIMU();
-      readMagnetometer();
+      if (millis() > nextIMUread) {
+      readIMU(&Bagger);
+      nextIMUread = millis() + 1000;
+      }
       break;
     case AUTONOMOUS:
-      updateSensors(&Bagger);
-      readIMU();
-      readMagnetometer();
-      collisionDetect(&Bagger);//Poll collision detection sensors and evade if neccessary
-      packageDetect(&Bagger);
-      packageCollect(&Bagger);
+      Task_Scheduler(&Bagger);
+//      updateSensors(&Bagger);
+//      readIMU(&Bagger);
+//      collisionDetect(&Bagger);//Poll collision detection sensors and evade if neccessary
+//      packageDetect(&Bagger);
       if (collectFlag == true) //Tell the robot to collect the weight
       {
         openJaws(1, 2); // Open Jaws ready for next package
@@ -77,6 +79,13 @@ void loop()
         }
       }
       autonomousDrive(&Bagger);
+      break;
+  }
+  
+//  else if (packageDetect() == true)
+//  {
+//    //Execute Collection Code
+//    packageCollect()
 //    packageCount++;
   }
 //  
@@ -94,18 +103,6 @@ void loop()
 //  {
 //    //UnloadPackages
 //    packageCount = 0;
-//  }
-//  else if (onBase == true)
-//  {
-//    //UnloadPackages
-//    packageCount = 0;
-//  }
-//      break;
-//  }
-
-//Do this every 25th loop
-//  if ((loopCount % 25) == 0) {
-//    readColourSensor();
 //  }
 
   //----------------
