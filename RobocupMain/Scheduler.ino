@@ -44,14 +44,7 @@ static TaskType Tasks[] =
   {INTERVAL_10MS ,   0,    updateSensors     },
   {INTERVAL_10MS ,   0,    collisionDetect   },
   {INTERVAL_10MS ,   0,    packageDetect     },
-  {INTERVAL_20MS ,   0,    autonomousDrive   },
-=======
-  {INTERVAL_100MS ,   0,    modeSelect        }, // Also make it a scheduled task for safety
-  {INTERVAL_100MS ,   0,    updateSensors     },
-  {INTERVAL_100MS ,   0,    collisionDetect   },
-  {INTERVAL_200MS ,   0,    packageDetect     },
-  {INTERVAL_500MS ,   0,    autonomousDrive   },
->>>>>>> parent of 8a26639... stuff
+  {INTERVAL_50MS ,   0,    autonomousDrive   },
   {INTERVAL_1000MS,   0,    readIMU           },
   {INTERVAL_1000MS,   0,    readMagnetometer  },
   {INTERVAL_1000MS,   0,    readColourSensor  },
