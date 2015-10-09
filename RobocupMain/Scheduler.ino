@@ -39,22 +39,13 @@ static TaskType Tasks[] =
   //  {0              ,   0,    modeSelect        }, // Continously check for the controller safeguard
   {0              ,   0,    Task_Placeholder  }, //Placeholder task, allowing us to do whatever we want within the
   {INTERVAL_100MS ,   0,    modeSelect        }, // Also make it a scheduled task for safety
-<<<<<<< HEAD
   {INTERVAL_10MS ,   0,    updateSensors     },
   {INTERVAL_10MS ,   0,    collisionDetect   },
   {INTERVAL_10MS ,   0,    packageDetect     },
   {INTERVAL_10MS,   0,    autonomousDrive   },
-//  {INTERVAL_1000MS,   0,    readIMU           },
-//  {INTERVAL_1000MS,   0,    readColourSensor  },
-=======
-  {INTERVAL_100MS ,   0,    updateSensors     },
-  {INTERVAL_100MS ,   0,    collisionDetect   },
-  {INTERVAL_100MS ,   0,    packageDetect     },
-  {INTERVAL_1000MS,   0,    autonomousDrive   },
   {INTERVAL_1000MS,   0,    readIMU           },
   {INTERVAL_1000MS,   0,    readMagnetometer  },
   {INTERVAL_1000MS,   0,    readColourSensor  },
->>>>>>> a353def6009e27be4d3c943961342587790a60e6
 };
 
 //static TaskType Tasks[] =
@@ -140,7 +131,7 @@ int Task_Scheduler(_Robot *Bagger)
 
     else if ((tick - Task_ptr[TaskIndex].LastTick) >= Task_ptr[TaskIndex].Interval)
     {
-<<<<<<< HEAD
+//----------------------------------------
       modeSelect(Bagger);
 //      Serial.print("opMode: ");
 //      Serial.println(opMode, DEC);
@@ -171,27 +162,30 @@ int Task_Scheduler(_Robot *Bagger)
       }
       modeSelect(Bagger);
     }//End for
-  //  }//End while
-=======
-      //Start task stopwatch, execute the task, stop the stopwatch and print out the runtime.
-      Task_StartTime = micros();
-      (*Task_ptr[TaskIndex].FunctionPtr)(Bagger);
-      Task_StopTime = micros();
+  
+  }//End while
+//------------------------------------------
 
-      //Print the Runtime
-      Task_RunTime = Task_StopTime - Task_StartTime;
-      Serial.print("Runtime:  ");
-      Serial.println(Task_RunTime, DEC);
+//      //Start task stopwatch, execute the task, stop the stopwatch and print out the runtime.
+//      Task_StartTime = micros();
+//      (*Task_ptr[TaskIndex].FunctionPtr)(Bagger);
+//      Task_StopTime = micros();
+//
+//      //Print the Runtime
+//      Task_RunTime = Task_StopTime - Task_StartTime;
+//      Serial.print("Runtime:  ");
+//      Serial.println(Task_RunTime, DEC);
+//
+//      //Save last tick the task was run
+//      Task_ptr[TaskIndex].LastTick = tick;
+//    }
+//
+//    /* Check if the user has requested control, and break out of the scheduler if so */
+//    modeSelect(Bagger);
+//
+//  }//End for
 
-      //Save last tick the task was run
-      Task_ptr[TaskIndex].LastTick = tick;
-    }
-
-    /* Check if the user has requested control, and break out of the scheduler if so */
-    modeSelect(Bagger);
-
-  }//End for
->>>>>>> a353def6009e27be4d3c943961342587790a60e6
+//------------------------------------------
 }//End scheduler
 
 

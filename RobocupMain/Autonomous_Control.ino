@@ -10,7 +10,7 @@ void autonomousDrive(_Robot *Bagger)
   
   static TurnDirection turnDir = Left;
   long rand;
-
+  
   //Can I turn yet? Check for the run time and whether or not evasive tactics is enabled
   if (  (millis() < nextRun) && (Bagger->driveState != EVASIVETACTICS) && (Bagger->driveState != FINDWEIGHT)  ) {
     return;
