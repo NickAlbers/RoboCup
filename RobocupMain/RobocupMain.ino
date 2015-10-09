@@ -7,6 +7,8 @@
 #include "Herkulex.h"
 //#include "Scheduler.h"
 #include <NewPing.h>
+#include "Herkulex.h"
+
 
 //Declare this last as the configuration file depends on the other includes
 #include "Config.h"
@@ -68,6 +70,9 @@ void loop()
       break;
     case REMOTECONTROL:
       xboxControl();
+      //beginSerial1(BAUDRATE);
+      Serial.println(Herkulex.stat(2)); //
+      //end();
 //      if (millis() > nextIMUread) {
 //      readIMU(&Bagger);
 //      nextIMUread = millis() + 1000;
