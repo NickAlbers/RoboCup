@@ -49,8 +49,8 @@ static TaskType Tasks[] =
 =======
   {INTERVAL_100MS ,   0,    updateSensors     },
   {INTERVAL_100MS ,   0,    collisionDetect   },
-  {INTERVAL_100MS ,   0,    packageDetect     },
-  {INTERVAL_1000MS,   0,    autonomousDrive   },
+  {INTERVAL_200MS ,   0,    packageDetect     },
+  {INTERVAL_500MS ,   0,    autonomousDrive   },
   {INTERVAL_1000MS,   0,    readIMU           },
   {INTERVAL_1000MS,   0,    readMagnetometer  },
   {INTERVAL_1000MS,   0,    readColourSensor  },
@@ -150,15 +150,15 @@ int Task_Scheduler(_Robot *Bagger)
         //Run Continuous Tasks
         //        Serial.println("Running Continuous Task");
         //        (*Task_ptr[TaskIndex].FunctionPtr)(Bagger);
-        modeSelect(Bagger);
+//        modeSelect(Bagger);
       }
 
       else if ((tick - Task_ptr[TaskIndex].LastTick) >= Task_ptr[TaskIndex].Interval)
       {
         //Start task stopwatch, execute the task, stop the stopwatch and print out the runtime.
-        Task_StartTime = micros();
+        Task_StartTime = millis();
         (*Task_ptr[TaskIndex].FunctionPtr)(Bagger);
-        Task_StopTime = micros();
+        Task_StopTime = millis();
 
         //Print the Runtime
         Task_RunTime = Task_StopTime - Task_StartTime;
