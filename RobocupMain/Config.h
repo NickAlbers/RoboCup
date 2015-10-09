@@ -100,14 +100,11 @@ const int Ultra_R_echoPin = A6;
 
 //Sensor Constants
 #define ULTRA_OFFSET 29 //Distance between the two ultrasonic sensors
-<<<<<<< HEAD
-
 
 NewPing Ultra_L(Ultra_L_trigPin, Ultra_L_echoPin, 80);
 NewPing Ultra_R(Ultra_R_trigPin, Ultra_R_echoPin, 80);
-=======
 #define PULSE_TIMEOUT 50000 //Number of microseconds to wait for pin to change, 50000us = 50ms
->>>>>>> a353def6009e27be4d3c943961342587790a60e6
+
 //***********************************************************************************************
 // COLLISION & PACKAGE IDENTIFICATION
 //***********************************************************************************************

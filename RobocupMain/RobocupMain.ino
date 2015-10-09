@@ -118,9 +118,6 @@ void loop()
 
   
   loopCount ++;
-<<<<<<< HEAD
-  //delay(10); //This makes stuff work
-=======
+
 //  delay(10); //This makes stuff work
->>>>>>> a353def6009e27be4d3c943961342587790a60e6
 }
