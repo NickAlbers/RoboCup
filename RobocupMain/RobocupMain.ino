@@ -5,10 +5,9 @@
 //#include <SoftwareSerial.h>
 #include "PololuLedStrip.h"
 #include "Herkulex.h"
-//#include "Scheduler.h"
+//#include "Scheduler.h" 
 #include <NewPing.h>
-#include "Herkulex.h"
-
+#include <Hx711.h>   
 
 //Declare this last as the configuration file depends on the other includes
 #include "Config.h"
@@ -29,7 +28,7 @@
 //  return &Bagger;
 //}
 
-
+  Hx711 scale(24, 25); 
 void initVcc()
 {
   // turn Vcc on (5V)
@@ -48,6 +47,7 @@ void setup()
   setupIMU();
   //setupColourSensor();
   //setupLED();
+
 }
 
 //***********************************************************************************************
@@ -72,6 +72,8 @@ void loop()
       xboxControl();
       //beginSerial1(BAUDRATE);
       Serial.println(Herkulex.stat(2)); //
+      Serial.print(scale.getGram(), 1);    //Get force and print answer
+      Serial.println(" g");
       //end();
 //      if (millis() > nextIMUread) {
 //      readIMU(&Bagger);
