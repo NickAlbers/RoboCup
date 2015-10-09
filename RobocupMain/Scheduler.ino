@@ -2,6 +2,7 @@
 // Task Constants
 //***********************************************************************************************
 #define INTERVAL_10MS   10
+#define INTERVAL_20MS   20
 #define INTERVAL_50MS   50
 #define INTERVAL_100MS  100
 #define INTERVAL_200MS  200
@@ -42,7 +43,7 @@ static TaskType Tasks[] =
   {INTERVAL_10MS ,   0,    updateSensors     },
   {INTERVAL_10MS ,   0,    collisionDetect   },
   {INTERVAL_10MS ,   0,    packageDetect     },
-  {INTERVAL_10MS ,   0,    autonomousDrive   },
+  {INTERVAL_20MS ,   0,    autonomousDrive   },
   {INTERVAL_1000MS,   0,    readIMU           },
   {INTERVAL_1000MS,   0,    readMagnetometer  },
   {INTERVAL_1000MS,   0,    readColourSensor  },

@@ -31,19 +31,19 @@ void modeSelect(_Robot *Bagger)
   // Enable or Disable remote control when Y is pressed
   if (Xbox.XboxReceiverConnected && Xbox.Xbox360Connected[0])
   {
-    
+
     if (opMode != REMOTECONTROL && Xbox.getButtonPress(X, 0))
     {
       opMode = REMOTECONTROL;
       Serial.println("Remote control enabled");
     }
-    
+
     else if (opMode != AUTONOMOUS && Xbox.getButtonPress(Y, 0))
     {
       opMode = AUTONOMOUS;
       Serial.println("Autonomous mode activated");
     }
-    
+
     else if (opMode != HANDBRAKE && Xbox.getButtonPress(A, 0))
     {
       opMode =  HANDBRAKE;
@@ -62,7 +62,7 @@ void xboxControl()
 {
   //Get the latest data on pressed buttons from the Xbox receiver
   Usb.Task();
-  
+
   //  Serial.println("Polling Xbox Controller");
   //  Serial.println("Remote Control"); Enable for debugging
   if (Xbox.getAnalogHat(LeftHatX, 0) > 1500 || Xbox.getAnalogHat(LeftHatX, 0) < -1500
@@ -98,6 +98,26 @@ void xboxControl()
   //Sweep the servos for package collection
   if (Xbox.getButtonPress(B, 0)) {
     toggleJaws(1, 2);
+  }
+
+  //  //Toggle the tray position
+  //  if (Xbox.getButtonClick(L2, 0)) {
+  //    if (trayPosition == TRAYDOWN)
+  //    {
+  //      liftTray(42);
+  //    }
+  //    else if (trayPosition == TRAYUP)
+  //    {
+  //      lowerTray(42);
+  //    }
+  //  }
+
+  if (Xbox.getButtonClick(UP, 0)) {
+    liftTray(42);
+  }
+  
+  if (Xbox.getButtonClick(DOWN, 0)) {
+    lowerTray(42);
   }
 
   if (Xbox.getButtonPress(L1, 0)) {

@@ -28,11 +28,13 @@
 //  return &Bagger;
 //}
 
-  Hx711 scale(24, 25); 
+  Hx711 scale1(24, 25); 
+  Hx711 scale2(32, 31); 
 void initVcc()
 {
   // turn Vcc on (5V)
-  pinMode(49, OUTPUT);                 //Pin 49 is used to enable IO power
+  pinMode(49, OUTPUT);   //Pin 49 is used to enable IO power
+  pinMode(30, OUTPUT);   //Sneakily out the LED initilisation here
   digitalWrite(49, 1);
 }
 
@@ -67,12 +69,16 @@ void loop()
   switch (opMode) {
     case HANDBRAKE:
       driveStop();
+      turnOffLED();
       break;
     case REMOTECONTROL:
+      turnOnLED();
       xboxControl();
       //beginSerial1(BAUDRATE);
-      Serial.println(Herkulex.stat(2)); //
-      Serial.print(scale.getGram(), 1);    //Get force and print answer
+      //Serial.println(Herkulex.stat(2)); //
+      Serial.print(scale1.getGram(), 1);    //Get force and print answer
+      Serial.print(" g | ");
+       Serial.print(scale2.getGram(), 1);    //Get force and print answer
       Serial.println(" g");
       //end();
 //      if (millis() > nextIMUread) {

@@ -68,18 +68,6 @@ void updateSensors(_Robot *Bagger)
   
   if(Bagger->Ultra_L==0)Bagger->Ultra_L=80;
   if(Bagger->Ultra_R==0)Bagger->Ultra_R=80;
-  
-//  Serial.print("Right IR:  " );
-//  Serial.print(Bagger->IRmed_L );
-//  Serial.print(" | Left IR:  " );
-//  Serial.print(Bagger->IRmed_R );
-//  Serial.print(" || Left Ultra:  " );
-//  Serial.print(Bagger->Ultra_L);
-//  Serial.print(" | Right Ultra:  " );
-//  Serial.println(Bagger->Ultra_R);
-  
-  //Bagger->Ultra_L = readUltra(Ultra_L_trigPin, Ultra_L_echoPin);
-  //Bagger->Ultra_R = readUltra(Ultra_R_trigPin, Ultra_R_echoPin);
 }
 
 //***********************************************************************************************
@@ -88,8 +76,6 @@ void updateSensors(_Robot *Bagger)
 //***********************************************************************************************
 void collisionDetect(_Robot *Bagger)
 {
-  
-  
   if ((Bagger->IRmed_L  <= SAFEDISTANCE) || (Bagger->IRmed_R  <= SAFEDISTANCE)) {
     Bagger->driveState = EVASIVETACTICS;
 //    Serial.println("Collision");
@@ -129,5 +115,4 @@ void evasiveManeouvers(_Robot *Bagger)
     nextRun = millis() + random(COLLISION_MIN_TIME, COLLISION_MAX_TIME);
   }
   driveState = DRIVING; //The next run should be to drive forwards
-
 }
