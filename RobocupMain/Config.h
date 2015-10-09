@@ -8,6 +8,7 @@
 
 typedef enum OperationMode { HANDBRAKE, REMOTECONTROL, AUTONOMOUS };
 typedef enum RobotState {TURNING, DRIVING, GETPACKAGE, AVOIDOBSTACLE, EVASIVETACTICS, FINDWEIGHT };
+typedef enum TrayState {TRAYUP, TRAYDOWN};
 typedef enum TurnDirection {  Reverse = -180, Left = -90, Forward = 0, Right = 90};
 typedef enum SweepDir {  SWEEPIN, SWEEPOUT};
 
@@ -48,6 +49,7 @@ struct _Robot
 static RobotState driveState = DRIVING;
 static OperationMode opMode = HANDBRAKE;
 static SweepDir sweepState = SWEEPIN;
+static TrayState trayPosition = TRAYDOWN;
 //int xboxConnected = false; //Assume no xbox controller is connected leave this so morgan can operate robot
 
 int loopCount = 0; //Counts the number of loops in main, probably unnecessary
@@ -126,8 +128,21 @@ long collectionTime = 0;
 //***********************************************************************************************
 int Smart_1 = 1; //motor ID - verify your ID !!!!
 int Smart_2 = 2;
+int Smart_42 = 42;
+
+#define TRAYDOWNANGLE 40
+#define TRAYUPANGLE 150
 
 //***********************************************************************************************
 // Mathematical Expressions
 //***********************************************************************************************
 #define M_PI 3.14159265358979323846
+
+//***********************************************************************************************
+// COMPASS CONSTANTS
+//***********************************************************************************************
+
+#define NUMCOMPASSREADS 4
+
+//Create the circular buffer
+static circBuf_t compassBuffer[NUMCOMPASSREADS];

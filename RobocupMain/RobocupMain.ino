@@ -8,7 +8,7 @@
 //#include "Scheduler.h"
 #include <NewPing.h>
 #include "Herkulex.h"
-
+#include "circBuf.h"
 
 //Declare this last as the configuration file depends on the other includes
 #include "Config.h"
@@ -39,6 +39,7 @@ void initVcc()
 
 void setup()
 {
+  Init_Circ_Buff (compassBuffer, NUMCOMPASSREADS);
   initVcc();
   setupXboxReceiver();
   setupDCMotors();
@@ -48,6 +49,18 @@ void setup()
   setupIMU();
   //setupColourSensor();
   //setupLED();
+    //Create the robot "Bagger"!!!
+    
+  static _Robot Bagger;
+  
+  int i = 0;
+  
+  //Fill the magnetometer buffer
+  for(i; i <  NUMCOMPASSREADS; i++)
+  {
+    readMagnetometer(&Bagger);
+  }
+  
 }
 
 //***********************************************************************************************
@@ -66,19 +79,36 @@ void loop()
   //Operation mode decision tree
   switch (opMode) {
     case HANDBRAKE:
-      driveStop();
+      static int FirstHandbreakRun = TRUE;
+      if (FirstHandbreakRun = TRUE);
+      {
+        driveStop();
+        FirstHandbreakRun = FALSE;
+      }
       break;
+      
     case REMOTECONTROL:
+    
+      FirstHandbreakRun = TRUE; //Handbreak first run flag clear
+    
       xboxControl();
+      if ((loopCount % 100) == 0)
+     { 
+      Serial.println(Herkulex.getAngle(42));
+      readMagnetometer(&Bagger);
+     }
+//      Serial.println(Herkulex.stat(42));
       //beginSerial1(BAUDRATE);
-      Serial.println(Herkulex.stat(2)); //
+//      Serial.println(Herkulex.stat(2)); //
       //end();
 //      if (millis() > nextIMUread) {
 //      readIMU(&Bagger);
 //      nextIMUread = millis() + 1000;
 //      }
       break;
+      
     case AUTONOMOUS:
+      FirstHandbreakRun = TRUE; //Handbreak first run flag clear
 //    Serial.println("TO SCHEDULER");
       Task_Scheduler(&Bagger);
 //    Serial.println("BACK FROM SCHEDULER");

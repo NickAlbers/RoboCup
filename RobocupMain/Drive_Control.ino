@@ -93,33 +93,3 @@ void drive(int Speed, TurnDirection angle)
   leftServo.write(trackLeft);
   rightServo.write(trackRight);
 }
-
-
-//Discontinued functions
-////left
-//void turnLeft()
-//{
-//  leftServo.write((45 * SPEED_PERC) / 100 + 90);
-//  rightServo.write(90 - (45 * SPEED_PERC) / 100);
-//}
-//
-////Right
-//void turnRight()
-//{
-//  leftServo.write(90 - (45 * SPEED_PERC) / 100);
-//  rightServo.write((45 * SPEED_PERC) / 100 + 90);
-//}
-//
-////Forward
-//void driveForward()
-//{
-//  leftServo.write(90 - (45 * SPEED_PERC) / 100);
-//  rightServo.write(90 - (45 * SPEED_PERC) / 100);
-//}
-//
-////Reverse
-//void driveReverse()
-//{
-//  leftServo.write((45 * SPEED_PERC) / 100 + 90);
-//  rightServo.write((45 * SPEED_PERC) / 100 + 90 );
-//}

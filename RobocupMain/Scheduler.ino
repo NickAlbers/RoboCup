@@ -151,4 +151,66 @@ int Task_Scheduler(_Robot *Bagger)
   }//End for
 }//End scheduler
 
+int Task_Scheduler_Autonomous(_Robot *Bagger)
+{
+  //This goes in setup
+  static uint32_t tick = 0;     //System Tick
+  static TaskType *Task_ptr;    //Task pointer
+  static uint8_t TaskIndex = 0; //Task Index
+  const  uint8_t NumTasks = Task_GetNumTasks(); //Number of Tasks
+
+  //Task Timer Variables
+  static uint32_t Task_StartTime = 0;
+  static uint32_t Task_StopTime = 0;
+  static uint32_t Task_RunTime = 0; //Time for task to execute
+
+
+  /***********************************************************************************************
+   * System Initialization
+   **********************************************************************************************/
+  Task_ptr = Task_GetConfig(); //Get a pointer to the task configuration
+
+  tick = millis(); //Get current system tick
+
+  /*********************************************************************************************
+   *  Loop through all tasks. First run all continous tasks. Then if the number of ticks
+   *  since the last time the task was run is greater than or equal to the task interval,
+   *  execute the task.
+   *
+   *
+   *  For a generic scheduler, this for loop would be enclused in a while(1) loop, in this the
+   *  program the main loop acheives the same task
+   ********************************************************************************************/
+
+  for (TaskIndex = 0; ((TaskIndex < NumTasks) && (opMode == AUTONOMOUS)); TaskIndex++)
+  {
+
+    if (Task_ptr[TaskIndex].Interval == 0)
+    {
+      //Run continuous tasks
+      (*Task_ptr[TaskIndex].FunctionPtr)(Bagger);
+    }
+
+    else if ((tick - Task_ptr[TaskIndex].LastTick) >= Task_ptr[TaskIndex].Interval)
+    {
+      //Start task stopwatch, execute the task, stop the stopwatch and print out the runtime.
+      Task_StartTime = micros();
+      (*Task_ptr[TaskIndex].FunctionPtr)(Bagger);
+      Task_StopTime = micros();
+
+      //Print the Runtime
+      Task_RunTime = Task_StopTime - Task_StartTime;
+      Serial.print("Runtime:  ");
+      Serial.println(Task_RunTime, DEC);
+
+      //Save last tick the task was run
+      Task_ptr[TaskIndex].LastTick = tick;
+    }
+
+    /* Check if the user has requested control, and break out of the scheduler if so */
+    modeSelect(Bagger);
+
+  }//End for
+}//End scheduler
+
 

@@ -113,6 +113,15 @@ bool packageCollect(_Robot * Bagger)
   return true;
 }
 
+//***********************************************************************************************
+// Sweep the arms if a package is against the tray
+//***********************************************************************************************
+
+bool packageDeploy(_Robot * Bagger)
+{
+  //Open arms, tip tray, drive forwards.
+}
+
 //  if ((collectFlag && !Bagger->package_C) && (millis() > collectionTime)) {     //assume package in blindspot directly in front
 //    collectionTime = millis() + COLLECTION_TIME;    //pause a moment to close arms
 //    collectFlag = false;

@@ -109,12 +109,15 @@ void readIMU(_Robot *Bagger)
 
 void readMagnetometer(_Robot *Bagger)
 {
+  static int16_t compassSum;
+  static int16_t compassAverage;
+  
   Serial.println("Reading Magnetometer");
 
   if (millis() < nextCompassRead) { return; }
 
   //Update Compass Read Time
-  nextCompassRead = millis() + 1000;
+//  nextCompassRead = millis() + 1000; //Discontinued, now done by the scheduler
 
   // Read register Status 1 and wait for the DRDY: Data Ready
   uint8_t ST1;
@@ -131,9 +134,7 @@ void readMagnetometer(_Robot *Bagger)
   // Request next magnetometer single measurement
   I2CwriteByte(MAG_ADDRESS, 0x0A, 0x01);
 
-
   // Create 16 bits values from 8 bits data
-
   // Magnetometer Readouts
   int16_t mx = Mag[1] << 8 | Mag[0];
   int16_t my = Mag[3] << 8 | Mag[2];
@@ -141,23 +142,30 @@ void readMagnetometer(_Robot *Bagger)
   
   /* Calculate the angle made with true north */
   int16_t compassAngle = atan2(my, mx) * 180.0 / M_PI;
+  Write_Circ_Buff (compassBuffer, compassAngle);
   
-  // Magnetometer
-  Serial.print("mx: ");
-  Serial.print (mx, DEC);
-  Serial.print ("\t");
-  Serial.print("my: ");
-  Serial.print (my, DEC);
-  Serial.print ("\t");
-  Serial.print("mz: ");
-  Serial.print (mz, DEC);
-  Serial.print ("\t");
+  /*Average the magnetometer readout to minimise compass wandering.*/
+  for (int i; i < NUMCOMPASSREADS; i++)
+  {
+    compassSum += Read_Circ_Buff(compassBuffer) ;
+  }
+  
+  compassAverage = compassSum / NUMCOMPASSREADS;
+    // Magnetometer
+//  Serial.print("mx: ");
+//  Serial.print (mx, DEC);
+//  Serial.print ("\t");
+//  Serial.print("my: ");
+//  Serial.print (my, DEC);
+//  Serial.print ("\t");
+//  Serial.print("mz: ");
+//  Serial.print (mz, DEC);
+//  Serial.print ("\t");
 
   Serial.print("Angle: ");
-  Serial.print (compassAngle, DEC);
+  Serial.print (compassAverage, DEC);
   Serial.print ("\t");
 
   // End of line
   Serial.println("");
 }
-
