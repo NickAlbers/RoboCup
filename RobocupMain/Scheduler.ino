@@ -39,11 +39,19 @@ static TaskType Tasks[] =
 {
   //  {0              ,   0,    modeSelect        }, // Continously check for the controller safeguard
   {0              ,   0,    Task_Placeholder  }, //Placeholder task, allowing us to do whatever we want within the
+<<<<<<< HEAD
   {INTERVAL_10MS ,   0,    modeSelect        }, // Also make it a scheduled task for safety
   {INTERVAL_10MS ,   0,    updateSensors     },
   {INTERVAL_10MS ,   0,    collisionDetect   },
   {INTERVAL_10MS ,   0,    packageDetect     },
   {INTERVAL_20MS ,   0,    autonomousDrive   },
+=======
+  {INTERVAL_100MS ,   0,    modeSelect        }, // Also make it a scheduled task for safety
+  {INTERVAL_100MS ,   0,    updateSensors     },
+  {INTERVAL_100MS ,   0,    collisionDetect   },
+  {INTERVAL_200MS ,   0,    packageDetect     },
+  {INTERVAL_500MS ,   0,    autonomousDrive   },
+>>>>>>> parent of 8a26639... stuff
   {INTERVAL_1000MS,   0,    readIMU           },
   {INTERVAL_1000MS,   0,    readMagnetometer  },
   {INTERVAL_1000MS,   0,    readColourSensor  },
