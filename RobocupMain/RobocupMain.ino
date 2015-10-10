@@ -8,7 +8,7 @@
 //#include "Scheduler.h"
 #include <NewPing.h>
 #include "Herkulex.h"
-
+#include "circBuf.h"
 
 //Declare this last as the configuration file depends on the other includes
 #include "Config.h"
@@ -35,6 +35,10 @@ void initVcc()
   // turn Vcc on (5V)
   pinMode(49, OUTPUT);   //Pin 49 is used to enable IO power
   pinMode(30, OUTPUT);   //Sneakily out the LED initilisation here
+  pinMode(38, INPUT);
+  pinMode(39, INPUT);
+  pinMode(40, INPUT);
+  pinMode(41, INPUT);
   digitalWrite(49, 1);
 }
 
@@ -46,7 +50,7 @@ void setup()
   setupIR();
   setupUltra();
   setupSmartServos();
-  setupIMU();
+  //setupIMU();
   //setupColourSensor();
   //setupLED();
 }

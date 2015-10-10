@@ -24,7 +24,7 @@ void setupXboxReceiver()
 //***********************************************************************************************
 void modeSelect(_Robot *Bagger)
 {
-
+  //Serial.println("ModeSelect");
   //Get the latest data on pressed buttons from the Xbox receiver
   Usb.Task();
 

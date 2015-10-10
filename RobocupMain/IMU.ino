@@ -96,15 +96,15 @@ void readIMU(_Robot *Bagger)
   // Display values
 
   // Accelerometer
-  Serial.print("ax: ");
-  Serial.print (ax, DEC);
-  Serial.print ("\t");
-  Serial.print("ay: ");
-  Serial.print (ay, DEC);
-  Serial.print ("\t");
-  Serial.print("az: ");
-  Serial.print (az, DEC);
-  Serial.print ("\t");
+//  Serial.print("gx: ");
+//  Serial.print (gx, DEC);
+//  Serial.print ("\t");
+//  Serial.print("az: ");
+//  Serial.print (az, DEC);
+//  Serial.print ("\t");
+//  Serial.print("az: ");
+//  Serial.print (az, DEC);
+//  Serial.print ("\t");
 }
 
 void readMagnetometer(_Robot *Bagger)

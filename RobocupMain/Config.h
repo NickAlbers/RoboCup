@@ -12,6 +12,8 @@ typedef enum TrayState {TRAYUP, TRAYDOWN};
 typedef enum TurnDirection {  Reverse = -180, Left = -90, Forward = 0, Right = 90};
 typedef enum SweepDir {  SWEEPIN, SWEEPOUT};
 
+
+
 //***********************************************************************************************
 //Declare globals Robot defintions
 //***********************************************************************************************
@@ -25,6 +27,8 @@ struct _Robot
   int IRmed_R = 0;
   long Ultra_L = 0;
   long Ultra_R = 0;
+  long Ultra_LT = 0;
+  long Ultra_RT = 0;
 
   //Robot drive control
   int Speed = 30;  //Percentage
@@ -100,18 +104,37 @@ const int Ultra_L_echoPin = A0;
 const int Ultra_R_trigPin = A7;
 const int Ultra_R_echoPin = A6;
 
+const int Ultra_LT_trigPin = A11;
+const int Ultra_LT_echoPin = A10;
+const int Ultra_RT_trigPin = A9;
+const int Ultra_RT_echoPin = A8;
+
 //Sensor Constants
 #define ULTRA_OFFSET 29 //Distance between the two ultrasonic sensors
+#define MAX_ULTRA 60
 
-NewPing Ultra_L(Ultra_L_trigPin, Ultra_L_echoPin, 80);
-NewPing Ultra_R(Ultra_R_trigPin, Ultra_R_echoPin, 80);
+
+NewPing Ultra_L(Ultra_L_trigPin, Ultra_L_echoPin, MAX_ULTRA);
+NewPing Ultra_R(Ultra_R_trigPin, Ultra_R_echoPin, MAX_ULTRA);
+NewPing Ultra_LT(Ultra_LT_trigPin, Ultra_LT_echoPin, MAX_ULTRA);
+NewPing Ultra_RT(Ultra_RT_trigPin, Ultra_RT_echoPin, MAX_ULTRA);
 #define PULSE_TIMEOUT 50000 //Number of microseconds to wait for pin to change, 50000us = 50ms
+
+
+
+const int  IR_dig_1 = 38;
+const int  IR_dig_2 = 39;
+const int  IR_dig_3 = 40;  //jaw weight detection
+const int  IR_dig_4 = 41;  //jaw weight detection
+
 
 //***********************************************************************************************
 // COLLISION & PACKAGE IDENTIFICATION
 //***********************************************************************************************
 //Collision Detection
-#define SAFEDISTANCE 40 //Value in centimeters
+#define SAFEDISTANCE 70 //Value in centimeters
+#define COLLISIONDISTANCE 35 //Value in centimeters
+#define DETECTION_MARGIN 5  //Value in centimeters
 
 //Package Detection
 int collectFlag = false;
@@ -119,9 +142,14 @@ long collectionTime = 0;
 
 #define COLLECTION_DELAY 500; //Amount of time to force forward driving to ensure package collection
 #define PACKAGE_IDENT_CONST 30 //30cm
-#define MANEOUVER2WEIGHT_CONST 1 ?
+#define MANEOUVER2WEIGHT_CONST 5 //?
+#define TURN_CONST 1
 #define COLLECTION_TIME 1000 //?
 #define SWEEPTIME 200 // Speed of the smart servo arm sweep
+
+#define MAXSPEED 50
+#define MIN_COLLECT_SPEED 20
+#define MAX_COLLECT_SPEED 30
 
 //***********************************************************************************************
 // SMART SERVO PARAMETERS & ID

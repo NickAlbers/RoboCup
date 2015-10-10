@@ -1,8 +1,13 @@
 //***********************************************************************************************
 // Task Constants
 //***********************************************************************************************
+#define INTERVAL_1MS   1
+#define INTERVAL_2MS   2
+#define INTERVAL_4MS   4
+#define INTERVAL_6MS   6
+#define INTERVAL_8MS   8
 #define INTERVAL_10MS   10
-#define INTERVAL_20MS   20
+#define INTERVAL_25MS   25
 #define INTERVAL_50MS   50
 #define INTERVAL_100MS  100
 #define INTERVAL_200MS  200
@@ -38,16 +43,15 @@ void Task_Placeholder(_Robot *bagger);
 static TaskType Tasks[] =
 {
   //  {0              ,   0,    modeSelect        }, // Continously check for the controller safeguard
-  {0              ,   0,    Task_Placeholder  }, //Placeholder task, allowing us to do whatever we want within the
-<<<<<<< HEAD
   {INTERVAL_10MS ,   0,    modeSelect        }, // Also make it a scheduled task for safety
-  {INTERVAL_10MS ,   0,    updateSensors     },
-  {INTERVAL_10MS ,   0,    collisionDetect   },
-  {INTERVAL_10MS ,   0,    packageDetect     },
+  {INTERVAL_50MS ,   0,    updateSensors     },
+  {INTERVAL_50MS ,   0,    collisionDetect   },
+  {INTERVAL_50MS ,   0,    packageDetect     },
   {INTERVAL_50MS ,   0,    autonomousDrive   },
-  {INTERVAL_1000MS,   0,    readIMU           },
-  {INTERVAL_1000MS,   0,    readMagnetometer  },
-  {INTERVAL_1000MS,   0,    readColourSensor  },
+  {INTERVAL_100MS ,   0,    detectCollection     },
+//  {INTERVAL_1000MS,   0,    readIMU           },
+//  {INTERVAL_1000MS,   0,    readMagnetometer  },
+//  {INTERVAL_1000MS,   0,    readColourSensor  },
 };
 
 //static TaskType Tasks[] =
@@ -140,8 +144,8 @@ int Task_Scheduler(_Robot *Bagger)
 
       //Print the Runtime
       Task_RunTime = Task_StopTime - Task_StartTime;
-      Serial.print("Runtime:  ");
-      Serial.println(Task_RunTime, DEC);
+      //Serial.print("Runtime:  ");
+      //Serial.println(Task_RunTime/1000, DEC);
 
       //Save last tick the task was run
       Task_ptr[TaskIndex].LastTick = tick;
