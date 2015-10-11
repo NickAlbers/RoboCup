@@ -43,9 +43,9 @@ void setupLED()
 // Flash the LED Strips the specified colour
 //***********************************************************************************************
 
-void UpdateLED(int red, int green, int blue)
+void LED_Update(int red, int green, int blue)
 {
-  Serial.println("Updating Led Strips");
+//  Serial.println("Updating Led Strips");
   // If any digit is received, we will go into integer parsing mode
   // until all three calls to parseInt return an interger or time out.
   // Read the color from the computer.
@@ -68,7 +68,7 @@ void UpdateLED(int red, int green, int blue)
 //***********************************************************************************************
 // Read LED colours from the serial input in the format R:G:B! exclamation mark denotes line end
 //***********************************************************************************************
-void LEDFromInput()
+void LED_FromInput()
 {
   // If any digit is received, we will go into integer parsing mode
   // until all three calls to parseInt return an interger or time out.
@@ -111,7 +111,7 @@ void LEDFromInput()
 // Read LED colours from the serial input in the format R:G:B! exclamation mark denotes line end
 //***********************************************************************************************
 
-void LEDGradient()
+void LED_Gradient()
 {
   // Update the colors.
   byte time = millis() >> 2;
@@ -132,11 +132,11 @@ void LEDGradient()
 // PCB LED
 //***********************************************************************************************
 
-void turnOnLED()
+void LED_TurnOn()
 {
   digitalWrite(30, HIGH);
 }
-void turnOffLED()
+void LED_TurnOff()
 {
   digitalWrite(30, LOW);
 }
