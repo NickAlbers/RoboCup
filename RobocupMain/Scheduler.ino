@@ -144,8 +144,8 @@ int Task_Scheduler(_Robot *Bagger)
 
       //Print the Runtime
       Task_RunTime = Task_StopTime - Task_StartTime;
-      //Serial.print("Runtime:  ");
-      //Serial.println(Task_RunTime/1000, DEC);
+      Serial.print("Runtime:  ");
+      Serial.println(Task_RunTime/1000, DEC);
 
       //Save last tick the task was run
       Task_ptr[TaskIndex].LastTick = tick;

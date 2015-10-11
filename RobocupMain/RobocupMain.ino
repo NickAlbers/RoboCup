@@ -1,12 +1,17 @@
+
+//Include 3rd party libraries
 #include <Herkulex.h>
 #include <Servo.h>
 #include <XBOXRECV.h>
+#include <NewPing.h>
+
+//Include standard C modules
 #include <stdio.h>
+
+//Include user created modules
 //#include <SoftwareSerial.h>
 #include "PololuLedStrip.h"
 #include "Herkulex.h"
-//#include "Scheduler.h"
-#include <NewPing.h>
 #include "Herkulex.h"
 #include "circBuf.h"
 
@@ -23,22 +28,16 @@
 //Setup Code goes here
 //***********************************************************************************************
 
-//// Getter function for any robot struct
-//_Robot *Robot_GetConfig(void)
-//{
-//  return &Bagger;
-//}
-
-
 void initVcc()
 {
   // turn Vcc on (5V)
-  pinMode(49, OUTPUT);   //Pin 49 is used to enable IO power
+  
   pinMode(30, OUTPUT);   //Sneakily out the LED initilisation here
   pinMode(38, INPUT);
   pinMode(39, INPUT);
   pinMode(40, INPUT);
   pinMode(41, INPUT);
+  pinMode(49, OUTPUT);   //Pin 49 is used to enable IO power
   digitalWrite(49, 1);
 }
 
@@ -76,7 +75,7 @@ void loop()
       break;
     case REMOTECONTROL:
       turnOnLED();
-      xboxControl();
+      xboxControl(&Bagger);
 //      if (millis() > nextIMUread) {
 //      readIMU(&Bagger);
 //      nextIMUread = millis() + 1000;

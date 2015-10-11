@@ -19,11 +19,11 @@ void setupSmartServos()
   Herkulex.initialize();         //initialize motors
 
   //Assert the servos to the forwards or downwards position and set the LEDS to red to indicate ready
-  Herkulex.moveOne(1, 512, 1000, LED_RED);
-  Herkulex.moveOne(2, 512, 1000, LED_RED);
-  Herkulex.moveOne(42, TRAYDOWNANGLE, 1000, LED_RED);
+//  Herkulex.moveOne(1, 512, 1000, LED_RED);
+//  Herkulex.moveOne(2, 512, 1000, LED_RED);
+  openJaws(1, 2);
+  lowerTray(42);
   sweepState = SWEEPIN;
-  trayPosition = TRAYDOWN;
 }
 
 void toggleJaws(int servo1, int servo2)

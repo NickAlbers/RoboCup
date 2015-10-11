@@ -159,7 +159,7 @@ int Smart_2 = 2;
 int Smart_42 = 42;
 
 #define TRAYDOWNANGLE 40
-#define TRAYUPANGLE 150
+#define TRAYUPANGLE -130
 
 //***********************************************************************************************
 // Mathematical Expressions

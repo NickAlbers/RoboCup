@@ -58,7 +58,7 @@ void modeSelect(_Robot *Bagger)
 //Function to control the DC motors from an xbox controller.
 //Left analog stick maps speed, right analog controls direction
 //***********************************************************************************************
-void xboxControl()
+void xboxControl(_Robot *robot)
 {
   //Get the latest data on pressed buttons from the Xbox receiver
   Usb.Task();
@@ -115,13 +115,25 @@ void xboxControl()
   if (Xbox.getButtonClick(UP, 0)) {
     liftTray(42);
   }
-  
+
   if (Xbox.getButtonClick(DOWN, 0)) {
     lowerTray(42);
   }
 
   if (Xbox.getButtonPress(L1, 0)) {
     setupSmartServos();
+  }
+
+  if (Xbox.getButtonPress(RIGHT, 0)) {
+    readIMU(robot);
+  }
+
+  if (Xbox.getButtonPress(LEFT, 0)) {
+    readMagnetometer(robot);
+  }
+  
+  if (Xbox.getButtonPress(L2, 0)) {
+    Weight_GetWeight();
   }
 
   //    if (Xbox.getButtonPress(L2, 0)) {

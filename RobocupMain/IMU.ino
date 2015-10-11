@@ -114,11 +114,6 @@ void readMagnetometer(_Robot *Bagger)
   
   Serial.println("Reading Magnetometer");
 
-  if (millis() < nextCompassRead) { return; }
-
-  //Update Compass Read Time
-//  nextCompassRead = millis() + 1000; //Discontinued, now done by the scheduler
-
   // Read register Status 1 and wait for the DRDY: Data Ready
   uint8_t ST1;
   do

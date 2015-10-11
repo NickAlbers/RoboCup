@@ -7,11 +7,7 @@ void Maneouver2Weight(_Robot *Bagger)
 {
 //  Serial.println("maneouvering to Weight");
   signed int package_xPos;
-
-
   Bagger->Speed = map(min(Bagger->Ultra_L,Bagger->Ultra_R),0,(MAX_ULTRA-DETECTION_MARGIN),MIN_COLLECT_SPEED,MAX_COLLECT_SPEED);
-
-
 
   if (Bagger->package_C) {
     package_xPos = ((Bagger->Ultra_L*Bagger->Ultra_L) - (Bagger->Ultra_R*Bagger->Ultra_R))  / (2*ULTRA_OFFSET);
