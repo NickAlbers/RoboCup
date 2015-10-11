@@ -49,16 +49,16 @@ void Auto_Logic(_Robot *Bagger)
 // Read the medium range IR sensors, and execute collision avoidance code if a collision is
 // imminent, return true if an object is within "safeDistance" centimeters
 //***********************************************************************************************
-void Auto_CollisionDetect(_Robot *Bagger)
+bool Auto_CollisionDetect(_Robot *Bagger)
 {
   //Serial.println("Collision Detect");
   if ((Bagger->IRmed_L  <= SAFEDISTANCE) || (Bagger->IRmed_R  <= SAFEDISTANCE)) {
-    Bagger->driveState = EVASIVETACTICS;
+//    Bagger->driveState = EVASIVETACTICS;
+    return true;
 //    Serial.println("Collision");
-    return;
   }
   else Bagger->Speed = MAXSPEED;
-  cornerFlag = false;
+  return false;
 }
 
 //***********************************************************************************************

@@ -50,6 +50,13 @@ struct _Robot
   uint8_t MagBuf[6];
 };
 
+bool CollisionFlag = false;
+bool PackageFlag = false;
+
+
+
+
+
 //Robot Control States
 static RobotState driveState = DRIVING;
 static OperationMode opMode = HANDBRAKE;
