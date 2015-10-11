@@ -1,14 +1,10 @@
-//***********************************************************************************************
-//  Buttons in use: X, Y, A LefthatY, RightHatX
-//***********************************************************************************************
-
+//  Buttons in use: X, Y, A, B. L1, L2, UP, DOWN, LEFT, RIGHT, LefthatY, RightHatX
 
 //***********************************************************************************************
 // Initialise Xbox Receiver
 //***********************************************************************************************
 void setupXboxReceiver()
 {
-  Serial.begin(BAUDRATE);
 #if !defined(__MIPSEL__)
   while (!Serial); // Wait for serial port to connect
 #endif
@@ -32,19 +28,19 @@ void modeSelect(_Robot *Bagger)
   if (Xbox.XboxReceiverConnected && Xbox.Xbox360Connected[0])
   {
 
-    if (opMode != REMOTECONTROL && Xbox.getButtonPress(X, 0))
+    if (opMode != REMOTECONTROL && Xbox.getButtonClick(X, 0))
     {
       opMode = REMOTECONTROL;
       Serial.println("Remote control enabled");
     }
 
-    else if (opMode != AUTONOMOUS && Xbox.getButtonPress(Y, 0))
+    else if (opMode != AUTONOMOUS && Xbox.getButtonClick(Y, 0))
     {
       opMode = AUTONOMOUS;
       Serial.println("Autonomous mode activated");
     }
 
-    else if (opMode != HANDBRAKE && Xbox.getButtonPress(A, 0))
+    else if (opMode != HANDBRAKE && Xbox.getButtonClick(A, 0))
     {
       opMode =  HANDBRAKE;
       Serial.println("Handbrake on");
@@ -96,7 +92,7 @@ void xboxControl(_Robot *robot)
   }
 
   //Sweep the servos for package collection
-  if (Xbox.getButtonPress(B, 0)) {
+  if (Xbox.getButtonClick(B, 0)) {
     toggleJaws(1, 2);
   }
 
@@ -120,44 +116,44 @@ void xboxControl(_Robot *robot)
     lowerTray(42);
   }
 
-  if (Xbox.getButtonPress(L1, 0)) {
+  if (Xbox.getButtonClick(L1, 0)) {
     setupSmartServos();
   }
 
-  if (Xbox.getButtonPress(RIGHT, 0)) {
+  if (Xbox.getButtonClick(RIGHT, 0)) {
     readIMU(robot);
   }
 
-  if (Xbox.getButtonPress(LEFT, 0)) {
+  if (Xbox.getButtonClick(LEFT, 0)) {
     readMagnetometer(robot);
   }
   
-  if (Xbox.getButtonPress(L2, 0)) {
+  if (Xbox.getButtonClick(L2, 0)) {
     Weight_GetWeight();
   }
 
-  //    if (Xbox.getButtonPress(L2, 0)) {
+  //    if (Xbox.getButtonClick(L2, 0)) {
   //    readIMU(&Bagger);
   //  }
 
 
   //Flash LED Green
-  //  if (Xbox.getButtonPress(R1, 0)) {
+  //  if (Xbox.getButtonClick(R1, 0)) {
   //    UpdateLED(0, 255, 0);
   //  }
   //
   //  //Flash LED red
-  //  if (Xbox.getButtonPress(R2, 0)) {
+  //  if (Xbox.getButtonClick(R2, 0)) {
   //    UpdateLED(255, 0, 0);
   //  }
   //
   //  //Flash LED blue
-  //  if (Xbox.getButtonPress(R3, 0)) {
+  //  if (Xbox.getButtonClick(R3, 0)) {
   //    UpdateLED(0, 0, 255);
   //  }
   //
   //    //Clear LED
-  //  if (Xbox.getButtonPress(L3, 0)) {
+  //  if (Xbox.getButtonClick(L3, 0)) {
   //    UpdateLED(0, 0, 0);
   //  }
 

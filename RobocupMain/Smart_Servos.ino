@@ -8,19 +8,18 @@
 void setupSmartServos()
 {
  Serial.println("SetUp Smart Servos");
-  pinMode(49, OUTPUT);                 //Pin 49 is used to enable IO power
-  digitalWrite(49, 1);                 //Enable IO power on main CPU board
 
   Herkulex.beginSerial2(115200); //open serial port 2 to talk to the motors
   Herkulex.reboot(1);            //reboot motor
   Herkulex.reboot(2);            //reboot motor
+  Herkulex.reboot(42);            //reboot motor
 
   delay(500);
   Herkulex.initialize();         //initialize motors
 
   //Assert the servos to the forwards or downwards position and set the LEDS to red to indicate ready
-//  Herkulex.moveOne(1, 512, 1000, LED_RED);
-//  Herkulex.moveOne(2, 512, 1000, LED_RED);
+  //  Herkulex.moveOne(1, 512, 1000, LED_RED);
+  //  Herkulex.moveOne(2, 512, 1000, LED_RED);
   openJaws(1, 2);
   lowerTray(42);
   sweepState = SWEEPIN;

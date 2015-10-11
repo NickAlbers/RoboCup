@@ -15,8 +15,11 @@
 
 long int cpt = 0;
 
-// This function read Nbytes bytes from I2C device at address Address.
-// Put read bytes starting at register Register in the Data array.
+/*Function:I2Cread(uint8_t Address, uint8_t Register, uint8_t Nbytes, uint8_t* Data) 
+ *This function read Nbytes bytes from I2C device at address Address.
+ *Put read bytes starting at register Register in the Data array.
+ */
+ 
 void I2Cread(uint8_t Address, uint8_t Register, uint8_t Nbytes, uint8_t* Data)
 {
   // Set register address
@@ -31,8 +34,10 @@ void I2Cread(uint8_t Address, uint8_t Register, uint8_t Nbytes, uint8_t* Data)
     Data[index++] = Wire.read();
 }
 
-
-// Write a byte (Data) in device (Address) at register (Register)
+/*Function:I2CwriteByte(uint8_t Address, uint8_t Register, uint8_t Data)
+ *Write a byte (Data) in device (Address) at register (Register)
+ */
+ 
 void I2CwriteByte(uint8_t Address, uint8_t Register, uint8_t Data)
 {
   // Set register address
@@ -46,9 +51,6 @@ void I2CwriteByte(uint8_t Address, uint8_t Register, uint8_t Data)
 // Initializations
 void setupIMU()
 {
-  pinMode(49, OUTPUT);                 //Pin 49 is used to enable IO power
-  digitalWrite(49, 1);                 //Enable IO power on main CPU board
-
   // Arduino initializations
   Wire.begin();                        //Set up I2C buss
 
@@ -66,17 +68,6 @@ void setupIMU()
 // Main loop, read and display data
 void readIMU(_Robot *Bagger)
 {
-//  if (millis() < nextIMUread) { return; }
-//
-//  //Update the IMU read time
-//  nextIMUread = millis() + 1000;
-  // _______________
-  // ::: Counter :::
-
-  // Display data counter
-//  Serial.print (cpt++, DEC);
-//  Serial.print ("\t");
-
   // Read accelerometer and gyroscope
   uint8_t Buf[14];
   I2Cread(MPU9250_ADDRESS, 0x3B, 14, Buf);
@@ -147,15 +138,6 @@ void readMagnetometer(_Robot *Bagger)
   
   compassAverage = compassSum / NUMCOMPASSREADS;
     // Magnetometer
-//  Serial.print("mx: ");
-//  Serial.print (mx, DEC);
-//  Serial.print ("\t");
-//  Serial.print("my: ");
-//  Serial.print (my, DEC);
-//  Serial.print ("\t");
-//  Serial.print("mz: ");
-//  Serial.print (mz, DEC);
-//  Serial.print ("\t");
 
   Serial.print("Angle: ");
   Serial.print (compassAverage, DEC);

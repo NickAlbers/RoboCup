@@ -36,7 +36,6 @@ rgb_color colors[LED_COUNT];
 void setupLED()
 {
   // Start up the serial port, for communication with the PC.
-  Serial.begin(4800);
   Serial.println("Ready to receive colors.");
 }
 

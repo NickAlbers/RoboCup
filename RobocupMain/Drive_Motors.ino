@@ -8,8 +8,6 @@
 void setupDCMotors()
 {
   //Setup the Servos
-  pinMode(49, OUTPUT);                 //Pin 49 is used to enable IO power
-  digitalWrite(49, 1);                 //Enable IO power on main CPU board
 
   leftServo.attach(3);  // attaches the servo pin 3 to the servo object
   rightServo.attach(2);  // attaches the servo pin 2 to the servo object
@@ -19,13 +17,19 @@ void setupDCMotors()
 // Directional Driving Functions
 //***********************************************************************************************
 
-//Stop
+/*Function: driveStop()
+ *Writes the stop speed to the motors
+ */
+ 
 void driveStop()
 {
   leftServo.write(90);
   rightServo.write(90);
 }
 
+/*Function: turnRandom()
+ * Picks a random direction, and rotates in that direction for a random time
+ */
 void turnRandom()
 {
   static int rand;
@@ -72,6 +76,11 @@ void driveReverse()
   rightServo.write(135);
 }
 
+/*Function: drive(int Speed, TurnDirection angle)
+ * Maps the Speed percentage and Angle to the relevant maximum and minimum values,
+ * checks that they are outside the deadband, and then write the values to the motors.
+ * Driving them at the calculated speed to implement steering.
+ */
 void drive(int Speed, TurnDirection angle)
 {
   //Map to motor ranges

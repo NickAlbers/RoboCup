@@ -122,10 +122,10 @@ NewPing Ultra_RT(Ultra_RT_trigPin, Ultra_RT_echoPin, MAX_ULTRA);
 
 
 
-const int  IR_dig_1 = 38;
-const int  IR_dig_2 = 39;
-const int  IR_dig_3 = 40;  //jaw weight detection
-const int  IR_dig_4 = 41;  //jaw weight detection
+const int  IR_CollectionSensors_1 = 38;
+const int  IR_CollectionSensors_2 = 39;
+const int  IR_CollectionSensors_3 = 40;  //jaw weight detection NEED TO RENAME
+const int  IR_CollectionSensors_4 = 41;  //jaw weight detection
 
 
 //***********************************************************************************************
@@ -147,7 +147,7 @@ long collectionTime = 0;
 #define COLLECTION_TIME 1000 //?
 #define SWEEPTIME 200 // Speed of the smart servo arm sweep
 
-#define MAXSPEED 50
+#define MAXSPEED 100
 #define MIN_COLLECT_SPEED 20
 #define MAX_COLLECT_SPEED 30
 
@@ -158,8 +158,15 @@ int Smart_1 = 1; //motor ID - verify your ID !!!!
 int Smart_2 = 2;
 int Smart_42 = 42;
 
-#define TRAYDOWNANGLE 40
-#define TRAYUPANGLE -130
+#define TRAYDOWNANGLE 70
+#define TRAYUPANGLE 160
+
+
+//***********************************************************************************************
+// WEIGHT SENSOR SETUP
+//***********************************************************************************************
+
+Hx711 scale(24, 25);                    //Setup pins for digital communications with weight IC
 
 //***********************************************************************************************
 // Mathematical Expressions

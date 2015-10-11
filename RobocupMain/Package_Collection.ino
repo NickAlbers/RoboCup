@@ -98,7 +98,7 @@ void packageDetect(_Robot *Bagger)
 
 void detectCollection(_Robot * Bagger)
 {
-  if (!digitalRead(IR_dig_3) || !digitalRead(IR_dig_3))
+  if (!digitalRead(IR_CollectionSensors_3) || !digitalRead(IR_CollectionSensors_3))
   {
     packageCollect(Bagger);
   }

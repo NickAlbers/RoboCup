@@ -1,6 +1,3 @@
-
-
-
 //***********************************************************************************************
 //Function allowing the robot to steer autonomously
 //***********************************************************************************************
@@ -46,43 +43,6 @@ void autonomousDrive(_Robot *Bagger)
       Bagger->driveState = DRIVING;
       break;
   }
-}
-
-
-//***********************************************************************************************
-// This function reads all sensors and stores them in the robot struct
-//***********************************************************************************************
-
-void updateSensors(_Robot *Bagger)
-{
-  //int tick = millis();
-   //Serial.println("Update Sensors");
-  //Bagger->IRlong_L = readIRMed(IRlong_L_Pin);
-  //Bagger->IRlong_R = readIRMed(IRlong_R_Pin);
-  
-  
-  Bagger->IRmed_L = readIRMed(IRmed_L_Pin);
-  Bagger->IRmed_R = readIRMed(IRmed_R_Pin);
-  
-  
-  Bagger->Ultra_L = Ultra_L.ping_cm();
-  Bagger->Ultra_R = Ultra_R.ping_cm();
-  Bagger->Ultra_LT = Ultra_LT.ping_cm();
-  Bagger->Ultra_RT = Ultra_RT.ping_cm();
-
-  if(Bagger->Ultra_L==0)Bagger->Ultra_L=MAX_ULTRA;
-  if(Bagger->Ultra_R==0)Bagger->Ultra_R=MAX_ULTRA;
-  if(Bagger->Ultra_LT==0)Bagger->Ultra_LT=MAX_ULTRA;
-  if(Bagger->Ultra_RT==0)Bagger->Ultra_RT=MAX_ULTRA;
-//  Serial.print(Bagger->Ultra_L);
-//  Serial.print("\t | \t");
-//  Serial.print(Bagger->Ultra_LT);
-//  Serial.print("\t || \t");
-//  Serial.print(Bagger->Ultra_R);
-//  Serial.print("\t | \t");
-//  Serial.println(Bagger->Ultra_RT);
-  //int tock = millis();
-  //Serial.println(tock-tick);
 }
 
 //***********************************************************************************************

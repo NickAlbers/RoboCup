@@ -4,6 +4,7 @@
 #include <Servo.h>
 #include <XBOXRECV.h>
 #include <NewPing.h>
+#include <Hx711.h>                      //Include needed library of functions to talk to hx711 IC
 
 //Include standard C modules
 #include <stdio.h>
@@ -28,6 +29,22 @@
 //Setup Code goes here
 //***********************************************************************************************
 
+//***********************************************************************************************
+// Initialisation Functions
+//***********************************************************************************************
+
+/*Function: initSerial()
+ *Initialises the serial readout at BAURDRATE defined in the configuration file.
+ */
+void initSerial()
+{
+  // initialize serial communications at set baudrate:
+  Serial.begin(BAUDRATE);
+}
+
+/*Function: initVcc()
+ *Initialises the supply voltage to the relevant pins
+ */
 void initVcc()
 {
   // turn Vcc on (5V)
@@ -41,15 +58,19 @@ void initVcc()
   digitalWrite(49, 1);
 }
 
+/*Function: setup()
+ *Execute all code needed to run only once, such as setting up any sensors
+ */
 void setup()
 {
+  initSerial();
   initVcc();
   setupXboxReceiver();
   setupDCMotors();
   setupIR();
   setupUltra();
   setupSmartServos();
-  //setupIMU();
+  setupIMU();
   //setupColourSensor();
   //setupLED();
 }
@@ -61,6 +82,8 @@ void loop()
 {
   //Create the robot "Bagger"!!!
   static _Robot Bagger;
+  
+  //Detect homebase and set HOMEDIRECTION based on the relevant colour.
 
   //Select the mode of operation for the main loop
   Usb.Task();
@@ -76,53 +99,11 @@ void loop()
     case REMOTECONTROL:
       turnOnLED();
       xboxControl(&Bagger);
-//      if (millis() > nextIMUread) {
-//      readIMU(&Bagger);
-//      nextIMUread = millis() + 1000;
-//      }
       break;
     case AUTONOMOUS:
-//    Serial.println("TO SCHEDULER");
       Task_Scheduler(&Bagger);
-//    Serial.println("BACK FROM SCHEDULER");
-//      updateSensors(&Bagger);
-//      readIMU(&Bagger);
-//      collisionDetect(&Bagger);//Poll collision detection sensors and evade if neccessary
-//      packageDetect(&Bagger);
-//      if (collectFlag == true) //Tell the robot to collect the weight
-//      {
-//        openJaws(1, 2); // Open Jaws ready for next package
-//        while (packageCollect(&Bagger) == false)
-//        {
-//          //Do stuff
-//        }
-//      }
-//      autonomousDrive(&Bagger);
       break;
   }
-  
-//  else if (packageDetect() == true)
-//  {
-//    //Execute Collection Code
-//    packageCollect()
-//    packageCount++;
-  
-//  
-//  if (packageCount == 3)
-//  {
-//    while (onBase != true)
-//    {
-//    homeSeek();
-//    if (collisionDetect() == true)
-//    {
-//      //Execute Avoidance Code
-//    }
-//  }  
-//  else if (onBase == true)
-//  {
-//    //UnloadPackages
-//    packageCount = 0;
-//  }
 
   
   loopCount ++;

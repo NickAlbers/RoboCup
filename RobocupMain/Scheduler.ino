@@ -48,7 +48,8 @@ static TaskType Tasks[] =
   {INTERVAL_50MS ,   0,    collisionDetect   },
   {INTERVAL_50MS ,   0,    packageDetect     },
   {INTERVAL_50MS ,   0,    autonomousDrive   },
-  {INTERVAL_100MS ,   0,    detectCollection     },
+  {INTERVAL_100MS ,  0,   detectCollection   },
+  {INTERVAL_500MS ,  0,   Task_Placeholder_Close_Jaws    },
 //  {INTERVAL_1000MS,   0,    readIMU           },
 //  {INTERVAL_1000MS,   0,    readMagnetometer  },
 //  {INTERVAL_1000MS,   0,    readColourSensor  },
@@ -69,9 +70,10 @@ static TaskType Tasks[] =
 /* Function: Task_Placeholder
  *  Allows us to do whatever we want in the continuous loop
  */
-void Task_Placeholder(_Robot *bagger)
+void Task_Placeholder_Close_Jaws(_Robot *bagger)
 {
-  //do nothing
+  //make sure the jaws are closed after each sweep
+  closeJaws(1,2);
 }
 
 
