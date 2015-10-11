@@ -1,6 +1,6 @@
 //***********************************************************************************************
-// Useing port S1 and channels S1 and S2 to drive the two motors on the robot.
-// The motors must be connected through the Sabertooth driver.
+// Useing port S1 and channels S1 and S2 to Motors_VariableDrive the two motors on the robot.
+// The motors must be connected through the Sabertooth Motors_VariableDriver.
 // The sabertooth must be in mode Microcontroller pulses, independent linear control mode.
 // 1000us to 2000us control the speed and direction. 1500us is stop.
 // Any speed outside this range will be ignored.
@@ -17,29 +17,29 @@ void setupDCMotors()
 // Directional Driving Functions
 //***********************************************************************************************
 
-/*Function: driveStop()
+/*Function: Motors_DriveStop()
  *Writes the stop speed to the motors
  */
  
-void driveStop()
+void Motors_DriveStop()
 {
   leftServo.write(90);
   rightServo.write(90);
 }
 
-/*Function: turnRandom()
+/*Function: Motors_TurnRandom()
  * Picks a random direction, and rotates in that direction for a random time
  */
-void turnRandom()
+void Motors_TurnRandom()
 {
   static int rand;
   rand = random(0, 2);//Random function chooses between min and max-1
   if (rand == 0) {
     //        Bagger->turnDir = Left;
-    turnRight();
+    Motors_TurnRight();
   }
   else if (rand == 1) {
-    turnLeft();
+    Motors_TurnLeft();
     //        Bagger->turnDir = Right;
   }
 }
@@ -49,39 +49,45 @@ void turnRandom()
 //***********************************************************************************************
 
 //left
-void turnLeft()
+void Motors_TurnLeft()
 {
   leftServo.write(135);
   rightServo.write(45);
 }
 
 //Right
-void turnRight()
+void Motors_TurnRight()
 {
   leftServo.write(45);
   rightServo.write(135);
 }
 
+//void Motors_TurnRightSlow();
+//{
+//  leftServo.write(70);
+//  rightServo.write(110);
+//}
+
 //Forward
-void driveForward()
+void Motors_DriveForward()
 {
   leftServo.write(45);
   rightServo.write(45);
 }
 
 //Reverse
-void driveReverse()
+void Motors_DriveReverse()
 {
   leftServo.write(135);
   rightServo.write(135);
 }
 
-/*Function: drive(int Speed, TurnDirection angle)
+/*Function: Motors_VariableDrive(int Speed, TurnDirection angle)
  * Maps the Speed percentage and Angle to the relevant maximum and minimum values,
  * checks that they are outside the deadband, and then write the values to the motors.
  * Driving them at the calculated speed to implement steering.
  */
-void drive(int Speed, TurnDirection angle)
+void Motors_VariableDrive(int Speed, TurnDirection angle)
 {
   //Map to motor ranges
   //Flip 135 and 45 if the chasis is flipped

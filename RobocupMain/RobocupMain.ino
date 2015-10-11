@@ -71,6 +71,7 @@ void setup()
   setupUltra();
   setupSmartServos();
   setupIMU();
+//  setupMagenometer()
   //setupColourSensor();
   //setupLED();
 }
@@ -87,24 +88,23 @@ void loop()
 
   //Select the mode of operation for the main loop
   Usb.Task();
-  modeSelect(&Bagger);
+  Xbox_ModeSelect(&Bagger);
 
   //If remote control enabled give user control via the Xbox controller.
   //Operation mode decision tree
   switch (opMode) {
     case HANDBRAKE:
-      driveStop();
-      turnOffLED();
+      Motors_DriveStop();
+      LED_TurnOff();
       break;
     case REMOTECONTROL:
-      turnOnLED();
+      LED_TurnOn();
       xboxControl(&Bagger);
       break;
     case AUTONOMOUS:
       Task_Scheduler(&Bagger);
       break;
   }
-
   
   loopCount ++;
 

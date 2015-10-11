@@ -5,20 +5,20 @@
 //This function reads all sensors and stores them in the robot struct
 //***********************************************************************************************
 
-/* Function: updateSensors
+/* Function: Sensors_UpdateAll
  *  This function reads all sensors and stores them in the robot struct
  */
  
-void updateSensors(_Robot *Bagger)
+void Sensors_UpdateAll(_Robot *Bagger)
 {
   //int tick = millis();
    //Serial.println("Update Sensors");
-  //Bagger->IRlong_L = readIRMed(IRlong_L_Pin);
-  //Bagger->IRlong_R = readIRMed(IRlong_R_Pin);
+  //Bagger->IRlong_L = IR_ReadMed(IRlong_L_Pin);
+  //Bagger->IRlong_R = IR_ReadMed(IRlong_R_Pin);
   
   
-  Bagger->IRmed_L = readIRMed(IRmed_L_Pin);
-  Bagger->IRmed_R = readIRMed(IRmed_R_Pin);
+  Bagger->IRmed_L = IR_ReadMed(IRmed_L_Pin);
+  Bagger->IRmed_R = IR_ReadMed(IRmed_R_Pin);
   
   
   Bagger->Ultra_L = Ultra_L.ping_cm();
@@ -52,7 +52,7 @@ void setupIR()
   pinMode(IRlong_R_Pin, INPUT);
 }
 
-int readIRMed(int IR_Pin)
+int IR_ReadMed(int IR_Pin)
 {
   SharpIR sharp(IR_Pin, 25, 93, 1080);
   int IR_cm;
@@ -70,7 +70,7 @@ int readIRMed(int IR_Pin)
   return IR_cm;
 }
 
-int readIRLong(int IR_Pin)
+int IR_ReadLong(int IR_Pin)
 {
   SharpIR sharp(IR_Pin, 25, 93, 20150);
   int IR_cm=sharp.distance();  
@@ -89,7 +89,7 @@ void setupUltra()
   pinMode(Ultra_R_echoPin, INPUT);
 }
 
-long readUltra(int trigPin, int echoPin)
+long Ultra_Read(int trigPin, int echoPin)
 {
   long duration, cm;
  
@@ -107,12 +107,12 @@ long readUltra(int trigPin, int echoPin)
   duration = pulseIn(echoPin, HIGH, PULSE_TIMEOUT);
  
   // convert the time into a distance
-  cm = microsecondsToCentimeters(duration);
+  cm = Ultra_ConvertMicrosecondsToCentimeters(duration);
   return cm;
 }
 
  
-long microsecondsToCentimeters(long microseconds)
+long Ultra_ConvertMicrosecondsToCentimeters(long microseconds)
 {
   //return microseconds / 29 / 2;
   return (microseconds / 82);
@@ -144,7 +144,7 @@ void setupColourSensor()
   }
 }
 
-void readColourSensor(_Robot *Bagger)
+void Colour_Read(_Robot *Bagger)
 {
   Serial.println("Reading Colour Sensor");
   Serial.println(" ");
@@ -191,12 +191,12 @@ void readColourSensor(_Robot *Bagger)
 
   if (((green / blue) > 1.0) && (green > 100))  {
     Serial.println("The colour is blue");
-    UpdateLED(0, 0, 255);
+    LED_Update(0, 0, 255);
     return;
   }
   else if (((blue / red) > 1.75) && (blue > green) && (blue > 150)) {
     Serial.println("The colour is green");
-    UpdateLED(0, 255, 0);
+    LED_Update(0, 255, 0);
     return;
   }
   else {

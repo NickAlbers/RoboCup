@@ -43,6 +43,7 @@ struct _Robot
   int package_C = false;
   
   int packageCount = 0;
+  int JawsClosedFlag = FALSE;
 
   //Robot IMU readings
   uint8_t IMUBuf[14];
@@ -87,10 +88,10 @@ XBOXRECV Xbox(&Usb);
 #define PACKAGE_MAX_TIME 500
 
 
-#define CORNER_TIMEOUT 2000;
+#define CORNER_TIMEOUT 500;
 
 //***********************************************************************************************
-// SENSORS
+// SENSORS  ~
 //***********************************************************************************************
 // IR:
 const int IRmed_R_Pin = A4;
@@ -133,8 +134,8 @@ const int  IR_CollectionSensors_4 = 41;  //jaw weight detection
 //***********************************************************************************************
 //Collision Detection
 #define SAFEDISTANCE 70 //Value in centimeters
-#define COLLISIONDISTANCE 35 //Value in centimeters
-#define DETECTION_MARGIN 5  //Value in centimeters
+#define COLLISIONDISTANCE 30 //Value in centimeters
+#define DETECTION_MARGIN 7  //Value in centimeters
 
 //Package Detection
 int collectFlag = false;
@@ -147,9 +148,9 @@ long collectionTime = 0;
 #define COLLECTION_TIME 1000 //?
 #define SWEEPTIME 200 // Speed of the smart servo arm sweep
 
-#define MAXSPEED 100
-#define MIN_COLLECT_SPEED 20
-#define MAX_COLLECT_SPEED 30
+#define MAXSPEED 60
+#define MIN_COLLECT_SPEED 30
+#define MAX_COLLECT_SPEED 50
 
 //***********************************************************************************************
 // SMART SERVO PARAMETERS & ID
@@ -158,9 +159,12 @@ int Smart_1 = 1; //motor ID - verify your ID !!!!
 int Smart_2 = 2;
 int Smart_42 = 42;
 
+int16_t Jaws_OpenTime = 0;
+
+#define JAWSCLOSEPERIOD 1000 //Jaws must remain closed for half a second before reopening
+
 #define TRAYDOWNANGLE 70
 #define TRAYUPANGLE 160
-
 
 //***********************************************************************************************
 // WEIGHT SENSOR SETUP

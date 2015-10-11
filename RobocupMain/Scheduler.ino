@@ -14,6 +14,19 @@
 #define INTERVAL_500MS  500
 #define INTERVAL_1000MS 1000
 
+//#define INTERVAL_1MS   500
+//#define INTERVAL_2MS   500
+//#define INTERVAL_4MS   500
+//#define INTERVAL_6MS   500
+//#define INTERVAL_8MS   500
+//#define INTERVAL_10MS   500
+//#define INTERVAL_25MS   500
+//#define INTERVAL_50MS   500
+//#define INTERVAL_100MS  500
+//#define INTERVAL_200MS  500
+//#define INTERVAL_500MS  500
+//#define INTERVAL_1000MS 500
+
 
 //***********************************************************************************************
 // Struct TaskType
@@ -31,7 +44,7 @@ typedef struct
 // Function Declarations
 TaskType *Task_GetConfig(void);
 uint8_t Task_GetNumTasks(void);
-void Task_Placeholder(_Robot *bagger);
+void Task_Placeholder_Open_Jaws(_Robot *bagger);
 
 
 //***********************************************************************************************
@@ -42,38 +55,35 @@ void Task_Placeholder(_Robot *bagger);
 
 static TaskType Tasks[] =
 {
-  //  {0              ,   0,    modeSelect        }, // Continously check for the controller safeguard
-  {INTERVAL_10MS ,   0,    modeSelect        }, // Also make it a scheduled task for safety
-  {INTERVAL_50MS ,   0,    updateSensors     },
-  {INTERVAL_50MS ,   0,    collisionDetect   },
-  {INTERVAL_50MS ,   0,    packageDetect     },
-  {INTERVAL_50MS ,   0,    autonomousDrive   },
-  {INTERVAL_100MS ,  0,   detectCollection   },
-  {INTERVAL_500MS ,  0,   Task_Placeholder_Close_Jaws    },
-//  {INTERVAL_1000MS,   0,    readIMU           },
-//  {INTERVAL_1000MS,   0,    readMagnetometer  },
-//  {INTERVAL_1000MS,   0,    readColourSensor  },
+  //  {0              ,   0,    Xbox_ModeSelect      }, // Continously check for the controller safeguard
+  {INTERVAL_10MS  ,  0,    Xbox_ModeSelect                }, // Also make it a scheduled task for safety
+  {INTERVAL_50MS  ,  0,    Sensors_UpdateAll             },
+  {INTERVAL_50MS  ,  0,    Auto_CollisionDetect      },
+  {INTERVAL_50MS  ,  0,    Package_Detect             },
+  {INTERVAL_50MS  ,  0,    Auto_Logic               },
+  {INTERVAL_100MS ,  0,    Package_TriggerSweep          },
+  {INTERVAL_100MS ,  0,    Task_Placeholder_Open_Jaws},
+  {INTERVAL_25MS ,  0,    Gyro_Read                 }
+  //  {INTERVAL_1000MS,   0,    readIMU           },
+  //  {INTERVAL_1000MS,   0,    readMagnetometer  },
+  //  {INTERVAL_1000MS,   0,    Colour_Read  },
 };
-
-//static TaskType Tasks[] =
-//{
-//  {0              ,   0,    Tsk          },
-//  {INTERVAL_10MS  ,   0,    Tsk_10ms     },
-//  {INTERVAL_50MS  ,   0,    Tsk_10ms     },
-//  {INTERVAL_100MS ,   0,    Tsk_100ms    },
-//  {INTERVAL_500MS ,   0,    Tsk_500ms    },
-//  {INTERVAL_1000MS,   0,    Tsk_1000ms   },
-//  {INTERVAL_1000MS,   0,    Tsk_5000ms   },
-//}
 
 
 /* Function: Task_Placeholder
  *  Allows us to do whatever we want in the continuous loop
  */
-void Task_Placeholder_Close_Jaws(_Robot *bagger)
+void Task_Placeholder_Open_Jaws(_Robot *bagger)
 {
-  //make sure the jaws are closed after each sweep
-  closeJaws(1,2);
+  if (millis() < Jaws_OpenTime)
+  {
+    return;
+  }
+  else
+  {
+    //Make sure the jaws are closed after each sweep
+    Jaws_Open(1, 2);
+  }
 }
 
 
@@ -146,15 +156,15 @@ int Task_Scheduler(_Robot *Bagger)
 
       //Print the Runtime
       Task_RunTime = Task_StopTime - Task_StartTime;
-      Serial.print("Runtime:  ");
-      Serial.println(Task_RunTime/1000, DEC);
+//      Serial.print("Runtime:  ");
+//      Serial.println(Task_RunTime / 1000, DEC);
 
       //Save last tick the task was run
       Task_ptr[TaskIndex].LastTick = tick;
     }
 
     /* Check if the user has requested control, and break out of the scheduler if so */
-    modeSelect(Bagger);
+    Xbox_ModeSelect(Bagger);
 
   }//End for
 }//End scheduler

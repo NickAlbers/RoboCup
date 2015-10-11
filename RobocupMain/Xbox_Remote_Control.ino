@@ -18,9 +18,9 @@ void setupXboxReceiver()
 //***********************************************************************************************
 // Changes from autonomous to remote control and vice versa on A "y" button press.
 //***********************************************************************************************
-void modeSelect(_Robot *Bagger)
+void Xbox_ModeSelect(_Robot *Bagger)
 {
-  //Serial.println("ModeSelect");
+  //Serial.println("Xbox_ModeSelect");
   //Get the latest data on pressed buttons from the Xbox receiver
   Usb.Task();
 
@@ -93,45 +93,46 @@ void xboxControl(_Robot *robot)
 
   //Sweep the servos for package collection
   if (Xbox.getButtonClick(B, 0)) {
-    toggleJaws(1, 2);
+    Jaws_Toggle(1, 2);
   }
 
   //  //Toggle the tray position
   //  if (Xbox.getButtonClick(L2, 0)) {
   //    if (trayPosition == TRAYDOWN)
   //    {
-  //      liftTray(42);
+  //      Tray_Lift(42);
   //    }
   //    else if (trayPosition == TRAYUP)
   //    {
-  //      lowerTray(42);
+  //      Tray_Lower(42);
   //    }
   //  }
 
   if (Xbox.getButtonClick(UP, 0)) {
-    liftTray(42);
+    Tray_Lift(42);
   }
 
   if (Xbox.getButtonClick(DOWN, 0)) {
-    lowerTray(42);
+    Tray_Lower(42);
   }
 
   if (Xbox.getButtonClick(L1, 0)) {
     setupSmartServos();
   }
 
-  if (Xbox.getButtonClick(RIGHT, 0)) {
-    readIMU(robot);
-  }
+//  if (Xbox.getButtonClick(RIGHT, 0)) {
+//    IMU();
+//  }
 
-  if (Xbox.getButtonClick(LEFT, 0)) {
-    readMagnetometer(robot);
-  }
+//  if (Xbox.getButtonClick(LEFT, 0)) {
+//    setupMagenometer();
+//  }
   
   if (Xbox.getButtonClick(L2, 0)) {
     Weight_GetWeight();
   }
-
+  
+  
   //    if (Xbox.getButtonClick(L2, 0)) {
   //    readIMU(&Bagger);
   //  }
@@ -139,22 +140,22 @@ void xboxControl(_Robot *robot)
 
   //Flash LED Green
   //  if (Xbox.getButtonClick(R1, 0)) {
-  //    UpdateLED(0, 255, 0);
+  //    LED_Update(0, 255, 0);
   //  }
   //
   //  //Flash LED red
   //  if (Xbox.getButtonClick(R2, 0)) {
-  //    UpdateLED(255, 0, 0);
+  //    LED_Update(255, 0, 0);
   //  }
   //
   //  //Flash LED blue
   //  if (Xbox.getButtonClick(R3, 0)) {
-  //    UpdateLED(0, 0, 255);
+  //    LED_Update(0, 0, 255);
   //  }
   //
   //    //Clear LED
   //  if (Xbox.getButtonClick(L3, 0)) {
-  //    UpdateLED(0, 0, 0);
+  //    LED_Update(0, 0, 0);
   //  }
 
 }
