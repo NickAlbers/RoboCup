@@ -11,7 +11,7 @@ void Maneouver2Weight(_Robot *Bagger)
 
   if (Bagger->package_C) {
     package_xPos = ((Bagger->Ultra_L*Bagger->Ultra_L) - (Bagger->Ultra_R*Bagger->Ultra_R))  / (2*ULTRA_OFFSET);
-    Bagger->turnDir = (TurnDirection) ((package_xPos) * MANEOUVER2WEIGHT_CONST );
+    Bagger->turnDir = (TurnDirection) (package_xPos * MANEOUVER2WEIGHT_CONST );
 
 
 //  Serial.print("Left \t");
@@ -21,7 +21,7 @@ void Maneouver2Weight(_Robot *Bagger)
 //  Serial.print(" \t || Pos:");
 //    Serial.println(package_xPos);
 //  Serial.print(" \t || Turn:");
-//  Serial.println(Bagger->turnDir);a
+//  Serial.println(Bagger->turnDir);
   }
   else if (Bagger->package_L) {
     Bagger->turnDir = (TurnDirection) (- min(Bagger->Ultra_L,Bagger->Ultra_R)*TURN_CONST); 
@@ -33,7 +33,7 @@ void Maneouver2Weight(_Robot *Bagger)
   }
   //   nextRun = millis() + random(PACKAGE_MIN_TIME, PACKAGE_MAX_TIME);
 
-  Motors_VariableDrive(Bagger->Speed, Bagger->turnDir);
+  drive(Bagger->Speed, Bagger->turnDir);
   
   Bagger->driveState = DRIVING;
 }
@@ -41,7 +41,7 @@ void Maneouver2Weight(_Robot *Bagger)
 //***********************************************************************************************
 // Scan for packages and inititiate relevant code
 //***********************************************************************************************
-void Package_Detect(_Robot *Bagger)
+void packageDetect(_Robot *Bagger)
 {
 //  Serial.println("Package Detection");
 
@@ -96,11 +96,11 @@ void Package_Detect(_Robot *Bagger)
 // Sweep the arms if a package is against the tray
 //***********************************************************************************************
 
-void Package_TriggerSweep(_Robot * Bagger)
+void detectCollection(_Robot * Bagger)
 {
   if (!digitalRead(IR_CollectionSensors_3) || !digitalRead(IR_CollectionSensors_3))
   {
-    Package_Collect(Bagger);
+    packageCollect(Bagger);
   }
   
   //check scales if weight collected
@@ -110,9 +110,9 @@ void Package_TriggerSweep(_Robot * Bagger)
       //timeout and move on if not connected
 }
 
-bool Package_Collect(_Robot * Bagger)
+bool packageCollect(_Robot * Bagger)
 {
-   Jaws_Close(1, 2); //Close jaws
+   closeJaws(1, 2); //Close jaws
    
    
 //  int attempt = 0
