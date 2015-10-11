@@ -1,7 +1,7 @@
 //***********************************************************************************************
 //Function allowing the robot to steer autonomously
 //***********************************************************************************************
-void Auto_Logic(_Robot *Bagger)
+void autonomousDrive(_Robot *Bagger)
 {
   //Serial.println("AutonomousDrive");
   
@@ -18,7 +18,7 @@ void Auto_Logic(_Robot *Bagger)
       Serial.println("Driving");
       //Generate a time to drive for, and set the next state to be turning
       nextRun = millis() + random(DRIVING_MIN_TIME, DRIVING_MAX_TIME); 
-      Motors_VariableDrive(Bagger->Speed, Forward);
+      drive(Bagger->Speed, Forward);
       //drive(0, Forward);
       //Bagger->driveState = TURNING; // Set the next run to be driving forwards
       break;
@@ -33,7 +33,7 @@ void Auto_Logic(_Robot *Bagger)
       
     case EVASIVETACTICS:
       //Serial.println("Avoiding Object");
-      Auto_EvasiveManoeuvers(Bagger);
+      evasiveManeouvers(Bagger);
       Bagger->driveState = DRIVING;
       break;
 
@@ -49,7 +49,7 @@ void Auto_Logic(_Robot *Bagger)
 // Read the medium range IR sensors, and execute collision avoidance code if a collision is
 // imminent, return true if an object is within "safeDistance" centimeters
 //***********************************************************************************************
-void Auto_CollisionDetect(_Robot *Bagger)
+void collisionDetect(_Robot *Bagger)
 {
   //Serial.println("Collision Detect");
   if ((Bagger->IRmed_L  <= SAFEDISTANCE) || (Bagger->IRmed_R  <= SAFEDISTANCE)) {
@@ -66,37 +66,33 @@ void Auto_CollisionDetect(_Robot *Bagger)
 // THIS FUNCTION IS BLOCKING
 //***********************************************************************************************
 
-void Auto_EvasiveManoeuvers(_Robot *Bagger)
+void evasiveManeouvers(_Robot *Bagger)
 {
-  //If the robot is not in a corner
-  if (cornerFlag == FALSE) {
+  if (!cornerFlag) {
     cornerTime = millis() + CORNER_TIMEOUT;
     cornerFlag = true;
   }
   
-  // Detect the direction of the imminent collision
   signed int collisionDirection = (Bagger->IRmed_L - Bagger->IRmed_R); //Work out fastest turn direction to avoid collision
-  
-  Serial.print("collisionDirection: ");
-  Serial.println(collisionDirection, DEC);
-  
 
   Bagger->Speed = map(min(Bagger->IRmed_L,Bagger->IRmed_R),COLLISIONDISTANCE,SAFEDISTANCE,0,MAXSPEED);
-
+  
+  
+  
   if (millis() > cornerTime) {
     Serial.print("   ");
     Serial.print("In corner");
-    
-    Motors_TurnRandom();
-    nextRun = millis() + random(COLLISION_MIN_TIME, COLLISION_MAX_TIME);; //Delay long enough to complete a turn
+    turnRight();
   }
   
   else {
-    Serial.println("Collision!!!");
+//    Serial.println("Collision!!!");
     Bagger->turnDir = (TurnDirection)(map(collisionDirection,-80,80,-90,90));
 //    Serial.println(Bagger->turnDir);
-    Motors_VariableDrive(Bagger->Speed, Bagger->turnDir);
+    drive(Bagger->Speed, Bagger->turnDir);
   }
+  
+  
   
 //  else if (collisionDirection < 0) //Left sensor reads further away than right sensor
 //  {

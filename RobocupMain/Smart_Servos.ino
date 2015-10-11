@@ -7,7 +7,7 @@
 
 void setupSmartServos()
 {
-  Serial.println("SetUp Smart Servos");
+ Serial.println("SetUp Smart Servos");
 
   Herkulex.beginSerial2(115200); //open serial port 2 to talk to the motors
   Herkulex.reboot(1);            //reboot motor
@@ -20,16 +20,12 @@ void setupSmartServos()
   //Assert the servos to the forwards or downwards position and set the LEDS to red to indicate ready
   //  Herkulex.moveOne(1, 512, 1000, LED_RED);
   //  Herkulex.moveOne(2, 512, 1000, LED_RED);
-  Jaws_Open(1, 2);
-  Tray_Lower(42);
+  openJaws(1, 2);
+  lowerTray(42);
   sweepState = SWEEPIN;
 }
 
-//***********************************************************************************************
-// Jaw Functions
-//***********************************************************************************************
-
-void Jaws_Toggle(int servo1, int servo2)
+void toggleJaws(int servo1, int servo2)
 {
   Serial.println("Toggling Smart Servos");
   static long nextSweep = 0;
@@ -42,11 +38,13 @@ void Jaws_Toggle(int servo1, int servo2)
     case SWEEPIN: //Green LED indicates in
       Herkulex.moveOne(servo1, 812, SWEEPTIME, LED_GREEN); // A change of 300 indicates a 90 degree angle
       Herkulex.moveOne(servo2, 212, SWEEPTIME, LED_GREEN);
+      Serial.println("Sweeping In");
       sweepState = SWEEPOUT;
       break;
     case SWEEPOUT: //Blue LED indicates in
       Herkulex.moveOne(servo1, 512, SWEEPTIME, LED_BLUE);
       Herkulex.moveOne(servo2, 512, SWEEPTIME, LED_BLUE);
+      Serial.println("Sweeping Out");
       sweepState = SWEEPIN;
       break;
   }
@@ -54,41 +52,36 @@ void Jaws_Toggle(int servo1, int servo2)
   nextSweep = millis() + SWEEPTIME;
 }
 
-void Jaws_Close(int servo1, int servo2)
+void closeJaws(int servo1, int servo2)
 { 
   Serial.println("Closing jaws");
   
-  //Set the time of the weight collection
-  Jaws_OpenTime = millis() + JAWSCLOSEPERIOD;
-  
-  LED_Update(0,0,255); //Flash LED strips blue to simulate jaws closing
+  UpdateLED(0,0,255); //Flash LED strips blue to simulate jaws closing
   Herkulex.moveOne(servo1, 812, SWEEPTIME, LED_GREEN); // A change of 300 indicates a 90 degree angle
   Herkulex.moveOne(servo2, 212, SWEEPTIME, LED_GREEN);
+  Serial.println("Sweeping In");
 }
 
-void Jaws_Open(int servo1, int servo2)
+void openJaws(int servo1, int servo2)
 {
-  LED_Update(0,255,0); //Flash LED strips green to simulate jaws opening
+  UpdateLED(0,255,0); //Flash LED strips green to simulate jaws opening
   Herkulex.moveOne(servo1, 512, SWEEPTIME, LED_BLUE);
   Herkulex.moveOne(servo2, 512, SWEEPTIME, LED_BLUE);
+  Serial.println("Sweeping In");
 }
 
-//***********************************************************************************************
-// Tray Functions
-//***********************************************************************************************
-
-void Tray_Lift(int servo)
+void liftTray(int servo)
 {
   trayPosition = TRAYUP;
-//  LED_Update(0,255,0); //Flash LED strips green to simulate jaws opening
+//  UpdateLED(0,255,0); //Flash LED strips green to simulate jaws opening
   Herkulex.moveOneAngle(servo, TRAYUPANGLE, SWEEPTIME, LED_BLUE);
   Serial.println("Lifting Tray");
 }
 
-void Tray_Lower(int servo)
+void lowerTray(int servo)
 {
   trayPosition = TRAYDOWN;
-//  LED_Update(0,255,0); //Flash LED strips green to simulate jaws opening
+//  UpdateLED(0,255,0); //Flash LED strips green to simulate jaws opening
   Herkulex.moveOneAngle(servo, TRAYDOWNANGLE, SWEEPTIME, LED_GREEN);
   Serial.println("Lowering Tray");
   
