@@ -48,7 +48,7 @@ void initSerial()
 void initVcc()
 {
   // turn Vcc on (5V)
-
+  
   pinMode(30, OUTPUT);   //Sneakily out the LED initilisation here
   pinMode(38, INPUT);
   pinMode(39, INPUT);
@@ -71,60 +71,9 @@ void setup()
   setupUltra();
   setupSmartServos();
   setupIMU();
-  //  setupMagenometer()
+//  setupMagenometer()
   //setupColourSensor();
   //setupLED();
-}
-
-void Logic(_Robot *Bagger)
-{
-  //Update all sensors
-  Sensors_UpdateAll(Bagger);
-
-  //Check for any collisions
-  CollisionFlag = Auto_CollisionDetect(Bagger);
-
-  //Check for any packages
-  PackageFlag = Package_Detect(Bagger);
-
-  if (CollisionFlag == true && PackageFlag == false)
-  {
-    Auto_EvasiveManoeuvers(Bagger);
-  }
-
-  //Check for any packages
-  else if (PackageFlag == true && CollisionFlag == false)
-  {
-    Package_Triangulate(Bagger);
-    Maneouver2Weight(Bagger);
-  }
-
-  else if (PackageFlag == true && CollisionFlag == true)
-  {
-
-    //Test the distance to the collision and the packages
-    //If obstacle closer than package
-    if ((Bagger->Ultra_L < Bagger->IRmed_L) || (Bagger->Ultra_R < Bagger->IRmed_R))
-    {
-      Package_Triangulate(Bagger);
-      Maneouver2Weight(Bagger);
-    }
-
-    //If package closer than obstacle
-    else if (((Bagger->Ultra_L > Bagger->IRmed_L) || (Bagger->Ultra_R > Bagger->IRmed_R)))
-    {
-      Auto_EvasiveManoeuvers(Bagger);
-    }
-  }
-
-  if (Bagger->packageCount >= 3);
-  {
-    //FindHome
-  }
-
-  //If no packages detected or no collision imminent
-    Auto_Logic(Bagger);
-    //      Task_Scheduler(&Bagger);
 }
 
 //***********************************************************************************************
@@ -134,7 +83,7 @@ void loop()
 {
   //Create the robot "Bagger"!!!
   static _Robot Bagger;
-
+  
   //Detect homebase and set HOMEDIRECTION based on the relevant colour.
 
   //Select the mode of operation for the main loop
@@ -153,11 +102,11 @@ void loop()
       xboxControl(&Bagger);
       break;
     case AUTONOMOUS:
-      Logic(&Bagger);
+      Task_Scheduler(&Bagger);
       break;
   }
-
+  
   loopCount ++;
 
-  //  delay(10); //This makes stuff work
+//  delay(10); //This makes stuff work
 }

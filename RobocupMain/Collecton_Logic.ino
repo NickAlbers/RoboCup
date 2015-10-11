@@ -41,18 +41,7 @@ void Maneouver2Weight(_Robot *Bagger)
 //***********************************************************************************************
 // Scan for packages and inititiate relevant code
 //***********************************************************************************************
-bool Package_Detect(_Robot *Bagger)
-{
-  if ( (Bagger->Ultra_L + DETECTION_MARGIN) < Bagger->Ultra_LT ) {
-    return true;
-  }
-  //object on right???
-  if ( (Bagger->Ultra_R + DETECTION_MARGIN) < Bagger->Ultra_RT ) {
-    return true;
-  }
-}
-
-void Package_Triangulate(_Robot *Bagger)
+void Package_Detect(_Robot *Bagger)
 {
 //  Serial.println("Package Detection");
 
@@ -96,9 +85,12 @@ void Package_Triangulate(_Robot *Bagger)
   else if (  (detect_R && (Bagger->Ultra_R < ULTRA_OFFSET)) || (detect_L && (Bagger->Ultra_L > sqrt(2)*ULTRA_OFFSET))  ) {
     Bagger->package_R = true;
   }
-  
+
+//  collectFlag = true;
+//  collectionTime = millis() + COLLECTION_DELAY;
   return;
 }
+
 
 //***********************************************************************************************
 // Sweep the arms if a package is against the tray
@@ -109,7 +101,6 @@ void Package_TriggerSweep(_Robot * Bagger)
   if (!digitalRead(IR_CollectionSensors_3) || !digitalRead(IR_CollectionSensors_3))
   {
     Package_Collect(Bagger);
-    Bagger->packageCount++;
   }
   
   //check scales if weight collected
