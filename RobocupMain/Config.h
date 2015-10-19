@@ -7,12 +7,13 @@
 #define BAUDRATE 4800
 
 typedef enum OperationMode { HANDBRAKE, REMOTECONTROL, AUTONOMOUS };
-typedef enum RobotState {TURNING, DRIVING, GETPACKAGE, AVOIDOBSTACLE, EVASIVETACTICS, FINDWEIGHT };
+typedef enum RobotState {TURNING, DRIVING, GETPACKAGE, AVOIDOBSTACLE, EVASIVETACTICS, FINDWEIGHT, COLLECTING };
 typedef enum TrayState {TRAYUP, TRAYDOWN};
 typedef enum TurnDirection {  Reverse = -180, Left = -90, Forward = 0, Right = 90};
 typedef enum SweepDir {  SWEEPIN, SWEEPOUT};
+typedef enum BaseColours {  BLUE_BASE, GREEN_BASE};
 
-
+BaseColours HomeBase = BLUE_BASE;
 
 //***********************************************************************************************
 //Declare globals Robot defintions
@@ -51,7 +52,8 @@ struct _Robot
 
 //Robot Control States
 static RobotState driveState = DRIVING;
-static OperationMode opMode = HANDBRAKE;
+//static OperationMode opMode = HANDBRAKE;
+static OperationMode opMode = AUTONOMOUS;
 static SweepDir sweepState = SWEEPIN;
 static TrayState trayPosition = TRAYDOWN;
 //int xboxConnected = false; //Assume no xbox controller is connected leave this so morgan can operate robot
@@ -81,8 +83,8 @@ XBOXRECV Xbox(&Usb);
 #define COLLISION_MAX_TIME 500
 #define DRIVING_MIN_TIME 1000
 #define DRIVING_MAX_TIME 3500
-#define TURNING_MIN_TIME 200 
-#define TURNING_MAX_TIME 1000
+#define TURNING_MIN_TIME 50 
+#define TURNING_MAX_TIME 300
 #define PACKAGE_MIN_TIME 200
 #define PACKAGE_MAX_TIME 500
 
@@ -120,7 +122,7 @@ NewPing Ultra_LT(Ultra_LT_trigPin, Ultra_LT_echoPin, MAX_ULTRA);
 NewPing Ultra_RT(Ultra_RT_trigPin, Ultra_RT_echoPin, MAX_ULTRA);
 #define PULSE_TIMEOUT 50000 //Number of microseconds to wait for pin to change, 50000us = 50ms
 
-
+int CurrBase = 0;
 
 const int  IR_CollectionSensors_1 = 38;
 const int  IR_CollectionSensors_2 = 39;
@@ -133,7 +135,7 @@ const int  IR_CollectionSensors_4 = 41;  //jaw weight detection
 //***********************************************************************************************
 //Collision Detection
 #define SAFEDISTANCE 70 //Value in centimeters
-#define COLLISIONDISTANCE 35 //Value in centimeters
+#define COLLISIONDISTANCE 45 //Value in centimeters
 #define DETECTION_MARGIN 5  //Value in centimeters
 
 //Package Detection
@@ -142,15 +144,19 @@ long collectionTime = 0;
 
 #define COLLECTION_DELAY 500; //Amount of time to force forward driving to ensure package collection
 #define PACKAGE_IDENT_CONST 30 //30cm
-#define MANEOUVER2WEIGHT_CONST 5 //?
+#define MANEOUVER2WEIGHT_CONST 3 //?
 #define TURN_CONST 1
 #define COLLECTION_TIME 1000 //?
 #define SWEEPTIME 200 // Speed of the smart servo arm sweep
 
-#define MAXSPEED 100
+#define MAXSPEED 80
 #define MIN_COLLECT_SPEED 20
 #define MAX_COLLECT_SPEED 30
 
+float r, g, b;
+
+int collectingPeriod = 0;
+#define COLLECTION_TIME 2000
 //***********************************************************************************************
 // SMART SERVO PARAMETERS & ID
 //***********************************************************************************************
@@ -160,13 +166,17 @@ int Smart_42 = 42;
 
 #define TRAYDOWNANGLE 70
 #define TRAYUPANGLE 160
+#define JAWSCLOSEPERIOD 2000
+
+int Jaws_OpenTime = 0;
 
 
 //***********************************************************************************************
 // WEIGHT SENSOR SETUP
 //***********************************************************************************************
 
-Hx711 scale(24, 25);                    //Setup pins for digital communications with weight IC
+Hx711 scale1(24, 25);                    //Setup pins for digital communications with weight IC
+//Hx711 scale2(31, 30);                    //Setup pins for digital communications with weight IC
 
 //***********************************************************************************************
 // Mathematical Expressions
@@ -181,3 +191,4 @@ Hx711 scale(24, 25);                    //Setup pins for digital communications 
 
 //Create the circular buffer
 static circBuf_t compassBuffer[NUMCOMPASSREADS];
+

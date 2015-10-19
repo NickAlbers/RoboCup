@@ -44,6 +44,19 @@ void turnRandom()
   }
 }
 
+void turnRandomHard(_Robot *Bagger)
+{
+  static int rand;
+  rand = random(0, 2);//Random function chooses between min and max-1
+  if (rand == 0) {
+    //        Bagger->turnDir = Left;
+    turnRightHard(Bagger);
+  }
+  else if (rand == 1) {
+    turnLeftHard(Bagger);
+    //        Bagger->turnDir = Right;
+  }
+}
 //***********************************************************************************************
 // Turn the robot in a specified direction
 //***********************************************************************************************
@@ -51,15 +64,28 @@ void turnRandom()
 //left
 void turnLeft()
 {
-  leftServo.write(135);
-  rightServo.write(45);
+  leftServo.write(120);
+  rightServo.write(70);
 }
 
 //Right
 void turnRight()
 {
+  leftServo.write(70);
+  rightServo.write(120);
+}
+
+void turnRightHard(_Robot *Bagger)
+{
   leftServo.write(45);
   rightServo.write(135);
+  delay(1500);
+}
+void turnLeftHard(_Robot *Bagger)
+{
+  leftServo.write(135);
+  rightServo.write(45);
+  delay(1500);
 }
 
 //Forward

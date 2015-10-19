@@ -27,7 +27,7 @@ void autonomousDrive(_Robot *Bagger)
       Serial.println("Turning");
 
       nextRun = millis() + random(TURNING_MIN_TIME, TURNING_MAX_TIME); //Generate a time to turn for
-      //turnRandom();
+      turnRandom();
       Bagger->driveState = DRIVING; //Set the next run to be a drive command
       break;
       
@@ -42,6 +42,16 @@ void autonomousDrive(_Robot *Bagger)
       Maneouver2Weight(Bagger);
       Bagger->driveState = DRIVING;
       break;
+    
+    case COLLECTING:
+      //Serial.println("Collecting Package");
+      drive(30, Forward);
+      
+      if (millis() > collectingPeriod){
+        Bagger->driveState = DRIVING;
+      }
+      break;
+      
   }
 }
 

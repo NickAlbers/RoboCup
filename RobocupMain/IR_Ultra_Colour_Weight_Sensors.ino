@@ -30,13 +30,13 @@ void updateSensors(_Robot *Bagger)
   if(Bagger->Ultra_R==0)Bagger->Ultra_R=MAX_ULTRA;
   if(Bagger->Ultra_LT==0)Bagger->Ultra_LT=MAX_ULTRA;
   if(Bagger->Ultra_RT==0)Bagger->Ultra_RT=MAX_ULTRA;
-//  Serial.print(Bagger->Ultra_L);
-//  Serial.print("\t | \t");
-//  Serial.print(Bagger->Ultra_LT);
-//  Serial.print("\t || \t");
-//  Serial.print(Bagger->Ultra_R);
-//  Serial.print("\t | \t");
-//  Serial.println(Bagger->Ultra_RT);
+  Serial.print(Bagger->Ultra_L);
+  Serial.print("\t | \t");
+  Serial.print(Bagger->Ultra_LT);
+  Serial.print("\t || \t");
+  Serial.print(Bagger->Ultra_R);
+  Serial.print("\t | \t");
+  Serial.println(Bagger->Ultra_RT);
   //int tock = millis();
   //Serial.println(tock-tick);
 }
@@ -137,7 +137,8 @@ void setupColourSensor()
   if (tcs.begin())
   {
     Serial.println("Found sensor");
-  } else
+  } 
+  else
   {
     Serial.println("No TCS34725 found ... check your connections");
     //while (1); // halt!
@@ -159,49 +160,33 @@ void readColourSensor(_Robot *Bagger)
 
   tcs.setInterrupt(true);  // turn off LED
 
-//  Serial.print("C:\t"); Serial.print(clear);
-//  Serial.print("\tR:\t"); Serial.print(red);
-//  Serial.print("\tG:\t"); Serial.print(green);
-//  Serial.print("\tB:\t"); Serial.print(blue);
+  Serial.print("C:\t"); Serial.print(clear);
+  Serial.print("\tR:\t"); Serial.print(red);
+  Serial.print("\tG:\t"); Serial.print(green);
+  Serial.print("\tB:\t"); Serial.print(blue);
 
   // Figure out some basic hex code for visualization
   uint32_t sum = clear;
-  float r, g, b;
   r = red; r /= sum;
   g = green; g /= sum;
   b = blue; b /= sum;
   r *= 256; g *= 256; b *= 256;
-//  Serial.print("\t");
-//  Serial.print((int)r, HEX); Serial.print((int)g, HEX); Serial.print((int)b, HEX);
-//  Serial.println();
+  
+  
 
-  //Guess the current colour
-  //  if ((red > 150 && red < 250) && (green > 150 && green < 250) && (blue > 150 && blue < 250)) {
-  //    Serial.println("The colour is blue");
-  //    UpdateLED(0,0,256);
-  //    return;
-  //  }
-  //  if ((red > 150 && red < 250) && (green > 100) && (blue > 50 && blue < 150)) {
-  //    Serial.println("The colour is green");
-  //        UpdateLED(0,256,0);
-  //    return;
-  //  }
-  //  else {
-  //    Serial.println("The colour is black");
-
-  if (((green / blue) > 1.0) && (green > 100))  {
-    Serial.println("The colour is blue");
-    UpdateLED(0, 0, 255);
-    return;
-  }
-  else if (((blue / red) > 1.75) && (blue > green) && (blue > 150)) {
-    Serial.println("The colour is green");
-    UpdateLED(0, 255, 0);
-    return;
-  }
-  else {
-    Serial.println("No colour detected");
-  }  
+//  if (((green / blue) > 1.0) && (green > 100))  {
+//    Serial.println("The colour is blue");
+//    UpdateLED(Bagger);
+//    return;
+//  }
+//  else if (((blue / red) > 1.75) && (blue > green) && (blue > 150)) {
+//    Serial.println("The colour is green");
+//    UpdateLED(Bagger);
+//    return;
+//  }
+//  else {
+//    Serial.println("No colour detected");
+//  }  
   
 //  else if (((red / blue) > 1.5) && (red > 150)) {
 //    Serial.println("The colour is red");
@@ -224,19 +209,42 @@ void readColourSensor(_Robot *Bagger)
   //  UpdateLED(0, 0, 0);
 }
 
+
+//UpdateLED(Bagger);
+//  Serial.print("\t");
+//  Serial.print((int)r, HEX); Serial.print((int)g, HEX); Serial.print((int)b, HEX);
+//  Serial.println();
+
+  //Guess the current colour
+  //  if ((red > 150 && red < 250) && (green > 150 && green < 250) && (blue > 150 && blue < 250)) {
+  //    Serial.println("The colour is blue");
+  //    UpdateLED(0,0,256);
+  //    return;
+  //  }
+  //  if ((red > 150 && red < 250) && (green > 100) && (blue > 50 && blue < 150)) {
+  //    Serial.println("The colour is green");
+  //        UpdateLED(0,256,0);
+  //    return;
+  //  }
+  //  else {
+  //    Serial.println("The colour is black");
+  
+  
 //***********************************************************************************************
 // WEIGHT
 //***********************************************************************************************
 
 void setupWeight() 
 {
-  scale.setOffset(0);
-  scale.setScale(1000); //?
+  scale1.setOffset(0);
+  scale1.setScale(1000); //?
+ // scale2.setOffset(0);
+  //scale2.setScale(1000); //?
 }
  
-void Weight_GetWeight() 
-{
-  Serial.print(scale.getGram(), 1);    //Get force and print answer
-  Serial.println(" g");
-}
+//void Weight_GetWeight() 
+//{
+//  Serial.print(scale.getGram(), 1);    //Get force and print answer
+//  Serial.println(" g");
+//}
 

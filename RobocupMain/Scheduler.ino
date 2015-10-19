@@ -13,6 +13,7 @@
 #define INTERVAL_200MS  200
 #define INTERVAL_500MS  500
 #define INTERVAL_1000MS 1000
+#define INTERNVAL_20000MS 20000
 
 
 //***********************************************************************************************
@@ -43,16 +44,19 @@ void Task_Placeholder(_Robot *bagger);
 static TaskType Tasks[] =
 {
   //  {0              ,   0,    modeSelect        }, // Continously check for the controller safeguard
-  {INTERVAL_10MS ,   0,    modeSelect        }, // Also make it a scheduled task for safety
-  {INTERVAL_50MS ,   0,    updateSensors     },
-  {INTERVAL_50MS ,   0,    collisionDetect   },
-  {INTERVAL_50MS ,   0,    packageDetect     },
-  {INTERVAL_50MS ,   0,    autonomousDrive   },
-  {INTERVAL_100MS ,  0,   detectCollection   },
-  {INTERVAL_500MS ,  0,   Task_Placeholder_Close_Jaws    },
+  {INTERVAL_10MS ,   0,  modeSelect        }, // Also make it a scheduled task for safety
+  {INTERVAL_50MS ,   0,  updateSensors     },
+  {INTERVAL_50MS ,   0,  collisionDetect   },
+  {INTERVAL_50MS ,   0,  packageDetect     },
+  {INTERVAL_50MS ,   0,  autonomousDrive   },
+  {INTERVAL_100MS,   0,  detectCollection  },
+  {INTERNVAL_20000MS, 0, turnRandomHard}, // {INTERVAL_200MS,   0,  readColourSensor  },
+//  {INTERVAL_200MS,   0,  checkHomeBase     },
+//  {INTERVAL_100MS,   0,  UpdateLED         },
+//  {INTERVAL_500MS ,  0,   Task_Placeholder_Open_Jaws    },
 //  {INTERVAL_1000MS,   0,    readIMU           },
 //  {INTERVAL_1000MS,   0,    readMagnetometer  },
-//  {INTERVAL_1000MS,   0,    readColourSensor  },
+  
 };
 
 //static TaskType Tasks[] =
@@ -70,10 +74,18 @@ static TaskType Tasks[] =
 /* Function: Task_Placeholder
  *  Allows us to do whatever we want in the continuous loop
  */
-void Task_Placeholder_Close_Jaws(_Robot *bagger)
+void Task_Placeholder_Open_Jaws(_Robot *bagger)
 {
   //make sure the jaws are closed after each sweep
-  closeJaws(1,2);
+  if (millis() < Jaws_OpenTime)
+  {
+    return;
+  }
+  else
+  {
+    //Make sure the jaws are closed after each sweep
+    openJaws(1, 2);
+  }
 }
 
 

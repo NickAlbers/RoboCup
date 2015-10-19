@@ -71,8 +71,8 @@ void setup()
   setupUltra();
   setupSmartServos();
   setupIMU();
-  //setupColourSensor();
-  //setupLED();
+  setupColourSensor();
+  setupLED();
 }
 
 //***********************************************************************************************
@@ -82,6 +82,12 @@ void loop()
 {
   //Create the robot "Bagger"!!!
   static _Robot Bagger;
+  
+  //Only set the HomeBase once
+  if (loopCount == 0)
+  {
+    setHomeBase(&Bagger);
+  }
   
   //Detect homebase and set HOMEDIRECTION based on the relevant colour.
 

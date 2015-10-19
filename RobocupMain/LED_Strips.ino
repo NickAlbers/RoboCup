@@ -43,16 +43,16 @@ void setupLED()
 // Flash the LED Strips the specified colour
 //***********************************************************************************************
 
-void UpdateLED(int red, int green, int blue)
+void UpdateLED(_Robot *Bagger)
 {
   Serial.println("Updating Led Strips");
   // If any digit is received, we will go into integer parsing mode
   // until all three calls to parseInt return an interger or time out.
   // Read the color from the computer.
   rgb_color color;
-  color.red = red;
-  color.green = blue;
-  color.blue = green;
+  color.red = r;
+  color.green = g;
+  color.blue = b;
 
   // Update the colors buffer.
   for (uint16_t i = 0; i < LED_COUNT; i++)

@@ -117,7 +117,7 @@ void xboxControl(_Robot *robot)
   }
 
   if (Xbox.getButtonClick(L1, 0)) {
-    setupSmartServos();
+    readColourSensor(robot);
   }
 
   if (Xbox.getButtonClick(RIGHT, 0)) {
@@ -128,9 +128,9 @@ void xboxControl(_Robot *robot)
     readMagnetometer(robot);
   }
   
-  if (Xbox.getButtonClick(L2, 0)) {
-    Weight_GetWeight();
-  }
+//  if (Xbox.getButtonClick(L2, 0)) {
+//    Weight_GetWeight();
+//  }
 
   //    if (Xbox.getButtonClick(L2, 0)) {
   //    readIMU(&Bagger);
